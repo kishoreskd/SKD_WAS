@@ -9,6 +9,10 @@
     input[type='number'] {
         width: 80px;
     }
+
+    .hidden {
+        display: none;
+    }
 </style>
 
 <div class="card border-1">
@@ -21,15 +25,19 @@
     </div>
 </div>
 
-<div class="pt-3">
-    <div class="card border-1">
+<form id="frm_container" action="/" method="post">
 
-        <div class="card-header pt-3 pl-3 pb-1">
-            <h6>Project Allocation</h6>
-        </div>
 
-        <div id="cardbody" class="card-body">
-            <form id="frm_container" action="/" method="post">
+
+
+    <div class="pt-3">
+        <div class="card border-1">
+
+            <div class="card-header pt-3 pl-3 pb-1">
+                <h6>Project Allocation</h6>
+            </div>
+
+            <div id="cardbody" class="card-body">
 
                 <input asp-for="ProjectAllocationId" hidden />
 
@@ -79,16 +87,42 @@
                         <span class="text-danger" asp-validation-for="ProductionHours"></span>
                     </div>
                 </div>
-            </form>
+
+            </div>
         </div>
     </div>
-</div>
+
+    <div class="card border-1 pb-0">
+        <div id="cardbody" class="card-body m-0">
+            <table class="table table-light table-bordered">
+                <thead class="table">
+                    <tr>
+                        <th width="1%" class="text-left"></th>
+                        <th width="10%" class="text-left">Allocation Type</th>
+                    </tr>
+                </thead>
+                <tbody class="text-right">
+                    <tr>
+                        <td id="cb_main"> <input class="form-check-input" type="checkbox" value="main" asp-for="IsMainChecked"></td>
+                        <td><strong>Main</strong></td>
+                    </tr>
+                    <tr>
+                        <td id="cb_misc"> <input class="form-check-input" type="checkbox" value="misc" asp-for="IsMiscChecked"></td>
+                        <td><strong> Misc</strong></td>
+                    </tr>
+                    <tr>
+                        <td id="cb_main_misc"> <input class="form-check-input" type="checkbox" value="main_misc" asp-for="IsMainMiscChecked"></td>
+                        <td><strong> Main and Misc</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 
 
-<div class="pt-3">
-    <form id="frm_container" action="/" method="post">
-        <div>
+    <div class="hidden main">
+        <div class="pt-3">
             <div class="card border-1">
 
                 <div class="card-header pt-3 pl-3 pb-1">
@@ -165,7 +199,7 @@
                                     <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
                                 </div>
                                 <div class="col">
-                                    <input id="txt_mainD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
+                                    <input id="txt_mainC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
                                     <span class="text-danger" asp-validation-for="MainAllocation.CheckerPercent"></span>
                                 </div>
 
@@ -176,7 +210,7 @@
                                 </div>
 
                                 <div class="col">
-                                    <input id="txt_mainC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
+                                    <input id="txt_mainD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
                                     <span class="text-danger" asp-validation-for="MainAllocation.DetailerPercent"></span>
                                 </div>
 
@@ -212,11 +246,11 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Submission Date:</strong></td>
-                                        <td id="td_mainSubmission"><span class="badge bg-success">@(Model.MainAllocation.SubmissionDate)</span></td>
+                                        <td id="td_mainsubmission"><span class="badge bg-success">@(Model.MainAllocation.SubmissionDate)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Ratio:</strong></td>
-                                        <td id="td_main_raio"><span class="badge bg-success">@(Model.MainAllocation.IFA):@(Model.MainAllocation.IFF)</span></td>
+                                        <td id="td_main_ratio"><span class="badge bg-success">@(Model.MainAllocation.IFA):@(Model.MainAllocation.IFF)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Total Resource:</strong></td>
@@ -242,8 +276,15 @@
                             </table>
                         </div>
                     </div>
-
+                    @*<div class="f-r pr-1">
+                            <button type="submit" id="btn_submit" class="btn btn-sm btn-primary">
+                                <i class="bi bi-check"></i> Save
+                            </button>
+                        </div>*@
                 </div>
+
+
+
             </div>
             <input id="rslt_mainSubmission" asp-for="@Model.MainAllocation.SubmissionDate" hidden />
             <input id="rslt_mainR1" asp-for="@Model.MainAllocation.R1" hidden />
@@ -253,351 +294,345 @@
             <input id="rslt_mainCnd" asp-for="@Model.MainAllocation.TotalChecker" hidden />
             <input id="rslt_mainDnd" asp-for="@Model.MainAllocation.TotalDetailer" hidden />
         </div>
-
-
-    </form>
-</div>
-
-
-<div class="card border-1">
-
-    <div class="card-header pt-3 pl-3 pb-1">
-        <h6>Misc Allocation</h6>
     </div>
 
-    <div id="cardbody" class="card-body m-1">
-        <form id="frm_container" action="/" method="post">
-
-            <div class="row">
-
-                <div class="col-6 hstack gap-2">
-                    <div class="row">
-
-                        <div class="col">
-                            <label class="form-label"><strong>Hours</strong></label>
-                        </div>
-
-                        <div class="col">
-                            <input id="txt_mischours" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MiscAllocation.Hours"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Ratio</strong></label>
-                        </div>
+    <div class="hidden misc">
 
 
-                        <div class="col-1">
-                            <input id="txt_misc_r1" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
-                        </div>
-                        <div class="col-1 text-center">
-                            <strong>:</strong>
-                        </div>
-                        <div class="col-4">
-                            <input id="txt_misc_r2" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
-                        </div>
+        <div class="card border-1">
 
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Start Date</strong></label>
-                        </div>
-                        <div class="col">
-                            <input id="txt_miscStart" asp-for="MiscAllocation.StartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
-                            <span class="text-danger" asp-validation-for="MiscAllocation.StartDate"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Schedule Days</strong></label>
-                        </div>
-                        <div class="col">
-                            <input id="txt_miscSchedule" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MiscAllocation.ScheduleDays"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-labe"><strong>Modeler</strong><span style="font-size:11px; color:green;">%</span></label>
-                        </div>
-                        <div class="col">
-                            <input id="txt_miscM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.ModelerPercent" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MiscAllocation.ModelerPercent"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
-                        </div>
-                        <div class="col">
-                            <input id="txt_miscD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MiscAllocation.CheckerPercent"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Detailer</strong><span style="font-size:11px; color:green;">%</span></label>
-                        </div>
-
-                        <div class="col">
-                            <input id="txt_miscC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MiscAllocation.DetailerPercent"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Coordination</strong><span style="font-size:11px; color:green;">%</span></label>
-
-                        </div>
-
-                        <div class="col">
-                            <input id="txt_miscCoordination" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.TotalCoordination" class="form-control" readonly type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MiscAllocation.TotalCoordination"></span>
-                        </div>
-                    </div>
-
-                    <div class="vr"></div>
-                </div>
-
-                <div class="col-6">
-                    <table id="" class="table table-light table-bordered" style="width:100%; height: 100%;">
-                        <thead class="table-primary" hidden>
-                            <tr>
-                                <th width="5%" class="text-left">Allocation</th>
-                                <th>Result</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-left">
-                            <tr>
-                                <td><strong>Hours:</strong></td>
-                                <td id="td_mischours"><span class="badge bg-success">@(Model.MiscAllocation.Hours)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Submission Date:</strong></td>
-                                <td id="td_miscSubmission"><span class="badge bg-success">@(Model.MiscAllocation.SubmissionDate)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Ratio:</strong></td>
-                                <td id="td_misc_raio"><span class="badge bg-success">@(Model.MiscAllocation.IFA):@(Model.MiscAllocation.IFF)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Total Resource:</strong></td>
-                                <td id="td_resourceMisc"><span class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Resource (Modeler):</strong></td>
-                                <td id="td_miscMnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Resource (Checker):</strong></td>
-                                <td id="td_miscCnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalChecker)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Resource (Detailer):</strong></td>
-                                <td id="td_miscDnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalDetailer)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Coordination:</strong></td>
-                                <td id="td_miscDnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalCoordination)</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="card-header pt-3 pl-3 pb-1">
+                <h6>Misc Allocation</h6>
             </div>
 
-            <input id="rslt_miscSubmission" asp-for="@Model.MiscAllocation.SubmissionDate" hidden />
-            <input id="rslt_miscR1" asp-for="@Model.MiscAllocation.R1" hidden />
-            <input id="rslt_miscR2" asp-for="@Model.MiscAllocation.R2" hidden />
-            <input id="rslt_miscResource" asp-for="@Model.MiscAllocation.TotalResources" hidden />
-            <input id="rslt_miscMnd" asp-for="@Model.MiscAllocation.TotalModeler" hidden />
-            <input id="rslt_miscCnd" asp-for="@Model.MiscAllocation.TotalChecker" hidden />
-            <input id="rslt_miscDnd" asp-for="@Model.MiscAllocation.TotalDetailer" hidden />
-        </form>
-    </div>
-</div>
+            <div id="cardbody" class="card-body m-1">
+
+                <div class="row">
+
+                    <div class="col-6 hstack gap-2">
+                        <div class="row">
+
+                            <div class="col">
+                                <label class="form-label"><strong>Hours</strong></label>
+                            </div>
+
+                            <div class="col">
+                                <input id="txt_mischours" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MiscAllocation.Hours"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Ratio</strong></label>
+                            </div>
 
 
-<div class="card border-1">
+                            <div class="col-1">
+                                <input id="txt_misc_r1" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                            </div>
+                            <div class="col-1 text-center">
+                                <strong>:</strong>
+                            </div>
+                            <div class="col-4">
+                                <input id="txt_misc_r2" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                            </div>
 
-    <div class="card-header pt-3 pl-3 pb-1">
-        <h6>Main and Misc Allocation</h6>
-    </div>
+                            <div class="w-100 pt-2"></div>
 
-    <div id="cardbody" class="card-body m-1">
-        <form id="" action="/" method="post">
+                            <div class="col">
+                                <label class="form-label"><strong>Start Date</strong></label>
+                            </div>
+                            <div class="col">
+                                <input id="txt_miscStart" asp-for="MiscAllocation.StartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
+                                <span class="text-danger" asp-validation-for="MiscAllocation.StartDate"></span>
+                            </div>
 
-            <div class="row">
+                            <div class="w-100 pt-2"></div>
 
-                <div class="col-6 hstack gap-2">
+                            <div class="col">
+                                <label class="form-label"><strong>Schedule Days</strong></label>
+                            </div>
+                            <div class="col">
+                                <input id="txt_miscSchedule" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MiscAllocation.ScheduleDays"></span>
+                            </div>
 
-                    <div class="row">
+                            <div class="w-100 pt-2"></div>
 
-                        <div class="col">
-                            <label class="form-label"><strong>Hours</strong></label>
+                            <div class="col">
+                                <label class="form-labe"><strong>Modeler</strong><span style="font-size:11px; color:green;">%</span></label>
+                            </div>
+                            <div class="col">
+                                <input id="txt_miscM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.ModelerPercent" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MiscAllocation.ModelerPercent"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
+                            </div>
+                            <div class="col">
+                                <input id="txt_miscD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MiscAllocation.CheckerPercent"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Detailer</strong><span style="font-size:11px; color:green;">%</span></label>
+                            </div>
+
+                            <div class="col">
+                                <input id="txt_miscC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MiscAllocation.DetailerPercent"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Coordination</strong><span style="font-size:11px; color:green;">%</span></label>
+
+                            </div>
+
+                            <div class="col">
+                                <input id="txt_miscCoordination" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.TotalCoordination" class="form-control" readonly type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MiscAllocation.TotalCoordination"></span>
+                            </div>
                         </div>
 
-                        <div class="col">
-                            <input id="txt_main_mischours" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.Hours"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Ratio</strong></label>
-                        </div>
-
-
-                        <div class="col-1">
-                            <input id="txt_main_misc_r1" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
-                        </div>
-                        <div class="col-1 text-center">
-                            <strong>:</strong>
-                        </div>
-                        <div class="col-4">
-                            <input id="txt_main_misc_r2" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Start Date</strong></label>
-                        </div>
-                        <div class="col">
-                            <input id="txt_main_miscStart" asp-for="MainAndMiscAllocation.StartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
-                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.StartDate"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Schedule Days</strong></label>
-                        </div>
-                        <div class="col">
-                            <input id="txt_main_miscSchedule" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.ScheduleDays"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-labe"><strong>Modeler</strong><span style="font-size:11px; color:green;">%</span></label>
-                        </div>
-                        <div class="col">
-                            <input id="txt_main_miscM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.ModelerPercent" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.ModelerPercent"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
-                        </div>
-                        <div class="col">
-                            <input id="txt_main_miscD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.CheckerPercent"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Detailer</strong><span style="font-size:11px; color:green;">%</span></label>
-                        </div>
-
-                        <div class="col">
-                            <input id="txt_main_miscC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.DetailerPercent"></span>
-                        </div>
-
-                        <div class="w-100 pt-2"></div>
-
-                        <div class="col">
-                            <label class="form-label"><strong>Coordination</strong><span style="font-size:11px; color:green;">%</span></label>
-
-                        </div>
-
-                        <div class="col">
-                            <input id="txt_main_miscCoordination" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" readonly asp-for="MainAndMiscAllocation.TotalCoordination" class="form-control" type="text" style="width:80px" />
-                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.TotalCoordination"></span>
-                        </div>
+                        <div class="vr"></div>
                     </div>
 
-                    <div class="vr"></div>
+                    <div class="col-6">
+                        <table id="" class="table table-light table-bordered" style="width:100%; height: 100%;">
+                            <thead class="table-primary" hidden>
+                                <tr>
+                                    <th width="5%" class="text-left">Allocation</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-left">
+                                <tr>
+                                    <td><strong>Hours:</strong></td>
+                                    <td id="td_mischours"><span class="badge bg-success">@(Model.MiscAllocation.Hours)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Submission Date:</strong></td>
+                                    <td id="td_miscSubmission"><span class="badge bg-success">@(Model.MiscAllocation.SubmissionDate)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ratio:</strong></td>
+                                    <td id="td_misc_raio"><span class="badge bg-success">@(Model.MiscAllocation.IFA):@(Model.MiscAllocation.IFF)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Resource:</strong></td>
+                                    <td id="td_resourceMisc"><span class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource (Modeler):</strong></td>
+                                    <td id="td_miscMnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource (Checker):</strong></td>
+                                    <td id="td_miscCnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalChecker)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource (Detailer):</strong></td>
+                                    <td id="td_miscDnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalDetailer)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Coordination:</strong></td>
+                                    <td id="td_miscDnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalCoordination)</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
+                <input id="rslt_miscSubmission" asp-for="@Model.MiscAllocation.SubmissionDate" hidden />
+                <input id="rslt_miscR1" asp-for="@Model.MiscAllocation.R1" hidden />
+                <input id="rslt_miscR2" asp-for="@Model.MiscAllocation.R2" hidden />
+                <input id="rslt_miscResource" asp-for="@Model.MiscAllocation.TotalResources" hidden />
+                <input id="rslt_miscMnd" asp-for="@Model.MiscAllocation.TotalModeler" hidden />
+                <input id="rslt_miscCnd" asp-for="@Model.MiscAllocation.TotalChecker" hidden />
+                <input id="rslt_miscDnd" asp-for="@Model.MiscAllocation.TotalDetailer" hidden />
+            </div>
+        </div>
+    </div>
 
-                <div class="col-6">
-                    <table class="table table-light table-bordered" style="width:100%; height: 100%;">
-                        <thead class="table" hidden>
-                            <tr>
-                                <th width="1%" class="text-left">Allocation</th>
-                                <th width="10%" class="text-left">Result</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-left">
-                            <tr>
-                                <td><strong> Hours:</strong></td>
-                                <td id="td_main_mischours"><span class="badge bg-success">@(Model.MainAndMiscAllocation.Hours)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Submission Date:</strong></td>
-                                <td id="td_main_miscSubmission"><span class="badge bg-success">@(Model.MainAndMiscAllocation.SubmissionDate)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Ratio:</strong></td>
-                                <td id="td_main_misc_raio"><span class="badge bg-success">@(Model.MainAndMiscAllocation.IFA):@(Model.MainAndMiscAllocation.IFF)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Total Resource:</strong></td>
-                                <td id="td_resourceMain"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Resource (Modeler):</strong></td>
-                                <td id="td_main_miscMnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Resource (Checker):</strong></td>
-                                <td id="td_main_miscCnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalChecker)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Resource (Detailer):</strong></td>
-                                <td id="td_main_miscDnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalDetailer)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Coordination:</strong></td>
-                                <td id="td_main_miscCornd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalCoordination)</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+
+    <div class="hidden main_misc">
+        <div class="card border-1">
+
+            <div class="card-header pt-3 pl-3 pb-1">
+                <h6>Main and Misc Allocation</h6>
             </div>
 
-            <input id="rslt_miscSubmission" asp-for="@Model.MainAndMiscAllocation.SubmissionDate" hidden />
-            <input id="rslt_miscR1" asp-for="@Model.MainAndMiscAllocation.R1" hidden />
-            <input id="rslt_miscR2" asp-for="@Model.MainAndMiscAllocation.R2" hidden />
-            <input id="rslt_miscResource" asp-for="@Model.MainAndMiscAllocation.TotalResources" hidden />
-            <input id="rslt_miscMnd" asp-for="@Model.MainAndMiscAllocation.TotalModeler" hidden />
-            <input id="rslt_miscCnd" asp-for="@Model.MainAndMiscAllocation.TotalChecker" hidden />
-            <input id="rslt_miscDnd" asp-for="@Model.MainAndMiscAllocation.TotalDetailer" hidden />
+            <div id="cardbody" class="card-body m-1">
 
-        </form>
+                <div class="row">
+
+                    <div class="col-6 hstack gap-2">
+
+                        <div class="row">
+
+                            <div class="col">
+                                <label class="form-label"><strong>Hours</strong></label>
+                            </div>
+
+                            <div class="col">
+                                <input id="txt_main_mischours" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MainAndMiscAllocation.Hours"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Ratio</strong></label>
+                            </div>
+
+
+                            <div class="col-1">
+                                <input id="txt_main_misc_r1" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                            </div>
+                            <div class="col-1 text-center">
+                                <strong>:</strong>
+                            </div>
+                            <div class="col-4">
+                                <input id="txt_main_misc_r2" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Start Date</strong></label>
+                            </div>
+                            <div class="col">
+                                <input id="txt_main_miscStart" asp-for="MainAndMiscAllocation.StartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
+                                <span class="text-danger" asp-validation-for="MainAndMiscAllocation.StartDate"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Schedule Days</strong></label>
+                            </div>
+                            <div class="col">
+                                <input id="txt_main_miscSchedule" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MainAndMiscAllocation.ScheduleDays"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-labe"><strong>Modeler</strong><span style="font-size:11px; color:green;">%</span></label>
+                            </div>
+                            <div class="col">
+                                <input id="txt_main_miscM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.ModelerPercent" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MainAndMiscAllocation.ModelerPercent"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
+                            </div>
+                            <div class="col">
+                                <input id="txt_main_miscD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MainAndMiscAllocation.CheckerPercent"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Detailer</strong><span style="font-size:11px; color:green;">%</span></label>
+                            </div>
+
+                            <div class="col">
+                                <input id="txt_main_miscC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MainAndMiscAllocation.DetailerPercent"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label"><strong>Coordination</strong><span style="font-size:11px; color:green;">%</span></label>
+
+                            </div>
+
+                            <div class="col">
+                                <input id="txt_main_miscCoordination" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" readonly asp-for="MainAndMiscAllocation.TotalCoordination" class="form-control" type="text" style="width:80px" />
+                                <span class="text-danger" asp-validation-for="MainAndMiscAllocation.TotalCoordination"></span>
+                            </div>
+                        </div>
+
+                        <div class="vr"></div>
+                    </div>
+
+
+                    <div class="col-6">
+                        <table class="table table-light table-bordered" style="width:100%; height: 100%;">
+                            <thead class="table" hidden>
+                                <tr>
+                                    <th width="1%" class="text-left">Allocation</th>
+                                    <th width="10%" class="text-left">Result</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-left">
+                                <tr>
+                                    <td><strong> Hours:</strong></td>
+                                    <td id="td_main_mischours"><span class="badge bg-success">@(Model.MainAndMiscAllocation.Hours)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Submission Date:</strong></td>
+                                    <td id="td_main_miscSubmission"><span class="badge bg-success">@(Model.MainAndMiscAllocation.SubmissionDate)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ratio:</strong></td>
+                                    <td id="td_main_misc_raio"><span class="badge bg-success">@(Model.MainAndMiscAllocation.IFA):@(Model.MainAndMiscAllocation.IFF)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Resource:</strong></td>
+                                    <td id="td_resourceMain"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource (Modeler):</strong></td>
+                                    <td id="td_main_miscMnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource (Checker):</strong></td>
+                                    <td id="td_main_miscCnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalChecker)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource (Detailer):</strong></td>
+                                    <td id="td_main_miscDnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalDetailer)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Coordination:</strong></td>
+                                    <td id="td_main_miscCornd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalCoordination)</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <input id="rslt_miscSubmission" asp-for="@Model.MainAndMiscAllocation.SubmissionDate" hidden />
+                <input id="rslt_miscR1" asp-for="@Model.MainAndMiscAllocation.R1" hidden />
+                <input id="rslt_miscR2" asp-for="@Model.MainAndMiscAllocation.R2" hidden />
+                <input id="rslt_miscResource" asp-for="@Model.MainAndMiscAllocation.TotalResources" hidden />
+                <input id="rslt_miscMnd" asp-for="@Model.MainAndMiscAllocation.TotalModeler" hidden />
+                <input id="rslt_miscCnd" asp-for="@Model.MainAndMiscAllocation.TotalChecker" hidden />
+                <input id="rslt_miscDnd" asp-for="@Model.MainAndMiscAllocation.TotalDetailer" hidden />
+
+            </div>
+        </div>
     </div>
-</div>
 
 
-<div>
-    <div id="cardbody" class="card-body m-1">
-        <form id="frm_container" action="/" method="post">
-        </form>
-    </div>
-</div>
+</form>
+
 
 
 @section Scripts{
@@ -648,8 +683,7 @@
         var rslt_miscCornd = "#rslt_miscCornd";
 
 
-        var td_mainR1 = "#td_main_r1";
-        var td_mainR2 = "#td_main_r2";
+        var td_main_ratio = "#td_main_ratio";
 
         var td_mainTotalResource = "#td_resourceMain";
         var td_mainhours = "#td_mainhours"
@@ -666,7 +700,6 @@
         var td_miscTotalResource = "#td_resourceMisc";
         var td_mischours = "#td_mischours";
         var td_miscSubmissionDt = "#td_miscSubmission";
-        var td_miscSubmissionDt = "#td_miscSubmission";
         var td_miscmodelerNd = "#td_miscMnd";
         var td_miscdetailerNd = "#td_miscDnd";
         var td_misccheckerNd = "#td_miscCnd";
@@ -678,6 +711,17 @@
             LoadForm();
         });
 
+        $("input[type='checkbox']").change(function () {
+            var checkbox = $(this).val();
+            var count = 0;
+            if ($(".hidden").hasClass(checkbox)) {
+                if ($(this).is(":checked")) {
+                    $(".hidden." + checkbox).show();
+                } else {
+                    $(".hidden." + checkbox).hide();
+                }
+            }
+        });
 
         const LoadForm = function () {
             @*var propName =  "MainAllocation";
@@ -884,19 +928,25 @@
             var estimation = allocation.GetEstimation();
 
             $(td_mainhours).text($(mainhours).val());
+
+            console.log(estimation.SubmissionDate);
+
             $(td_mainSubmissionDt).text(estimation.SubmissionDate);
 
-            $(td_mainR1).text(estimation.R1);
-            $(td_mainR2).text(estimation.R2);
+            var ratio1 = COM.IsNanOrInfinity(estimation.R1) ? 0 : estimation.R1;
+            var ratio2 = COM.IsNanOrInfinity(estimation.R2) ? 0 : estimation.R2;
+
+            var mainRatio = ratio1 + ":" + ratio2;
+            console.log(mainRatio);
+
+            $(td_main_ratio).text(mainRatio);
 
             $(td_mainTotalResource).text(COM.IsNanOrInfinity(Math.ceil(estimation.TotalResource)) ? 0 : Math.ceil(estimation.TotalResource));
             $(td_mainmodelerNd).text(COM.IsNanOrInfinity(estimation.TotalModelers) ? 0 : estimation.TotalModelers);
             $(td_maincheckerNd).text(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
             $(td_maindetailerNd).text(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
 
-
             $(td_mainCorNd).text(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
-
 
             $(rslt_mainCnd).val(COM.IsNanOrInfinity(estimation.MainCresourceNeed) ? 0 : estimation.MainCresourceNeed);
             $(rslt_mainSubmission).val(estimation.SubmissionDate);
@@ -907,8 +957,6 @@
             $(rslt_mainCnd).val(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
             $(rslt_mainDnd).val(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
             $(rslt_mainCornd).val(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
-
-
         });
 
         class Allocation {
@@ -937,6 +985,10 @@
                 var m = Math.round(COM.GetPercent(this._mPercent, resoureceTotal));
                 var c = Math.round(COM.GetPercent(this._Cpercent, resoureceTotal));
                 var d = Math.round(COM.GetPercent(this._Dpercent, resoureceTotal));
+
+                console.log(this._Dpercent);
+
+                console.log("Detailers: " + d);
 
                 var total = m + c + d;
                 var coordniation = 0;
@@ -1035,7 +1087,7 @@
             }
             static IsValidPercent(event) {
 
-                var a = parseInt($(mainmodeler).val());
+                @*var a = parseInt($(mainmodeler).val());
                 var b = parseInt($(maindetailer).val());
                 var c = parseInt($(mainchecker).val());
 
@@ -1053,7 +1105,7 @@
                 if (!this.IsValid(a, b, c, percent)) {
                     event.target.value = 0;
                     return false;
-                }
+                }*@
 
                 return true;
             }

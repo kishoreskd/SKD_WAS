@@ -52,7 +52,6 @@
 
     static IsNanOrInfinity(x) {
         if (isNaN(x) || !isFinite(x)) {
-            console.log(x);
             return true
         }
         else { return false };

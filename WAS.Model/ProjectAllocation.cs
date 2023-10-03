@@ -58,5 +58,10 @@ namespace WAS.Model
         public MainAllocation? MainAllocation { get; set; }
         public MiscAllocation? MiscAllocation { get; set; }
         public MainAndMiscAllocation? MainAndMiscAllocation { get; set; }
+
+
+        public bool IsMainChecked { get; set; }
+        public bool IsMiscChecked { get; set; }
+        public bool IsMainMiscChecked { get; set; }
     }
 }

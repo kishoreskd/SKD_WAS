@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 
 namespace PGT_WAS.Areas.Admin.Controllers
-{
+{ 
     [Area(SD.ROLE.Role_Admin)]
     [Authorize(Roles = SD.ROLE.Role_Admin)]
     public class DepartmentController : Controller

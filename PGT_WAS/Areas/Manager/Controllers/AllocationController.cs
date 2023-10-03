@@ -41,6 +41,12 @@ namespace PGT_WAS.Areas.Manager.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ProjectInfoAllocation()
+        {
+            return View(new ProjectAllocation() { MainAllocation = new MainAllocation(), MiscAllocation = new MiscAllocation(), MainAndMiscAllocation = new MainAndMiscAllocation() });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> UpSert(int? id)
         {
 

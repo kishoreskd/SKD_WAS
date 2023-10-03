@@ -36,6 +36,12 @@ namespace WAS.Context
         public DbSet<UserTaskStatus> UserTaskStatus { get; set; }
 
 
+        public DbSet<ProjectAllocation> ProjectAllocation { get; set; }
+        public DbSet<MainAllocation> MainAllocation { get; set; }
+        public DbSet<MiscAllocation> MiscAllocation { get; set; }
+        public DbSet<MainAndMiscAllocation> MainAndMiscAllocation { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -64,7 +64,7 @@ namespace WAS.Model
         public double TotalCoordination { get; set; }
 
         [ForeignKey("ProjectAllocation")]
-        public int? ProjectId { get; set; }
+        public int? ProjectAllocationId { get; set; }
 
         [ForeignKey("ProjectAllocationId")]
         public ProjectAllocation? ProjectAllocation { get; set; }

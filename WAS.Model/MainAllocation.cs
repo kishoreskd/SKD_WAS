@@ -68,7 +68,7 @@ namespace WAS.Model
 
 
         [ForeignKey("ProjectAllocation")]
-        public int? ProjectId { get; set; }
+        public int? ProjectAllocationId { get; set; }
 
         [ForeignKey("ProjectAllocationId")]
         public ProjectAllocation? ProjectAllocation { get; set; }
