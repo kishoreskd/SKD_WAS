@@ -21,12 +21,16 @@ namespace WAS.Context.Repository
             this.Employee = new EmployeeContext(_context);
             this.Project = new ProjectContext(_context);
             this.UserTaskStatus = new UserTaskStatusContext(_context);
+            this.ProjectAllocation = new ProjectAllocationContext(_context);
         }
 
         public IUserTasks UserTasks { get; private set; }
         public IEmployeeContext Employee { get; private set; }
         public IProjectContext Project { get; private set; }
         public IUserTaskStatusContext UserTaskStatus { get; private set; }
+
+
+        public IProjectAllocationContext ProjectAllocation { get; private set; }
 
         public async Task<int> Commit()
         {

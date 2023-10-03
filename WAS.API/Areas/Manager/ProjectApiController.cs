@@ -5,14 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-
-using WAS.Interface;
-
 using WAS.Context.Manager;
 using Microsoft.Extensions.Logging;
 
 using WAS.Model;
 using WAS.Utility;
+using WAS.Interface;
 
 namespace WAS.API.Areas.Manager
 {

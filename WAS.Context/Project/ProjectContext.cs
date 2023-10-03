@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using WAS.Model;
-using WAS.Interface;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using WAS.Interface;
 
 namespace WAS.Context.Manager
 {
