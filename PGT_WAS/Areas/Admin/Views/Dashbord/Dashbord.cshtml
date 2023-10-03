@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewData["Title"] = "Dashbord";
+}
+
+
+
+
+
+
+<h5><i class="bi bi-house-door"></i> Home</h5>
+
+
+<div class="container ml-8 pb-4">
+
+    <div class="row text-center border-0  ">
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card-counter green">
+                    @*<i class="fa fa-code-fork"></i>*@
+                    <span id="cc_department" class="count-numbers">0</span>
+                    <span class="count-name">Department</span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card-counter blue">
+                    @*<i class="fa fa-ticket"></i>*@
+                    <span id="cc_designation" class="count-numbers">0</span>
+                    <span class="count-name">Designation</span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card-counter orange">
+                    @*<i class="fa-light fa-location-dot"></i>*@
+                    <span id="cc_location" class="count-numbers">0</span>
+                    <span class="count-name">Location</span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card-counter skyblue">
+                    @*<i class="fa fa-users"></i>*@
+                    <span id="cc_holiday" class="count-numbers">0</span>
+                    <span class="count-name">Holidays</span>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card-counter grey">
+                    @*<i class="fa fa-users"></i>*@
+                    <span id="cc_employee" class="count-numbers">0</span>
+                    <span class="count-name">Employees</span>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="col m-4">
+                <div class="counter counter-color-green">
+                    <i class="bx bi-building"></i>
+                    <h2 id="cc_department" class="timer count-title count-number" data-to="100" data-speed="1500">0</h2>
+                    <p class="count-text ">Department</p>
+                </div>
+            </div>
+            <div class="col  m-4">
+                <div class="counter counter-color-orange">
+                    <i class="bx bi-person-badge"></i>
+                    <h2 id="cc_designation" class="timer count-title count-number" data-to="1700" data-speed="1500">0</h2>
+                    <p class="count-text ">Designation</p>
+                </div>
+            </div>
+            <div class="col  m-4">
+                <div class="counter counter-color-skyblue">
+                    <i class="bx bi-geo-alt"></i>
+
+                    <h2 id="cc_location" class="timer count-title count-number" data-to="11900" data-speed="1500">0</h2>
+                    <p class="count-text ">Location</p>
+                </div>
+            </div>
+            <div class="col  m-4 ">
+                <div class="counter counter-color-blue">
+                    <i class="bi bi-calendar4"></i>
+
+                    <h2 id="cc_holiday" class="timer count-title count-number" data-to="157" data-speed="1500">0</h2>
+                    <p class="count-text ">PGT Holidays</p>
+                </div>
+            </div>
+            <div class="col  m-4 ">
+                <div class="counter counter-color-coral">
+                    <i class="bx bi-person-fill"></i>
+
+                    <h2 id="cc_employee" class="timer count-title count-number" data-to="157" data-speed="1500">0</h2>
+                    <p class="count-text ">Employees</p>
+                </div>
+            </div>*@
+    </div>
+</div>
+
+<div class="card">
+
+    <div class="row">
+        <div class="col-sm m-4">
+            <div class="card shadow border-0 pt-3 pl-3  h-100">
+                <h6 class="card-title"><i class="bi bi-person"></i>&nbsp Employee List</h6>
+
+                <div style="height:360px; overflow-y:scroll">
+
+                    <table id="dt_employee_view" class="table display  table-borderless " style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th> Name</th>
+                                <th>Gender</th>
+                                <th>Employee Id</th>
+                                <th>Designation</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm m-4">
+            <div class="card  shadow border-0 pt-3 pl-3 ">
+                <h6 class="card-title"><i class="bx bi-building"></i>&nbsp Department List</h6>
+                <div style="height:360px; overflow-y:scroll">
+                    <table id="dt_department_view" class="table display  table-borderless" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm m-4">
+            <div class="card  shadow border-0 pt-3 pl-3 ">
+                <h6 class="card-title"><i class="bx bi-person-badge"></i>&nbsp Designation List</h6>
+                <div style="height:360px; overflow-y:scroll">
+                    <table id="dt_designation_view" class="table  table-borderless">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Designation</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm m-4">
+            <div class="card  shadow border-0 pt-3 pl-3 ">
+                <h6 class="card-title"><i class="bx bi-geo-alt"></i>&nbsp Location List</h6>
+                <div style="height:360px; overflow-y:scroll">
+                    <table id="dt_location_view" class="table  table-borderless">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm m-4">
+            <div class="card  shadow border-0 pt-3 pl-3 ">
+                <h6 class="card-title"><i class="bi bi-calendar4"></i>&nbsp PGT Holiday Calendar</h6>
+                <div style="height:360px; overflow-y:scroll">
+                    <table id="dt_holiday_view" class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Holiday</th>
+                                <th>Date</th>
+                                <th>#Remarks</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm m-4">
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <script src="~/js/Admin/dashbord.js"></script>
+}
+
+

@@ -1,0 +1,170 @@
+﻿@model Designation
+
+
+@{
+    ViewData["Title"] = "Designation";
+}
+
+
+<style>
+    @*.bigdrop {
+        width: 600px !important;
+    }
+
+    .select2-container--krajee .select2-dropdown--below {
+        width: 230px !important;
+        margin-left: -70px !important;
+    }*@
+</style>
+
+<h5><i class="bi bi-database"></i>Designation</h5>
+
+<div class="card mt-4">
+    <div class="row">
+        <div class="col-6 m-4">
+            <div class="card ">
+                <div class="card-body pt-4">
+                    <h6 class="card-title">@( COM.IsValidID(Model.DesignationId)? "Update Designation" : "Add Designation")</h6>
+                    <hr />
+                    <form method="post" onsubmit="return CheckAlreadyExist()" asp-controller="Designation" asp-area="Admin" asp-action="UpSert" class="pgt-form">
+                        <input asp-for="DesignationId" hidden />
+                        @*===========================================================================================================*@
+                        <div class="row">
+
+                            <div class="col">
+                                <label class="form-label">Department<span style="color: red">*</span></label>
+                            </div>
+
+                            <div class="col">
+                                <select id="sb_department" class="form-select" asp-for="DepartmentId" asp-items="@(new SelectList (string.Empty, nameof(Model.DepartmentId), nameof(Model.Department.DepartmentName)))">
+                                </select>
+                                <span class="text-danger" asp-validation-for="DepartmentId"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            <div class="col">
+                                <label class="form-label">Designation Name<span style="color: red">*</span></label>
+                            </div>
+
+                            <div class="col">
+                                <input id="designation_name" class="form-control" asp-for="DesignationName" type="text" placeholder="Designation" />
+                                <span id="designation_error" class="text-danger" asp-validation-for="DesignationName"></span>
+                            </div>
+
+                            <div class="w-100 pt-2"></div>
+
+                            @*<select class="js-example-placeholder-single js-states form-select">
+                                    <option></option>
+                                </select>*@
+
+                            <div class="col">
+                                <label class="form-label">Designation Name<span style="color: red">*</span></label>
+                            </div>
+                            <div class="col form-group">
+                                <select class="department_list" style="width: 100%" multiple="multiple">
+                                    <option value=""></option>
+                                </select>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="row pt-4">
+                            <div class="col-6 col-md-3">
+                                <button type="submit" class="btn btn-primary form-control"> @( COM.IsValidID(Model.DesignationId)? "Update" : "Create") <i class="bi bi-database-fill-up"></i></button>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a class="btn btn-outline-primary border  form-control" asp-controller="Designation" asp-area="Admin" asp-action="Index">
+                                    <i class="bi bi-arrow-left"></i>
+                                    Back to List
+                                </a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+         $(document).ready(function () {
+             LoadDepartments();
+
+             $(".department_list").select2({
+                 placeholder: "Select a department",
+                 dropdownCssClass: "increasedzindexclass",
+                 allowClear: true
+             });
+
+
+             $.ajax({
+                 url: '@Url.Content("~/")' + "pgt/api/DepartmentApi/Get",
+                 type: "GET",
+                 success: function (data) {
+
+                     var items = "";
+
+                     $.each(data, function (index,values) {
+                         console.log(values.departmentName);
+                         items += "<option value ='" + values.departmentId + "'>" + values.departmentName + "</option>"
+                     });
+
+                     $(".department_list").html(items);
+
+                 }
+             });
+         });
+
+
+        const LoadDepartments = function () {
+
+             $.ajax({
+
+                 url: '@Url.Content("~/")' + "pgt/api/DepartmentApi/Get",
+                 type: "GET",
+                 success: function (data) {
+
+                     $("#sb_department").empty();
+                     var items = "";
+
+                     $.each(data, function (index,values) {
+                         console.log(values.departmentName);
+                         items += "<option value ='" + values.departmentId + "'>" + values.departmentName + "</option>"
+                     });
+
+                     $("#sb_department").html(items);
+                 }
+             });
+        };
+
+        const CheckAlreadyExist = function () {
+            var department = "#sb_department";
+            var designation = "#designation_name";
+
+            var url = '@Url.Content("~/")' + `Admin/Designation/CheckAlreadyExist`;
+
+            $.post(url, { dep: $(department).val(), des: $(designation).val() }, function (data) {
+                if (data.success) {
+                    $(designation).val(' ');
+                    $("#designation_error").text("The designation already exist in this department.");
+                    return false;
+                }
+            });
+        };
+
+
+    </script>
+}

@@ -1,0 +1,420 @@
+﻿@model Employee
+
+
+@{
+    ViewData["Title"] = "Employee";
+}
+
+
+
+
+<h5><i class="bi bi-database"></i> Register</h5>
+
+<div class="row">
+    <div class="card  mt-4 col-12">
+        <div class="card  m-4 p-4 shadow border-0">
+            <h6>@( COM.IsValidID(Model.Id)? "Update Employee" : "Add Employee")</h6>
+            <hr />
+
+            <form method="post" asp-controller="Employee" asp-area="Admin" asp-action="UpSert" class="pgt-form">
+                <input id="global_id" asp-for="Id" hidden />
+                @*<input id="global_department_id" asp-for="DepartmentId" hidden />
+                <input id="global_designation_id" asp-for="DesignationId" hidden />
+                <input id="global_location_id" asp-for="LocationId" hidden />
+                <input id="global_role_id" asp-for="RoleId" hidden />
+                <input id="global_reporting_id" asp-for="RepotingPersonId" hidden />*@
+
+                @*===========================================================================================================*@
+                <div class="row">
+
+                    <div class="col">
+                        <label class="form-label">Name<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <input id="name" class="form-control" asp-for="Name" type="text" placeholder="Name" />
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">EmployeeId<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control" onblur="return CheckAlreadyExist()" id="employeeid" asp-for="EmployeeId" type="text" placeholder="Employee id" />
+                        <span id="employee_validation" class="text-danger" asp-validation-for="EmployeeId"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label">Date of birth<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control" asp-for="DOB" placeholder="dd\mm\yyyy" id="dt_birthdate" type="text" />
+                        <span class="text-danger" asp-validation-for="DOB"></span>
+                    </div>
+
+
+                    <div class="col">
+                        <label class="form-label">Email id<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control" asp-for="EmailID" type="text" placeholder="Email id" />
+                        <span class="text-danger" asp-validation-for="EmailID"></span>
+                    </div>
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label">Gender<span style="color: red">*</span></label>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" asp-for="Gender">
+                            <option>---Select---</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="Gender"></span>
+                    </div>
+
+                    <div class="col">
+                        <label class=" form-label">MobileNumber<span style="color: red">*</span></label>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" asp-for="MobileNumber" type="text" placeholder="Mobile number" />
+                        <span class="text-danger" asp-validation-for="MobileNumber"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label" a>BloodGroup<span style="color: red">*</span></label>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" asp-for="BloodGroup">
+                            <option disabled>---Select---</option>
+                            <option value="1">O+</option>
+                            <option value="2">B+</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="BloodGroup"></span>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">Address<span style="color: red">*</span></label>
+                    </div>
+                    <div class="col">
+                        <textarea class="form-control" placeholder="Address" asp-for="Address"></textarea>
+                        <span class="text-danger" asp-validation-for="Address"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+                    <div class="col">
+                        <label class="form-label">Department<span style="color: red">*</span></label>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" id="sb_department" asp-for="DepartmentId" asp-items="@(new SelectList (string.Empty, nameof(Model.DepartmentId), nameof(Model.Department.DepartmentName)))"></select>
+                        <span class="text-danger" asp-validation-for="DepartmentId"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Designation<span style="color: red">*</span></label>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" id="sb_designation" asp-for="DesignationId" asp-items="@(new SelectList (string.Empty, nameof(Model.DesignationId), nameof(Model.Designation.DesignationName)))">
+                        </select>
+                        <span class="text-danger" asp-validation-for="DesignationId"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label">Date of joining<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control" placeholder="Date of joining" asp-for="DateOfJoining" id="dt_joininig" type="text" placeholder="dd/mm/yyyy" />
+                        <span class="text-danger" asp-validation-for="DateOfJoining"></span>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">Total experiance<span style="color: red">*</span></label>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" placeholder="Total experiance" asp-for="TotalExperiance" type="number" />
+                        <span class="text-danger" asp-validation-for="TotalExperiance"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label" asp-for="ExperianceInThisDep">Experiance in this department<span style="color: red"></span></label>
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control" asp-for="ExperianceInThisDep" type="number" />
+                        <span class="text-danger" asp-validation-for="ExperianceInThisDep"></span>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">Location<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <select id="sb_location" class="form-select" asp-for="LocationId">
+                        </select>
+                        <span class="text-danger" asp-validation-for="LocationId"></span>
+                    </div>
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col-6">
+                        <label class="form-label">Types of job handle<span style="color: red"></span></label>
+                        <textarea class="form-control" asp-for="TypesOfJobHandle"></textarea>
+                        <span class="text-danger" asp-validation-for="TypesOfJobHandle"></span>
+                    </div>
+                </div>
+
+                @*<div class="card   mt-5 col-12">*@
+                <div class="pt-4 ">
+                    <h6>Authentication</h6>
+                    <hr />
+                </div>
+
+                <div class="row m-3">
+
+                    <div class="col">
+                        <label class="form-label">User Name<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control" asp-for="UserName" type="text" />
+                        <span class="text-danger" asp-validation-for="UserName"></span>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">Password<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control" asp-for="Password" type="text" />
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label">Confirm Password<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <input class="form-control" asp-for="ConfirmPassword" type="text" />
+                        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">Role<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col">
+                        <select id="sb_role" class="form-select" asp-for="RoleId">
+                        </select>
+                        <span class="text-danger" asp-validation-for="RoleId"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+
+                    <div class="col-3">
+                        <label class="form-label">ReportingTo<span style="color: red">*</span></label>
+                    </div>
+
+                    <div class="col-3">
+                        <select id="cmb_reporting_to" class="form-select" asp-for="RepotingPersonId">
+                        </select>
+                        @*<span class="text-danger" asp-validation-for="ReportingTo"></span>*@
+                    </div>
+                </div>
+                @*</div>*@
+
+
+
+                @*===========================================================================================================*@
+                <div class="row pt-5">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">@( COM.IsValidID(Model.Id)? "Update" : "Create")<i class="bi bi-database-fill-up"></i></button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a class="btn btn-outline-primary border  form-control" asp-controller="Employee" asp-area="Admin" asp-action="Index">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+         $(document).ready(function () {
+             LoadDepartments();
+             LoadLocation();
+             LoadReportingPerson();
+             DatePicker();
+             LoadRoles();
+
+             $("#cmb_reporting_to").select2({
+                 placeholder: "Reporting person",
+                 dropdownCssClass: "increasedzindexclass",
+                 allowClear: true
+             });
+         });
+
+        $("#sb_department").change(function () {
+            LoadDesignation();
+            LoadReportingPerson();
+        });
+
+        $("#sb_location").change(function () {
+            LoadReportingPerson();
+        });
+
+
+        const LoadRoles = function(){
+            var role = "#sb_role";
+            var url = '@Url.Content("~/")' + "pgt/api/RoleApi/Get"
+
+            $.getJSON(url, function (data) {
+
+                $(role).empty();
+
+                var items = "<option value='" + " " + "'>" + "----Select----" + "</option>";
+
+                $.each(data, function (index, value) {
+                    items += "<option value ='" + value.roleID + "'>" + value.roleName + "</option>"
+                });
+
+                $(role).html(items);
+                BindSelection("global_role_id", "sb_role");
+            });
+
+        }
+        const LoadDepartments = function () {
+            $.getJSON('@Url.Content("~/")' + "pgt/api/DepartmentApi/Get", function (data) {
+
+                $("#sb_department").empty();
+
+                var items = "<option value='" + " " + "'>" + "----Select----" + "</option>";
+
+                $.each(data, function (i, values) {
+                    items += "<option value ='" + values.departmentId + "'>" + values.departmentName + "</option>"
+                });
+
+                $("#sb_department").html(items);
+
+                BindSelection("global_department_id", "sb_department");
+                LoadDesignation();
+            });
+        };
+        const LoadDesignation = function () {
+
+            var url = '@Url.Content("~/")' + "pgt/api/DesignationApi/Get?id=" + $("#sb_department").val();
+
+            $.post(url, function (data) {
+
+                $("#sb_designation").empty();
+
+                var items = "<option value='" + " " + "'>" + "----Select----" + "</option>";
+
+                $.each(data, function (i, values) {
+                    items += "<option value ='" + values.designationId + "'>" + values.designationName + "</option>"
+                });
+
+                $("#sb_designation").html(items);
+                BindSelection("global_designation_id", "sb_designation");
+            });
+        };
+
+        const LoadLocation = function () {
+            $.getJSON('@Url.Content("~/")' + "pgt/api/LocationApi/Get", function (data) {
+
+                $("#sb_location").empty();
+
+                var items = "<option value='" + " " + "'>" + "----Select----" + "</option>";
+
+                $.each(data, function (i, values) {
+                    items += "<option value ='" + values.locationId + "'>" + values.locationName + "</option>"
+                });
+
+                $("#sb_location").html(items);
+                BindSelection("global_location_id", "sb_location");
+            });
+        };
+
+        const LoadReportingPerson = function () {
+
+            var department = $("#sb_department").val();
+            var location = $("#sb_location").val();
+
+            if (COM.IsNullOrEmpty(department) || COM.IsNullOrEmpty(location)) {
+
+                department = $("#global_department_id").val()
+                location = $("#global_location_id").val();
+            }
+
+            var url = '@Url.Content("~/")' + "pgt/api/EmployeeApi/Get?dep=" + department + "&loc=" + location;
+
+            $("#cmb_reporting_to").empty();
+            var items = "";
+
+            $.post(url, function (data) {
+
+                $.each(data, function (index, values) {
+
+                   items += "<option value ='" + values.id + "'>" + values.name + "</option>"
+                });
+
+                $("#cmb_reporting_to").html(items);
+                BindSelection("global_reporting_id", "cmb_reporting_to");
+            });
+        }
+
+        const BindSelection = function (id, bindto) {
+            var val = $("#" + id).val();
+            if (!COM.IsNullOrEmpty(val)) {
+                $("#" + bindto).val(val);
+                $("#" + id).val(val);
+            }
+        }
+        const CheckAlreadyExist = function () {
+            var employeeId = "#employeeid";
+            var url = '@Url.Content("~/")' + `Admin/Employee/CheckAlreadyExist`;
+
+            $.post(url, { val: $(employeeId).val() }, function (data) {
+                if (data.success) {
+                    $(employeeId).val(' ');
+                    $("#employee_validation").text("The employee id already exist.");
+                    return false;
+                }
+            });
+        };
+        const DatePicker = function () {
+            $("#dt_joininig").datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+            $("#dt_birthdate").datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+        };
+
+    </script>
+}

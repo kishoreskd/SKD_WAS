@@ -1,0 +1,193 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WAS | @ViewData["Title"] </title>
+
+
+    <environment names="Development">
+
+        @*PLUGINS/STYLESHEETS*@
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+        <link href="~/css/form.css" rel="stylesheet" />
+        <link href="~/css/batch.css" rel="stylesheet" />
+        <link href="~/css/datatables.css" rel="stylesheet" />
+
+        <link href="~/css/test.css" rel="stylesheet" />
+        <link href="~/css/layout.css" rel="stylesheet" />
+        <link href="~/css/countercard.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/site.css" />
+
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css">
+        @*<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.print.css">*@
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+        <link href="~/css/Calendar.css" rel="stylesheet" />
+
+        <link href="~/css/ganttChart.css" rel="stylesheet" />
+    </environment>
+
+</head>
+
+<body>
+
+    <div id="wrapper" class="toggled">
+        <div class="overlay"></div>
+
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container-fluid">
+
+                <a class="is-closed navbar-brand" data-toggle="offcanvas" href="#"><i class="bi bi-list"></i></a>
+
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="navbar-nav me-auto text-end">
+                        @*<li class="nav-item">
+                                <a class="nav-link active" href="#">
+                                    Admin
+                                    <span class="visually-hidden">(current)</span>
+                                </a>
+                            </li>*@
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(Context.Session.GetString("user_name").Split(" ")[0]) / @(Context.Session.GetString("role")) </a>
+
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" asp-area="@SD.ROLE.Role_Login" asp-action="Logout" asp-controller="Login">Signout</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- Sidebar -->
+        <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+
+            <div class="nav sidebar-nav">
+
+                <div class="sidebar-header">
+                    <div class="row">
+                        <div class="sidebar-brand pt-0">
+                            <img width="100%" src="~/images/icons/logo.png" />
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="pl-1 pt-4">
+
+                    <li><a asp-area="@SD.ROLE.Role_TeamLead" asp-action="Dashbord" asp-controller="Dashbord">Home</a></li>
+
+                    <li class="">
+                        <a href="#works" class="dropdown-toggle" data-toggle="dropdown">Your Plan<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a asp-area="@SD.ROLE.Role_TeamLead" asp-action="InternalPlan" asp-controller="InternalPlan">
+                                    @*<i class="bi-building"></i>*@
+                                    <span class="text">Monthly Plan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="">
+                        <a href="#works" class="dropdown-toggle" data-toggle="dropdown">Team Plan<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a asp-area="@SD.ROLE.Role_TeamLead" asp-action="TeamInternalPlan" asp-controller="TeamPlan">
+                                    @*<i class="bi-building"></i>*@
+                                    <span class="text">Team Monthly Plan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+
+        </nav>
+
+
+        @*------------------------MAIN-------------------------------------*@
+
+        <div id="page-content-wrapper">
+            <partial name="_Notification" />
+            @RenderBody()
+
+
+            @*<footer>
+                    <p>Author: Hege Refsnes</p>
+                    <p><a href="mailto:hege@example.com">hege@example.com</a></p>
+                </footer>*@
+        </div>
+
+
+
+    </div>
+
+    @*-------------------------------------------------------------*@
+
+
+    @*</div>*@
+
+    <environment names="Development">
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+
+        <script src="~/js/layout.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <script src="//cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" asp-append-version="true"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://cdn.tiny.cloud/1/h4g18nxqifi8zjy9irrq80l5nvltdrxfjxwrejajm4e2lq1k/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <script src="~/js/test.js"></script>
+        <script src="~/js/Utility/COM.js"></script>
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        @*Gantt Chart*@
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
+                integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    </environment>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+    @*PARTIALS*@
+    <script src="~/js/Partial/dialog/deleteModal.js"></script>
+
+
+</body>
+</html>

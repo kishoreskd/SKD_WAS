@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "Employee";
+}
+
+<h5><i class="bx bi-person-badge"></i>&nbsp Employee</h5>
+
+
+<div class="text-end pb-3">
+    <a asp-action="UpSert" asp-controller="Employee" asp-area="Admin" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Create Employee
+    </a>
+</div>
+
+
+<div class="card border-0">
+    <div class="row">
+        <div class="col-sm m-4">
+            <div class="pt-2">
+                <h6 class="card-title"><i class="bx bi-person-badge"></i>&nbsp Employee List</h6>
+                <hr />
+            </div>
+
+            <table id="employeeTable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>DOB</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                        <th>Mobile No</th>
+                        <th>Blood group</th>
+                        <th>Address</th>
+                        <th>DOJ</th>
+                        <th>Experiance</th>
+                        <th>Location</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts{
+    <script src="~/js/Admin/employee.js"></script>
+}

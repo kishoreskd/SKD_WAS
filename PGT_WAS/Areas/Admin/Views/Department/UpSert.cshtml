@@ -1,0 +1,79 @@
+﻿@model Department
+
+@{
+    ViewData["Title"] = "Department";
+}
+
+
+
+<h5><i class="bi bi-database"></i> Register</h5>
+
+
+<div class="card shadow border-0 mt-4">
+    <div class="row">
+        <div class="col-6">
+            <div class="card shadow border-0 m-4">
+                <div class="card-body p-4">
+                    <h6 class="card-title"><i class="bi bi-building-add"></i>&nbsp @( COM.IsValidID(Model.DepartmentId)? "Update Department" : "Add Department")</h6>
+                    <hr />
+
+                    <form method="post" asp-controller="Department" asp-area="Admin" asp-action="UpSert" class="pgt-form">
+                        <input asp-for="DepartmentId" hidden />
+
+                        @*===========================================================================================================*@
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Department Name<span style="color: red">*</span></label>
+                                <input id="department_name" onblur="return CheckAlreadyExist();" class="form-control" asp-for="DepartmentName" type="text" />
+                                <span id="department_error" class="text-danger" asp-validation-for="DepartmentName"></span>
+                            </div>
+                        </div>
+
+                        <div class="row pt-4">
+                            <div class="col-6 col-md-3">
+                                <button type="submit" class="btn btn-primary form-control"> @( COM.IsValidID(Model.DepartmentId)? "Update" : "Create") <i class="bi bi-database-fill-up"></i></button>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a class="btn btn-outline-primary border  form-control" asp-controller="Department" asp-area="Admin" asp-action="Index">
+                                    <i class="bi bi-arrow-left"></i>
+                                    Back to List
+                                </a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+
+    <script type="text/javascript">
+
+        const CheckAlreadyExist = function () {
+            var department = "#department_name";
+            var url = '@Url.Content("~/")' + `Admin/Department/CheckAlreadyExist`;
+
+            $.post(url, { val: $(department).val() }, function (data) {
+                console.log(data);
+                if (data.success) {
+                    $(department).val(' ');
+                    $("#department_error").text("The department already exist.");
+                    return false;
+                }
+            });
+        };
+
+    </script>
+
+}

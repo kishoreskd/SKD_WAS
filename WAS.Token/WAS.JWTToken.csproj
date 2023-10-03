@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WAS.Context\WAS.Context.csproj" />
+    <ProjectReference Include="..\WAS.Interface\WAS.Interface.csproj" />
+    <ProjectReference Include="..\WAS.Model\WAS.Model.csproj" />
+  </ItemGroup>
+
+</Project>

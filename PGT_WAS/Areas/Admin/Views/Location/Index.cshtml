@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Location";
+}
+
+<h5><i class="bx bi-geo-alt"></i>&nbsp Location</h5>
+
+
+<div class="text-end  pb-3">
+    <a asp-action="UpSert" asp-controller="Location" asp-area="Admin" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i>  Create  Location
+    </a>
+</div>
+
+
+<div class="card shadow border-0">
+    <div class="row">
+        <div class="col-sm m-4">
+            <h6 class="card-title"><i class="bx bi-geo-alt"></i>&nbsp Location List</h6>
+            <hr />
+
+            <table id="locationTable"  class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Location name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+@section Scripts{
+    <script src="~/js/Admin/location.js"></script>
+}

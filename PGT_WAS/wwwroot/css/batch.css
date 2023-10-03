@@ -1,0 +1,40 @@
+﻿/*.pgt-status {
+    font-size: 10px;
+    padding: 6px 16px;
+    color: var(--light);
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+    .pgt-status.department {
+        background-color: rgba(255, 0, 0, 0.3);
+        color: black;
+    }
+
+    .pgt-status.designation {
+        background: var(--yellow);
+    }
+
+    .pgt-status.location {
+        background: var(--orange);
+    }
+
+    .pgt-status.edit {
+        background-color: green;
+    }
+
+    .pgt-status.delete {
+        background: var(--red);
+    }
+
+.pgt-box {
+    font-size: 10px;
+    padding: 30px 16px;*/
+/*    color:);*/
+    /*border-radius: 20px;
+    font-weight: 700;
+    text-align: center;
+    background-color: lightblue;
+    vertical-align: middle;
+       
+}*/

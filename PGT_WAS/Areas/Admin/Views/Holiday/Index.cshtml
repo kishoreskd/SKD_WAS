@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Holiday";
+}
+
+<h5><i class="bx bi-calendar"></i>&nbsp Holiday</h5>
+
+<div class="text-end pb-3">
+    <a asp-action="UpSert" asp-controller="Holiday" asp-area="Admin" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Create Holiday
+    </a>
+</div>
+
+<div class="card lh-lg ">
+    <div class="row">
+        <div class="col-sm m-4">
+
+            <div class="pt-2">
+                <h6 class="card-title"><i class="bx bi-calendar"></i>&nbsp Holiday List</h6>
+                <hr />
+            </div>
+
+            <div class="table-responsive">
+                <table id="holidayTable"  class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Holiday Name</th>
+                            <th>Holiday Date</th>
+                            <th>Remarks</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/Admin/holiday.js"></script>
+}

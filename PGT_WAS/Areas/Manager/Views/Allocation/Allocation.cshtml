@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "Allocation";
+}
+
+
+<div class="card border-1 mt-4">
+
+    <div class="card-header pt-1">
+        <h class="card-title m-3"><b>Project Lists</b></h>
+    </div>
+
+    <div class="card-body">
+
+        <div class="">
+
+            <div class="f-r pb-3 pr-1">
+                <a class="btn btn-sm btn-primary text-right m-l-xs" asp-action="UpSert" asp-controller="Allocation" asp-area="@SD.ROLE.Role_Manager">
+                    <i class="bi bi-plus-circle"></i> Assign
+                </a>
+            </div>
+
+            <div class="f-r pb-3 pr-1">
+                <a class="btn btn-sm btn-primary text-right m-l-xs" asp-action="ProjectAllocation" asp-controller="Allocation" asp-area="@SD.ROLE.Role_Manager">
+                    <i class="bi bi-plus-circle"></i> Project Allocation
+                </a>
+            </div>
+        </div>
+
+
+        <table id="projectAllocationTable" style="font-size:12px;" class="table table-borderless table-hover table-default">
+            <thead class="table-primary">
+                <tr>
+                    <th class="text-center"></th>
+                    <th>#</th>
+                    <th class="text-center">PGT job number</th>
+                    <th>Client Name</th>
+                    <th>Project name</th>
+                    <th>Client job number</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+
+
+@section Scripts{
+    <script src="~/js/Manager/allocation.js"></script>
+}

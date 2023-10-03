@@ -1,0 +1,963 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model PrimaryuserTasks
+
+@{
+    ViewData["Title"] = "Internal Plan";
+}
+
+
+<!--#region Delete Modal  -->
+<form method="post" asp-action="Remove" asp-area="Manager" asp-controller="InternalPlan">
+    <div class="modal fade" id="modal_delete" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Remove Task: </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="card-body">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="form-label" required>Selected Tasks:</label>
+                                </div>
+                                <div class="col-8">
+                                    <select id="cmb_usertasks_ids_delete" class="form-control" multiple="multiple" style="width: 100%" asp-for="@Model.DeleteUserTasks_VM.UserTaskIds">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-folder-x"></i> Are sure want to delete?</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--#endregion Edit Modal  -->
+<!--#region Edit Modal  -->
+<form method="post" asp-action="Edit" asp-area="Manager" asp-controller="InternalPlan">
+    <div class="modal fade" id="modal_edit" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Task: </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="card-body">
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="form-label" required>Project:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <select id="cmb_project_number_edit" asp-for="@Model.UpdateUserTasks_VM.ProjectId" style="width: 100%">
+                                        <option value="">N/A</option>
+                                    </select>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Start Date:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <input id="dt_start_date_edit" class="form-control" placeholder="dd\mm\yyyy" type="text" asp-for="@Model.UpdateUserTasks_VM.StartDate" />
+                                    <span class="text-danger" asp-validation-for="@Model.UpdateUserTasks_VM.StartDate"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>End Date:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <input id="dt_end_date_edit" class="form-control" placeholder="dd\mm\yyyy" type="text" asp-for="@Model.UpdateUserTasks_VM.EndDate" />
+                                    <span class="text-danger" asp-validation-for="@Model.UpdateUserTasks_VM.EndDate"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Status:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <select id="cmb_status_edit" style="width: 100%" asp-for="@Model.UpdateUserTasks_VM.Status">
+                                        <option value="1">---Select---</option>
+                                        <option value="2">Notice Period</option>
+                                        <option value="3">Training</option>
+                                        <option value="4">Leave</option>
+                                    </select>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Description:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <textarea id="txt_description_edit" class="form-control" type="text" asp-for="@Model.UpdateUserTasks_VM.Desctiption"></textarea>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Selected Tasks:</label>
+                                </div>
+                                <div class="col-8">
+                                    <select id="cmb_user_task_ids" class="form-control" multiple="multiple" style="width: 100%" asp-for="@Model.UpdateUserTasks_VM.UserTaskIds" hidden>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-database-fill-up"></i> Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--#endregion -->
+
+
+<form method="post" asp-action="Create" asp-area="Manager" asp-controller="InternalPlan">
+    <!--#region Create Modal  -->
+    <div class="modal fade" id="modal_assign" role="dialog" data-bs-keyboard="false" style="overflow:hidden;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Task: </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="card-body">
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="form-label" required>Project:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <select id="cmb_project_number_add" asp-for="@Model.PostUserTasks_VM.ProjectId" style="width: 100%">
+                                        <option value="">N/A</option>
+                                    </select>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Start Date:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <input id="dt_start_date_add" class="form-control" placeholder="dd\mm\yyyy" type="text" asp-for="@Model.PostUserTasks_VM.StartDate" />
+                                    <span class="text-danger" asp-validation-for="@Model.PostUserTasks_VM.StartDate"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>End Date:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <input id="dt_end_date_add" class="form-control" placeholder="dd\mm\yyyy" type="text" asp-for="@Model.PostUserTasks_VM.EndDate" />
+                                    <span class="text-danger" asp-validation-for="@Model.PostUserTasks_VM.EndDate"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Team Lead:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <select id="cmb_team_lead_add" class="form-control" style="width: 100%">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Team Employees:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <select id="cmb_team_employees_add" class="form-control" multiple="multiple" style="width: 100%" asp-for="@Model.PostUserTasks_VM.TeamEmployees">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Status:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <select id="cmb_status_add" class="form-control" style="width: 100%" asp-for="@Model.PostUserTasks_VM.Status">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col-4">
+                                    <label class="form-label" required>Description:</label>
+                                </div>
+
+                                <div class="col-8">
+                                    <textarea id="txt_description_edit" class="form-control" type="text" asp-for="@Model.PostUserTasks_VM.Desctiption"></textarea>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary text-left" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-database-fill-up"></i> Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--#endregion -->
+    <!--#region Task Table  -->
+
+    <div class="card border-1 mt-4">
+        <div class="card-header pt-1">
+
+            <div class="m-2 pl-2 pb-0">
+
+                <div class="text-left f-l pb-3">
+                    <label class="">Month: </label>
+                </div>
+
+                <div class="text-left f-l pb-3 pl-2">
+                    <input id="dt_month" class="form-select" placeholder="dd\mm\yyyy" type="text" asp-for="@Model.PostUserTasks_VM.Month" />
+                </div>
+
+
+                <div class="text-left f-l pb-3 pl-2">
+                    <label class="">Lead: </label>
+                </div>
+
+                <div class="text-left f-l pb-3 pl-1">
+                    <label class="badge bg-success">@Context.Session.GetString("user_name")</label>
+                </div>
+
+
+                <div class="text-left f-l pb-3 pl-2">
+                    <label class="">Team Member: </label>
+                </div>
+
+                <div class="text-left f-l pb-3 pl-1 col-2">
+                    <select id="cmb_team_lead_filter" class="form-select" style="width: 100%"></select>
+                </div>
+
+
+                <div class="f-r pb-3 pr-1">
+                    <a class="btn btn-sm btn-secondary text-right m-l-xs" asp-action="Test" asp-controller="InternalPlan" asp-area="Manager">
+                        <i class="bi bi-plus-circle"></i> Test
+                    </a>
+                </div>
+
+                <div class="f-r pb-3 pr-1">
+                    <button type="button" id="btn_reload" class="btn btn-sm btn-success text-right m-l-xs">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+
+                <div class="f-r pb-3 pr-1">
+                    <button id="btn_modal_delete" type="button" class="btn btn-sm btn-danger text-right m-l-xs" data-bs-toggle="modal" data-bs-target="#modal_delete">
+                        <i class="bi bi-folder-x"></i> Delete
+                    </button>
+                </div>
+
+                <div class="f-r pb-3 pr-1">
+                    <button id="btn_modal_edit" type="button" class="btn btn-sm btn-secondary text-right m-l-xs" data-bs-toggle="modal" data-bs-target="#modal_edit">
+                        <i class="bi bi-pencil"></i> Edit
+                    </button>
+                </div>
+
+                <div class="f-r pb-3 pr-1">
+                    <button type="button" class="btn btn-sm btn-primary text-right m-l-xs" data-bs-toggle="modal" data-bs-target="#modal_assign">
+                        <i class="bi bi-plus-circle"></i> Assign
+                    </button>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="target">
+                <div class="pt-2">
+                    <table id="dt_tasks" style="font-size:12px;" class="table table-borderless table-hover table-default">
+                        <thead class="table-primary">
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th></th>
+
+                                @*<th><div class="pl-3"><input class="form-check-input chk_selectall" type="checkbox" /></div></th>*@
+                                <th>Employee Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--#endregion -->
+</form>
+
+
+
+<div class="card border-1 mt-4">
+    <div class="card-header pt-1">
+        <h class="card-title m-3"><b>Project Gantt Chart</b></h>
+    </div>
+    <div id="cardbody" class="card-body">
+
+        <canvas id="myChart"></canvas>
+
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Manager/internal_job_allocation.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+            $('table').on('click', 'tr.child-row', function () {
+
+                console.log("clicked");
+
+                const childRows = $(this).next('tr');
+
+                var isChecked = $(this).find('input').is(":checked");
+                isChecked = isChecked ? false : true;
+                $(this).find('input').prop("checked", isChecked);
+            });
+
+            $('table').on('click', 'tr.primary-row', function () {
+
+
+                    const childRows = $(this).next('.table-light');
+
+                childRows.find('input').prop("checked", true);
+
+                    // Toggle the visibility of child rows when the primary row is clicked
+
+            });
+
+            @*$('table').on('click', 'td', function () {
+
+                $(this).parent('tr').find('input').prop("checked", true);
+
+            });*@
+        });
+
+
+        var minDate;
+        var maxDate;
+        //#region
+        //#endregion
+
+        //#region Initializing plugins and others
+
+        $(document).ready(() => {
+
+            DatePicker();
+
+            $("#cmb_month").select2({
+                placeholder: "Select month",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_team_lead_add").select2({
+                placeholder: "Select team lead",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_project_number_add").select2({
+                placeholder: "Select project number",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_team_employees_add").select2({
+                placeholder: "Select team employees",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_status_add").select2({
+                placeholder: "Select a status",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_team_lead_edit").select2({
+                placeholder: "Select team lead",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_project_number_edit").select2({
+                placeholder: "Select project number",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_user_task_ids").select2({
+                placeholder: "Select user taks",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_usertasks_ids_delete").select2({
+                placeholder: "Select user taks",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $("#cmb_status_edit").select2({
+                placeholder: "Select a status",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+            $('#cmb_taskactivity_ids').hide();
+
+            @*$("#cmb_team_lead_filter").select2({
+                placeholder: "Select a team lead",
+                dropdownParent: $('#modal_assign'),
+
+            });*@
+
+
+            LoadJobNumber();
+            LoadTeamLeads();
+            LoadTasksToTable();
+            LoadGanttSettings();
+            LoadUserTaskStatus();
+        });
+
+        //#endregion
+
+        //#region Date Initializiation
+
+            var _dt_month;
+            const DatePicker = function () {
+
+                $("#dt_month").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    showButtonPanel: true,
+                    dateFormat: 'MM yy',
+                    onClose: function (dateText, inst) {
+
+                        @*var val = dateText.split(" ");
+                        var month = val[0];
+                        var year = val[1];
+                        var date = "01 " + month + " " + year;
+
+                        _dt_month = $.datepicker.parseDate("dd MM yy", date);*@
+
+                        @* _dt_month = MonthToDateFormat(dateText);*@
+
+                        @* LoadTasksToTable();
+                        LoadGanttSettings();*@
+                    },
+                    onChangeMonthYear: function (year, month, inst) {
+
+                        var selectedDate = new Date(year, month - 1, 1);
+
+                        var fullyear = selectedDate.getFullYear();
+                        var month = selectedDate.getMonth() + 1;
+                        var date = selectedDate.getDate();
+
+                        //#region min and max date settings
+
+                        $("#dt_start_date_add").datepicker("option", "minDate", selectedDate);
+                        $("#dt_end_date_add").datepicker("option", "minDate", selectedDate);
+                        $("#dt_start_date_edit").datepicker("option", "minDate", selectedDate);
+                        $("#dt_end_date_edit").datepicker("option", "minDate", selectedDate);
+
+                        var maxDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, -0);
+
+                        $("#dt_start_date_add").datepicker("option", "maxDate", maxDate);
+                        $("#dt_end_date_add").datepicker("option", "maxDate", maxDate);
+                        $("#dt_start_date_edit").datepicker("option", "maxDate", maxDate);
+                        $("#dt_end_date_edit").datepicker("option", "maxDate", maxDate);
+
+                        var formatedMonth = $.datepicker.formatDate("MM", selectedDate);
+
+                        //#endregion
+
+                        $("#dt_month").val(`${formatedMonth} ${fullyear}`);
+                        var dateText = `${date} ${month} ${year}`
+                        _dt_month = MonthToDateFormat(dateText);
+
+                        LoadTasksToTable();
+                        LoadGanttSettings();
+                    }
+
+                }).datepicker("setDate", "0");
+                $("#dt_month").focus(function () {
+                    $(".ui-datepicker-calendar").hide();
+                    $("#ui-datepicker-div").position({
+                        my: "center top",
+                        at: "center bottom",
+                        of: $(this)
+                    });
+                });
+                $("#dt_start_date_add").datepicker({
+                    dateFormat: "dd/mm/yy",
+                    stepMonths: 0,
+                });
+                $("#dt_end_date_add").datepicker({
+                    @* beforeShowDay: $.datepicker.noWeekends,*@
+                dateFormat: "dd/mm/yy",
+                    stepMonths: 0,
+
+                });
+            $("#dt_start_date_edit").datepicker({
+                    @* beforeShowDay: $.datepicker.noWeekends,*@
+            dateFormat: "dd/mm/yy",
+                stepMonths: 0,
+                });
+            $("#dt_end_date_edit").datepicker({
+                    @* beforeShowDay: $.datepicker.noWeekends,*@
+            dateFormat: "dd/mm/yy",
+                stepMonths: 0,
+              });
+            }
+            const MonthToDateFormat = function (strDate) {
+                var val = strDate.split(" ");
+
+                var day = val[0];
+                var month = val[1];
+                var year = val[2];
+
+                if (day.length < 2) {
+                    day = "0" + day;
+                }
+                if (month.length < 2) {
+                    month = "0" + month;
+                }
+
+                var date = `${day} ${month} ${year}`;
+                return $.datepicker.parseDate("dd mm yy", date);
+            }
+
+        //#endregion
+
+        //#region Events
+
+            $("#cmb_team_lead_add").change(() => {
+
+                LoadTeamEmployees();
+            });
+
+            $("#dt_month").change(() => {
+
+
+                LoadTasksToTable();
+            });
+
+            $("#btn_modal_edit").click(() => {
+                LoadAllCheckedIds();
+            });
+
+            $("#btn_modal_delete").click(() => {
+                LoadAllCheckedIds();
+            });
+
+            $("#btn_reload").click(() => {
+                LoadTasksToTable();
+                LoadGanttChart();
+
+            });
+
+            $("#cmb_team_lead_filter").change(() => {
+                LoadTasksToTable();
+                LoadGanttSettings();
+            });
+
+          $('#chk_selectall').click(function (e) {
+                 console.log(e);
+                var table = $(e.target).closest('table');
+                @*console.log(table);*@
+                $('td input:checkbox', table).prop('checked', this.checked);
+            });
+
+
+
+
+        //#endregion
+
+        //#region Load
+
+        const LoadTasksToTable = function () {
+            dataTable.ajax.url(`/Manager/InternalPlan/GetAllTasks?month=${$("#dt_month").val()}&teamLeadId=${$("#cmb_team_lead_filter").val()}`);
+            dataTable.ajax.reload();
+        }
+        const LoadAllCheckedIds = function () {
+
+            var checkedIds = [];
+            $("#cmb_user_task_ids").empty();
+            $("#cmb_usertasks_ids_delete").empty();
+
+            $('#dt_tasks input[type="checkbox"]:checked').each(function () {
+                checkedIds.push($(this).attr('id'));
+                var id = $(this).attr('id');
+                var val = $(this).val();
+                if (id !== undefined && !COM.IsNullOrEmpty(id)) {
+                    console.log(id);
+                    $("#cmb_user_task_ids").append($('<option selected>').val(id).html(val));
+                    $("#cmb_usertasks_ids_delete").append($('<option selected>').val(id).html(val));
+                };
+            });
+        }
+        const LoadJobNumber = function () {
+
+            $("#cmb_project_number_add").empty();
+            $("#cmb_project_number_edit").empty();
+
+            var url ='@Url.Content("~/")'+ "pgt/api/ProjectApi/Get";
+            var items = "";
+
+            $.get(url, (data) => {
+                $.each(data, (i, val) => {
+                    items += "<option value ='" + val.projectId + "'>" + val.pgtJobNumber + "</option>"
+                });
+
+                $("#cmb_project_number_add").html(items);
+                $("#cmb_project_number_edit").html(items);
+            });
+
+        }
+        const LoadTeamLeads = function () {
+
+            $("#cmb_team_lead_add").empty();
+            $("#cmb_team_lead_edit").empty();
+            $("#cmb_team_lead_filter").empty();
+
+
+            var url = '@Url.Content("~/")' + `Manager/InternalPlan/GetTeamEmployees`;
+            var items = "";
+
+            $.get(url, function (data){
+                $.each(data, (i, val) => {
+                    items += "<option value ='" + val.id + "'>" + val.name + "</option>"
+                });
+
+                $("#cmb_team_lead_add").html(items);
+                $("#cmb_team_lead_edit").html(items);
+                $("#cmb_team_lead_filter").html(items);
+
+                LoadTeamEmployees();
+
+                if (COM.IsValidCount($("#cmb_team_lead_filter").val())) {
+                    LoadTasksToTable();
+                    LoadGanttSettings();
+                };
+            });
+
+        }
+
+        const LoadTeamEmployees = function () {
+            var teamLead = $("#cmb_team_lead_add").val();
+            $("#cmb_team_employees_add").empty();
+            $("#cmb_team_employees_edit").empty();
+
+            var url = '@Url.Content("~/")' + "Admin/Employee/GetTeamEmployees";
+            var items = "";
+
+            $.post(url, { teamlead: teamLead},(data) => {
+                $.each(data, (i, val) => {
+                    items += "<option value ='" + val.id + "'>" + val.name + "</option>"
+                });
+
+                $("#cmb_team_employees_add").html(items);
+                $("#cmb_team_employees_edit").html(items);
+
+            });
+        }
+        const LoadMonth = function () {
+
+            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            for (var i = new Date().getFullYear(); i >= 2000; i--) {
+                $.each(months, function (index, value) {
+                    $("#cmb_month").append($('<option>').val(index + "_" + i).html(value + " " + i));
+                });
+            }
+        }
+        const LoadUserTaskStatus = function () {
+
+            $("#cmb_status_add").empty();
+            $("#cmb_status_edit").empty();
+
+            var url = '@Url.Content("~/")' + "Manager/InternalPlan/GetAllUserTaskStatus";
+            var items = "";
+
+            $.get(url,(data) => {
+                $.each(data, (i, val) => {
+                    items += "<option value ='" + val.userTaskStatusId + "'>" + val.status + "</option>"
+                });
+
+                $("#cmb_status_add").html(items);
+                $("#cmb_status_edit").html(items);
+            });
+        }
+
+        //#endregion
+
+        //#region Gantt Chart
+        const LoadGanttSettings = function () {
+
+            minDate = new Date(_dt_month.getFullYear(), _dt_month.getMonth(), 1);
+            maxDate = new Date(_dt_month.getFullYear(), _dt_month.getMonth() + 1, 0);
+
+            minDate = $.datepicker.formatDate('yy-mm-dd', minDate).toString();
+            maxDate = $.datepicker.formatDate('yy-mm-dd', maxDate).toString();
+
+            config.options.scales.x.min = minDate;
+            config.options.scales.x.max = maxDate;
+
+            LoadGanttChart();
+            myChart.update();
+        }
+
+
+         var data = {
+            label: [],
+             datasets: [],
+             designation :[],
+         };
+
+        const LoadGanttChart = function () {
+
+            data.label = [];
+            data.designation = [];
+            data.datasets = [];
+
+            var teamLead = $("#cmb_team_lead_filter").val();
+            var selectedMonth = $("#dt_month").val();
+            var url = '@Url.Content("~/")' + "Manager/InternalPlan/GetTaskActivity";
+            var activitydata = [];
+            var task = [];
+
+            $.post(url, { month: selectedMonth, teamLeadId : teamLead }, function (response) {
+
+                $.each(response, (i, value) => {
+
+                    data.label.push(value.label);
+                    data.designation.push(value.designation);
+                    activitydata = [];
+                    task = [];
+
+                    $.each(value.activity, (index, act) => {
+                        activitydata.push({
+                            x: [act.startDate, act.endDate], y: value.label
+                        });
+
+                        var currentTask = "";
+                        currentTask = !COM.ObjIsNull(act.project) ? act.project.pgtJobNumber : act.userTaskStatus.status;
+                        task.push(currentTask)
+                    });
+
+                    data.datasets.push({
+                        label: "Range",
+                        data: activitydata,
+                        backgroundColor: 'rgba(0, 128, 0, 0.5)',
+                        borderColor: 'rgba(255, 26, 104, 0.2)',
+                        taskAssigned: task,
+                        backgroundColor: [
+                            'rgba(255, 26, 104, 0.3)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(0, 0, 0, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 26, 104, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(0, 0, 0, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderSkipped: false,
+                        borderRadius: 10,
+                        barPercentage: 2,
+                        hoverBorderColor: "#000",
+                    });
+                });
+                @*console.log(data);*@
+                myChart.update();
+
+            });
+        }
+
+        //Today Line Block
+        const todayLine = {
+            id: 'todayLine',
+            afterDatasetsDraw(chart, args, pluginOptions) {
+                const { ctx, data, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
+                ctx.save();
+                ctx.beginPath();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = 'rgba(255, 26, 104, 1)';
+                ctx.setLineDash([6, 6])
+                ctx.moveTo(x.getPixelForValue(new Date()), top);
+                ctx.lineTo(x.getPixelForValue(new Date()), bottom);
+                ctx.stroke();
+            }
+        }
+        //Assigned Task plugins
+        const assignedTasks = {
+            id: 'assignedTasks',
+            afterDatasetsDraw(chart, args, pluginOptions) {
+                const { ctx, data, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
+                ctx.font = 'bolder 12px sans-serif';
+                ctx.fillStyle = 'black';
+                ctx.textBaseline = 'middle';
+                // data.datasets[0].data.forEach((datapoint, index) => { ctx.fillText(datapoint.name, 10, y.getPixelForValue(index));})
+
+                @*data.designation.forEach((data, index) => {
+                    ctx.fillText(`(${data.split('')[0]})`, 10, y.getPixelForValue(index));
+                });*@
+
+                @*data.label.forEach((data, index) => {
+                    ctx.fillText(data, 10, y.getPixelForValue(index));
+                });*@
+            }
+        }
+
+
+        // config
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                layout: {
+                    padding: {
+                        left: 0,
+                    }
+                },
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        position: 'top',
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                        },
+                        min: '',
+                        max: '',
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: context => {
+                                const sd = COM.StringToDate(context[0].raw.x[0]);
+                                const ed = COM.StringToDate(context[0].raw.x[1]);
+
+                                const formatedDate = FormatDate(sd) + " to " + FormatDate(ed);
+
+                                return formatedDate;
+                            },
+                            label: context => {
+                                @*console.log(context);*@
+
+                                return `Project assigned to "${context.label}"`;
+                            }
+                        },
+                        enable: false,
+                    },
+                    datalabels: {
+                        formatter: (value, context) => {
+                            @*console.log(context.dataIndex);*@
+                            return `${context.dataset.taskAssigned[context.dataIndex]}`
+
+                        }
+                    },
+                },
+            },
+
+            plugins: [todayLine, assignedTasks, ChartDataLabels]
+        };
+
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+        //#endregion
+
+        const FormatDate = function (date) {
+            const formatDate = date.toLocaleString([], {
+                year: 'numeric',
+                month: "short",
+                day: 'numeric'
+            });
+
+            return formatDate;
+        }
+
+    </script>
+
+}
+
+

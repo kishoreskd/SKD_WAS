@@ -1,0 +1,20 @@
+﻿.fc-highlight {
+    background: green;
+    color: white;
+}
+
+.fc-button {
+    height: 2.4em !important;
+}
+
+.fc-list-event {
+    background-color: white;
+}
+
+.fc-list-event-title a {
+    background-color: white;
+}
+
+.fc-daygrid-event {
+    background-color: #f5f5f5;
+}

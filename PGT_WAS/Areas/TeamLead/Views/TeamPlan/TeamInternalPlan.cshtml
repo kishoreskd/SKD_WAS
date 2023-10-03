@@ -1,0 +1,448 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Team Internal Plan";
+}
+
+<!--#region Task Table  -->
+
+<div class="card border-1 mt-4">
+    <div class="card-header pt-1">
+        <div class="m-2 pl-2 pb-0">
+
+            <div class="text-left f-l pb-3">
+                <label class="">Month: </label>
+            </div>
+
+            <div class="text-left f-l pb-3 pl-2">
+                <input id="dt_month" class="form-select" placeholder="dd\mm\yyyy" type="text" />
+            </div>
+
+            <div class="text-left f-l pb-3 pl-2">
+                <label class="">Lead: </label>
+            </div>
+
+            <div class="text-left f-l pb-3 pl-1">
+                <label class="badge bg-success">@Context.Session.GetString("user_name")</label>
+            </div>
+
+
+            <div class="text-left f-l pb-3 pl-2">
+                <label class="">Team Member: </label>
+            </div>
+
+            <div class="text-left f-l pb-3 pl-1 col-2">
+                <select id="cmb_team_lead_filter" class="form-select" style="width: 100%"></select>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="card-body">
+
+
+
+
+        <div id="target">
+            <div class="pt-2">
+                <table id="dt_team_tasks" style="font-size:12px;" class="table table-borderless table-hover table-default">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th></th>
+                            <th>#</th>
+                            @*<th><div class="pl-3"><input class="form-check-input chk_selectall" type="checkbox" /></div></th>*@
+                            <th>Employee Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--#endregion -->
+
+
+
+
+<div class="card border-1 mt-4">
+    <div class="card-header pt-1">
+        <h class="card-title m-3"><b>Gantt Chart</b></h>
+    </div>
+    <div id="cardbody" class="card-body">
+
+        <canvas id="myChart"></canvas>
+
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/TeamLead/team_internal_job_allocation.js"></script>
+
+    <script type="text/javascript">
+
+        var minDate;
+        var maxDate;
+        //#region
+        //#endregion
+
+
+        //#region Initializing plugins and others
+
+        $(document).ready(() => {
+
+            DatePicker();
+
+            $("#cmb_month").select2({
+                placeholder: "Select month",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });
+
+            LoadTeamLeads();
+            LoadGanttSettings();
+            LoadUserTaskStatus();
+
+        });
+
+        //#endregion
+
+        //#region Date Initializiation
+
+        var _dt_month;
+        const DatePicker = function () {
+
+            $("#dt_month").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'MM yy',
+                onChangeMonthYear: function (year, month, inst) {
+
+                    var selectedDate = new Date(year, month - 1, 1);
+
+                    var fullyear = selectedDate.getFullYear();
+                    var month = selectedDate.getMonth() + 1;
+                    var date = selectedDate.getDate();
+
+                    var formatedMonth = $.datepicker.formatDate("MM", selectedDate);
+                    $("#dt_month").val(`${formatedMonth} ${fullyear}`);
+                    var dateText = `${date} ${month} ${year}`
+                    _dt_month = MonthToDateFormat(dateText);
+
+                    LoadTasksToTable();
+                    LoadGanttSettings();
+                }
+
+            }).datepicker("setDate", "0");
+
+            $("#dt_month").focus(function () {
+                $(".ui-datepicker-calendar").hide();
+                $("#ui-datepicker-div").position({
+                    my: "center top",
+                    at: "center bottom",
+                    of: $(this)
+                });
+            });
+        }
+        const MonthToDateFormat = function (strDate) {
+            var val = strDate.split(" ");
+
+            var day = val[0];
+            var month = val[1];
+            var year = val[2];
+
+            if (day.length < 2) {
+                day = "0" + day;
+            }
+            if (month.length < 2) {
+                month = "0" + month;
+            }
+
+            var date = `${day} ${month} ${year}`;
+            return $.datepicker.parseDate("dd mm yy", date);
+        }
+
+        //#endregion
+
+        //#region Events
+
+            $("#dt_month").change(() => {
+                LoadTasksToTable();
+            });
+
+            $("#cmb_team_lead_filter").change(() => {
+                LoadTasksToTable();
+                LoadGanttSettings();
+            });
+
+        //#endregion
+
+        //#region Load
+
+        const LoadTasksToTable = function () {
+
+            dataTable.ajax.url(`/TeamLead/TeamPlan/GetAllTasks?month=${$("#dt_month").val()}&teamLeadId=${$("#cmb_team_lead_filter").val()}`);
+            dataTable.ajax.reload();
+        }
+        const LoadJobNumber = function () {
+
+            $("#cmb_project_number_add").empty();
+            $("#cmb_project_number_edit").empty();
+
+            var url ='@Url.Content("~/")'+ "pgt/api/ProjectApi/Get";
+            var items = "";
+
+            $.get(url, (data) => {
+                $.each(data, (i, val) => {
+                    items += "<option value ='" + val.projectId + "'>" + val.pgtJobNumber + "</option>"
+                });
+
+                $("#cmb_project_number_add").html(items);
+                $("#cmb_project_number_edit").html(items);
+            });
+
+        }
+        const LoadTeamLeads = function () {
+
+            $("#cmb_team_lead_filter").empty();
+
+            var url = '@Url.Content("~/")' + `TeamLead/TeamPlan/GetTeamEmployees`;
+            var items = "";
+
+            $.get(url, function (data){
+                $.each(data, (i, val) => {
+                    items += "<option value ='" + val.id + "'>" + val.name + "</option>"
+                });
+
+                $("#cmb_team_lead_filter").html(items);
+
+
+                if (COM.IsValidCount($("#cmb_team_lead_filter").val())) {
+                    LoadTasksToTable();
+                    LoadGanttSettings();
+                };
+            });
+        }
+
+        //#endregion
+
+        //#region Gantt Chart
+            const LoadGanttSettings = function () {
+
+                minDate = new Date(_dt_month.getFullYear(), _dt_month.getMonth(), 1);
+                maxDate = new Date(_dt_month.getFullYear(), _dt_month.getMonth() + 1, 0);
+
+                minDate = $.datepicker.formatDate('yy-mm-dd', minDate).toString();
+                maxDate = $.datepicker.formatDate('yy-mm-dd', maxDate).toString();
+
+                config.options.scales.x.min = minDate;
+                config.options.scales.x.max = maxDate;
+
+                LoadGanttChart();
+                myChart.update();
+        }
+
+             var data = {
+                label: [],
+                 datasets: [],
+                 designation :[],
+        };
+
+            const LoadGanttChart = function () {
+
+                data.label = [];
+                data.designation = [];
+                data.datasets = [];
+
+                var teamLead = $("#cmb_team_lead_filter").val();
+                var selectedMonth = $("#dt_month").val();
+
+                var url = '@Url.Content("~/")' + "TeamLead/TeamPlan/GetTaskActivity";
+                var activitydata = [];
+                var task = [];
+
+                $.post(url, { month: selectedMonth, teamLeadId : teamLead }, function (response) {
+
+                    $.each(response, (i, value) => {
+
+                        data.label.push(value.label);
+                        data.designation.push(value.designation);
+                        activitydata = [];
+                        task = [];
+
+                        $.each(value.activity, (index, act) => {
+                            activitydata.push({
+                                x: [act.startDate, act.endDate], y: value.label
+                            });
+
+                            var currentTask = "";
+                            currentTask = !COM.ObjIsNull(act.project) ? act.project.pgtJobNumber : act.userTaskStatus.status;
+                            task.push(currentTask)
+                        });
+
+                        data.datasets.push({
+                            label: "Range",
+                            data: activitydata,
+                            backgroundColor: 'rgba(0, 128, 0, 0.5)',
+                            borderColor: 'rgba(255, 26, 104, 0.2)',
+                            taskAssigned: task,
+                            backgroundColor: [
+                                'rgba(255, 26, 104, 0.3)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(0, 0, 0, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 26, 104, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(0, 0, 0, 1)'
+                            ],
+                            borderWidth: 1,
+                            borderSkipped: false,
+                            borderRadius: 10,
+                            barPercentage: 2,
+                            hoverBorderColor: "#000",
+                        });
+                    });
+                    @*console.log(data);*@
+                    myChart.update();
+
+                });
+            }
+
+            //Today Line Block
+            const todayLine = {
+                id: 'todayLine',
+                afterDatasetsDraw(chart, args, pluginOptions) {
+                    const { ctx, data, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.lineWidth = 3;
+                    ctx.strokeStyle = 'rgba(255, 26, 104, 1)';
+                    ctx.setLineDash([6, 6])
+                    ctx.moveTo(x.getPixelForValue(new Date()), top);
+                    ctx.lineTo(x.getPixelForValue(new Date()), bottom);
+                    ctx.stroke();
+                }
+            }
+            //Assigned Task plugins
+            const assignedTasks = {
+                id: 'assignedTasks',
+                afterDatasetsDraw(chart, args, pluginOptions) {
+                    const { ctx, data, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
+                    ctx.font = 'bolder 12px sans-serif';
+                    ctx.fillStyle = 'black';
+                    ctx.textBaseline = 'middle';
+                    // data.datasets[0].data.forEach((datapoint, index) => { ctx.fillText(datapoint.name, 10, y.getPixelForValue(index));})
+
+                    @*data.designation.forEach((data, index) => {
+                        ctx.fillText(`(${data.split('')[0]})`, 10, y.getPixelForValue(index));
+                    });*@
+
+                    @*data.label.forEach((data, index) => {
+                        ctx.fillText(data, 10, y.getPixelForValue(index));
+                    });*@
+                }
+            }
+
+
+            // config
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    layout: {
+                        padding: {
+                            left: 0,
+                        }
+                    },
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            position: 'top',
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                            },
+                            min: '',
+                            max: '',
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: context => {
+                                    const sd = COM.StringToDate(context[0].raw.x[0]);
+                                    const ed = COM.StringToDate(context[0].raw.x[1]);
+
+                                    const formatedDate = FormatDate(sd) + " to " + FormatDate(ed);
+
+                                    return formatedDate;
+                                },
+                                label: context => {
+                                    @*console.log(context);*@
+
+                                    return `Project assigned to "${context.label}"`;
+                                }
+                            },
+                            enable: false,
+                        },
+                        datalabels: {
+                            formatter: (value, context) => {
+                                @*console.log(context.dataIndex);*@
+                                return `${context.dataset.taskAssigned[context.dataIndex]}`
+
+                            }
+                        },
+                    },
+                },
+
+                plugins: [todayLine, assignedTasks, ChartDataLabels]
+            };
+
+            var myChart = new Chart(
+                document.getElementById('myChart'),
+                config
+            );
+        //#endregion
+
+        const FormatDate = function (date) {
+            const formatDate = date.toLocaleString([], {
+                year: 'numeric',
+                month: "short",
+                day: 'numeric'
+            });
+
+            return formatDate;
+        }
+
+
+
+    </script>
+
+}
+
+

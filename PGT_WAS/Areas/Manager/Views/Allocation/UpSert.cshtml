@@ -1,0 +1,903 @@
+﻿@model Project
+
+@{
+    ViewData["Title"] = "Allocation";
+}
+
+<div class="row">
+
+    <div class="card border-1">
+        <div id="cardbody" class="card-header pt-1">
+            <div class="f-l pr-1">
+                <button type="button" id="btn_submit" class="badge bg-dark  form-control" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <i class="bi bi-check"></i> Assign
+                </button>
+            </div>
+
+            <div class="f-l pr-1">
+                <a id="btn_submit" class="badge bg-secondary form-control" asp-controller="Allocation" asp-area="@SD.ROLE.Role_Manager" asp-action="Allocation">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row pt-3">
+
+    <div class="card border-1">
+
+        <div class="card-header">
+            <h7 class="card-title m-3"><b>Allocation</b></h7>
+        </div>
+
+        <div class="card-body">
+
+            <form method="post" asp-controller="Allocation" asp-area="@SD.ROLE.Role_Manager" asp-action="UpSert" class="pgt-form">
+
+                <input asp-for="ProjectId" hidden />
+
+                <div class="row">
+
+                    <div class="col">
+                        <label class="form-label">Job Number (PGT) </label>
+                    </div>
+
+                    <div class="col">
+                        <input asp-for="PGTJobNumber" class="form-control" placeholder="Project Number..." />
+                        <span class="text-danger" asp-validation-for="PGTJobNumber"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Client Name</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="ClientName" class="form-control" placeholder="Client Name..." />
+                        <span class="text-danger" asp-validation-for="ClientName"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label">Project Name</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="ProjectName" class="form-control" placeholder="Project Name..." />
+                        <span class="text-danger" asp-validation-for="ProjectName"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Client Job Number </label>
+
+                    </div>
+                    <div class="col">
+                        <input asp-for="ClientJobNumber" class="form-control" placeholder="Client Job Number..." />
+                        <span class="text-danger" asp-validation-for="ClientJobNumber"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label">IFA : IFF</label>
+
+                    </div>
+                    <div class="col">
+                        <input id="ratio" value="80:20" asp-for="Ratio" class="form-control" type="text" placeholder="2:3" />
+                        <span class="text-danger" asp-validation-for="Ratio"></span>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">Production Hours</label>
+                    </div>
+                    <div class="col">
+                        <input value="9" id="txt_productionhours" asp-for="WHPerday" class="form-control" type="number" />
+                        <span class="text-danger" asp-validation-for="WHPerday"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col-3">
+                        <label class="form-label">Type</label>
+                    </div>
+
+                    <div class="col-3">
+                        <select id="cmb_project_type" style="width: 100%">
+                            <option value="main">Main</option>
+                            <option value="misc">Misc</option>
+                            <option value="misc_main">Misc&Main</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                @*--------MAIN AND MISC---------*@
+
+                <hr />
+
+                <div class="card shadow border-0 m-1 p-3">
+
+                    <div class="row">
+
+                        @*----------MAIN-------------*@
+
+                        <div class="col-6">
+                            <div class="pt-1 pb-3">
+                                <h6>Main Allocation</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-label">Hours</label>
+
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainhours" asp-for="MainH" class="form-control" type="number" />
+                                    <span class="text-danger" asp-validation-for="MainH"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Start Date</label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainStart" asp-for="MainStartDt" class="form-control" type="text" placeholder="dd/mm/yyyy" />
+                                    <span class="text-danger" asp-validation-for="MainStartDt"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Schedule Days</label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainSchedule" onkeypress="return COM.IsNumber()" asp-for="MainSDt" class="form-control" type="text" />
+                                    <span class="text-danger" asp-validation-for="MainSDt"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-labe">Modeler %</label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainModelersNdPercent" type="text" />
+                                    <span class="text-danger" asp-validation-for="MainModelersNdPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Detailer %</label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainDetilersNdPercent" class="form-control" type="text" />
+                                    <span class="text-danger" asp-validation-for="MainDetilersNdPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Checker %</label>
+
+                                </div>
+
+                                <div class="col">
+                                    <input id="txt_mainC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainCheckersNdPercent" class="form-control" type="text" />
+                                    <span class="text-danger" asp-validation-for="MainCheckersNdPercent"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*----------Misc-------------*@
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="pt-1 pb-3">
+                                    <h6>Misc Allocation</h6>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">Hours</label>
+
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mischours" asp-for="MiscH" class="form-control" type="number" />
+                                    <span class="text-danger" asp-validation-for="MiscH"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Start Date</label>
+
+                                </div>
+
+                                <div class="col">
+                                    <input id="txt_miscStart" asp-for="MiscStartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
+                                    <span class="text-danger" asp-validation-for="MiscStartDate"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Schedule Days</label>
+
+                                </div>
+                                <div class="col">
+                                    <input id="txt_miscSchedule" asp-for="MiscSDt" class="form-control" type="text" />
+                                    <span class="text-danger" asp-validation-for="MiscSDt"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Modeler %</label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_miscM" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscModelersNdPercent" class="form-control" type="text" />
+                                    <span class="text-danger" asp-validation-for="MiscModelersNdPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Detailer %</label>
+
+                                </div>
+                                <div class="col">
+                                    <input formnovalidate id="txt_miscD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscDetilersNdPercent" class="form-control" type="text" />
+                                    <span class="text-danger" asp-validation-for="MiscDetilersNdPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label">Checker %</label>
+
+                                </div>
+                                <div class="col">
+                                    <input id="txt_miscC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscCheckersNdPercent" class="form-control" type="text" />
+                                    <span class="text-danger" asp-validation-for="MiscCheckersNdPercent"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input id="rslt_mainSubmission" asp-for="ProjectEstimation.MainSubmissionDt" hidden />
+                        <input id="rslt_miscSubmission" asp-for="ProjectEstimation.MiscSubmissionDt" hidden />
+                        <input id="rslt_MainRatio" asp-for="ProjectEstimation.IFAr1r2" hidden />
+                        <input id="rslt_miscRatio" asp-for="ProjectEstimation.IFFr1r2" hidden />
+                        <input id="rslt_mainResource" asp-for="ProjectEstimation.ResourcesMain" hidden />
+                        <input id="rslt_miscResource" asp-for="ProjectEstimation.ResourcesMisc" hidden />
+                        <input id="rslt_mainMnd" asp-for="ProjectEstimation.MainMNd" hidden />
+                        <input id="rslt_miscMnd" asp-for="ProjectEstimation.MiscMNd" hidden />
+                        <input id="rslt_mainDnd" asp-for="ProjectEstimation.MainDNd" hidden />
+                        <input id="rslt_miscDnd" asp-for="ProjectEstimation.MiscDNd" hidden />
+                        <input id="rslt_mainCnd" asp-for="ProjectEstimation.MainCNd" hidden />
+                        <input id="rslt_miscCnd" asp-for="ProjectEstimation.MiscCNd" hidden />
+                        <input id="rslt_mainCnd" asp-for="ProjectEstimation.ProjectId" hidden />
+                        <input id="rslt_miscCnd" asp-for="ProjectEstimation.ProjectEstimationId" hidden />
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal  fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Allocation Result</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table id="" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Allocation</th>
+                                                <th width="200px">Main</th>
+                                                <th width="200px">Misc</th>
+                                                @*<th>Total</th>*@
+                                                @*<th class="text-end">Result</th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Hours</td>
+                                                <td id="td_mainhours">@(Model.MainH) </td>
+                                                <td id="td_mischours">@(Model.MiscH)</td>
+                                                @*<td>0</td>*@
+                                            </tr>
+                                            <tr>
+                                                <td>Submission Date</td>
+                                                <td id="td_mainsubmission">@(COM.IsNullOrEmpty(Model.ProjectEstimation.MainSubmissionDt) ? "dd/mm/yy" : Model.ProjectEstimation.MainSubmissionDt)</td>
+                                                <td id="td_miscSubmission">@(COM.IsNullOrEmpty(Model.ProjectEstimation.MiscSubmissionDt) ? "dd/mm/yy" : Model.ProjectEstimation.MiscSubmissionDt)</td>
+                                                @*<td>dd/mm/yy</td>*@
+                                            </tr>
+                                            <tr>
+                                                <td>Ratio</td>
+                                                <td id="td_main_ratio">@(COM.IsNullOrEmpty(Model.ProjectEstimation.IFAr1r2) ? "ahrs:bhrs" : Model.ProjectEstimation.IFAr1r2)</td>
+                                                <td id="td_misc_raio">@(COM.IsNullOrEmpty(Model.ProjectEstimation.IFFr1r2) ? "ahrs:bhrs" : Model.ProjectEstimation.IFFr1r2)</td>
+                                                @*<td>a hrs: b hrs</td>*@
+                                            </tr>
+                                            <tr>
+                                                <td>Resource</td>
+                                                <td id="td_resourceMain">@(Model.ProjectEstimation.ResourcesMain)</td>
+                                                <td id="td_resourceMisc">@(Model.ProjectEstimation.ResourcesMisc)</td>
+                                                @*<td>0</td>*@
+                                            </tr>
+                                            <tr>
+                                                <td>Resource need of modelers</td>
+                                                <td id="td_mainMnd">@(Model.ProjectEstimation.MainMNd)</td>
+                                                <td id="td_miscMnd">@(Model.ProjectEstimation.MiscMNd)</td>
+                                                @*<td>0</td>*@
+                                            </tr>
+                                            <tr>
+                                                <td>Resource need of detailers</td>
+                                                <td id="td_mainDnd">@(Model.ProjectEstimation.MainDNd)</td>
+                                                <td id="td_miscDnd">@(Model.ProjectEstimation.MiscDNd)</td>
+                                                @*<td>0</td>*@
+                                            </tr>
+                                            <tr>
+                                                <td>Resource need of checkers</td>
+                                                <td id="td_mainCnd">@(Model.ProjectEstimation.MainCNd)</td>
+                                                <td id="td_miscCnd">@(Model.ProjectEstimation.MiscCNd)</td>
+                                                @*<td>0</td>*@
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary border-0 shadow" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary border-0 shadow">@(COM.IsValidID(Model.ProjectId)? "Update" : "Create") <i class="bi bi-database-fill-up"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        //#region Element id's / Initializiation
+
+            var productionnhours = "#txt_productionhours";
+            var ratio = "#ratio";
+
+            var mainhours = "#txt_mainhours"
+            var mischours = "#txt_mischours"
+
+            var mainStart = "#txt_mainStart";
+            var miscStart = "#txt_miscStart";
+
+            var mainschedule = "#txt_mainSchedule";
+            var miscschedule = "#txt_miscSchedule";
+
+
+            var mainmodeler = "#txt_mainM";
+            var miscmodeler = "#txt_miscM";
+
+            var maindetailer = "#txt_mainD";
+            var miscdetailer = "#txt_miscD";
+
+            var mainchecker = "#txt_mainC";
+            var miscchecker = "#txt_miscC";
+
+            @* ----------------ROWS-------------------*@
+
+
+            var td_mainRatio = "#td_main_ratio";
+            var td_miscRatio = "#td_misc_raio";
+
+            var mainTotalResource = "#td_resourceMain";
+            var miscTotalResource = "#td_resourceMisc";
+
+            var td_mainhours = "#td_mainhours"
+            var td_mischours = "#td_mischours"
+
+            var td_mainSubmissionDt = "#td_mainsubmission"
+            var td_miscSubmissionDt = "#td_miscSubmission"
+
+
+            var td_mainSubmissionDt = "#td_mainsubmission"
+            var td_miscSubmissionDt = "#td_miscSubmission"
+
+
+            var td_mainmodelerNd = "#td_mainMnd";
+            var td_maindetailerNd = "#td_mainDnd";
+            var td_maincheckerNd = "#td_mainCnd";
+
+            var td_miscmodelerNd = "#td_miscMnd";
+            var td_miscdetailerNd = "#td_miscDnd";
+            var td_misccheckerNd = "#td_miscCnd";
+
+
+            var rslt_mainSubmission = "#rslt_mainSubmission";
+            var rslt_miscSubmission = "#rslt_miscSubmission";
+            var rslt_MainRatio = "#rslt_MainRatio";
+            var rslt_miscRatio = "#rslt_miscRatio";
+            var rslt_mainResource = "#rslt_mainResource";
+            var rslt_miscResource = "#rslt_miscResource";
+            var rslt_mainMnd = "#rslt_mainMnd";
+            var rslt_miscMnd = "#rslt_miscMnd";
+            var rslt_mainDnd = "#rslt_mainDnd";
+            var rslt_miscDnd = "#rslt_miscDnd";
+            var rslt_mainCnd = "#rslt_mainCnd";
+            var rslt_miscCnd = "#rslt_miscCnd";
+
+       //#endregion
+
+
+        $(document).ready(() => {
+            DatePicker();
+
+            @*$("#cmb_project_type").select2({
+                placeholder: "Select project type",
+                dropdownCssClass: "increasedzindexclass",
+                allowClear: true
+            });*@
+
+        });
+
+        const DatePicker = function () {
+            $("#txt_mainStart").datepicker({
+                beforeShowDay: $.datepicker.noWeekends,
+                dateFormat: 'dd/mm/yy'
+            });
+
+            $("#txt_miscStart").datepicker({
+                beforeShowDay: $.datepicker.noWeekends,
+                dateFormat: 'dd/mm/yy'
+            });
+        };
+
+
+        $("#btn_submit").click(function () {
+
+                var allocation = new Allocation(
+                COM.ConvertFloat($(mainhours).val()),
+                COM.ConvertFloat($(mischours).val()),
+                COM.ConvertFloat($(productionnhours).val()),
+                COM.ConvertFloat($(mainschedule).val()),
+
+                COM.ConvertFloat($(miscschedule).val()),
+                COM.ParseDate($(mainStart).val()),
+                COM.ParseDate($(miscStart).val()),
+
+                COM.ConvertFloat($(mainmodeler).val()),
+                COM.ConvertFloat($(maindetailer).val()),
+                COM.ConvertFloat($(mainchecker).val()),
+
+                COM.ConvertFloat($(miscmodeler).val()),
+                COM.ConvertFloat($(miscdetailer).val()),
+                COM.ConvertFloat($(miscchecker).val()),
+
+                $(ratio).val()
+            );
+
+            var estimation = allocation.GetEstimation();
+
+            $(td_mainhours).text($(mainhours).val());
+            $(td_mischours).text($(mischours).val());
+
+            $(td_mainSubmissionDt).text(estimation.MainSubmissionDate);
+            $(rslt_mainSubmission).val(estimation.MainSubmissionDate);
+
+            $(td_mainRatio).text(estimation.IFAR1R2);
+            $(rslt_MainRatio).val(estimation.IFAR1R2);
+
+            $(mainTotalResource).text(COM.IsNanOrInfinity(Math.ceil(estimation.ResourceMainTotal)) ? 0 : Math.ceil(estimation.ResourceMainTotal));
+            $(rslt_mainResource).val(COM.IsNanOrInfinity(Math.ceil(estimation.ResourceMainTotal)) ? 0 : Math.ceil(estimation.ResourceMainTotal));
+
+
+            $(td_mainmodelerNd).text(COM.IsNanOrInfinity(estimation.MainMresourceNeed) ? 0 : estimation.MainMresourceNeed);
+            $(rslt_mainMnd).val(COM.IsNanOrInfinity(estimation.MainMresourceNeed) ? 0 : estimation.MainMresourceNeed);
+
+
+            $(td_maindetailerNd).text(COM.IsNanOrInfinity(estimation.MainDresourceNeed) ? 0 : estimation.MainDresourceNeed);
+            $(rslt_mainDnd).val(COM.IsNanOrInfinity(estimation.MainDresourceNeed) ? 0 : estimation.MainDresourceNeed);
+
+            $(td_maincheckerNd).text(COM.IsNanOrInfinity(estimation.MainCresourceNeed) ? 0 : estimation.MainCresourceNeed);
+            $(rslt_mainCnd).val(COM.IsNanOrInfinity(estimation.MainCresourceNeed) ? 0 : estimation.MainCresourceNeed);
+
+                    @*---------------MISC---------------*@
+
+            $(td_miscSubmissionDt).text(estimation.MiscSubmissionDate);
+            $(rslt_miscSubmission).val(estimation.MiscSubmissionDate);
+
+            $(td_miscRatio).text(estimation.IFFr1r2);
+            $(rslt_miscRatio).val(estimation.IFFr1r2);
+
+            $(miscTotalResource).text(COM.IsNanOrInfinity(Math.ceil(estimation.ResourceMiscTotal)) ? 0 : Math.ceil(estimation.ResourceMiscTotal));
+            $(rslt_miscResource).val(COM.IsNanOrInfinity(Math.ceil(estimation.ResourceMiscTotal)) ? 0 : Math.ceil(estimation.ResourceMiscTotal));
+
+            $(td_miscmodelerNd).text(COM.IsNanOrInfinity(estimation.MiscMresourceNeed) ? 0 : estimation.MiscMresourceNeed);
+            $(rslt_miscMnd).val(COM.IsNanOrInfinity(estimation.MiscMresourceNeed) ? 0 : estimation.MiscMresourceNeed);
+
+            $(td_miscdetailerNd).text(COM.IsNanOrInfinity(estimation.MiscDresourceNeed) ? 0 : estimation.MiscDresourceNeed);
+            $(rslt_miscDnd).val(COM.IsNanOrInfinity(estimation.MiscDresourceNeed) ? 0 : estimation.MiscDresourceNeed);
+
+            $(td_misccheckerNd).text(COM.IsNanOrInfinity(estimation.MiscCresourceNeed) ? 0 : estimation.MiscCresourceNeed);
+            $(rslt_miscCnd).val(COM.IsNanOrInfinity(estimation.MiscCresourceNeed) ? 0 : estimation.MiscCresourceNeed);
+        });
+
+
+        class Allocation {
+
+             constructor(mainhours, mischours, productionhours, mainschedule, miscSchedule, mainStart, miscStart
+                 , mainmodeler, maindetailer, mainchecker, miscmodeler, miscdetailer, miscchecker, ratio) {
+
+                this._mainHours = mainhours;
+                this._miscHours = mischours;
+                this._productionHours = productionhours;
+                this._mainSchedule = mainschedule;
+                this._miscSchedule = miscSchedule;
+                this._mainStart = mainStart;
+                this._miscStart = miscStart;
+                this._mainModeler = mainmodeler;
+                this._mainDetailer = maindetailer;
+                this._mainChecker = mainchecker;
+                this._miscModeler = miscmodeler;
+                this._miscDetailer = miscdetailer;
+                this._miscChecker = miscchecker;
+                this._ratio = ratio;
+                this._pgtHolidays = [];
+             }
+
+            GetEstimation() {
+
+                var estimation = new Estimation();
+
+                var x = this._ratio.split(':');
+                var a = x[0];
+                var b = x[1];
+
+                //MAIN
+                var submissionDate = COM.ParseDateOfObject(this.GetSubmissionDate(this._mainStart, this._mainSchedule, null, false ));
+                estimation.MainSubmissionDate = submissionDate;
+
+                var r1 = this.GetRatio(a, this._mainHours);
+                var r2 = this.GetRatio(b, this._mainHours);
+                estimation.IFAr1r2 = `${r1}hrs : ${r2}hrs`;
+
+                var rscrc1 = this.GetTotalResouce(COM.ConvertFloat(r1), this._mainSchedule, this._productionHours);
+
+                var src1 = Math.ceil(this.GetResouce(rscrc1, this._mainModeler));
+                var src2 = Math.ceil(this.GetResouce(rscrc1, this._mainDetailer));
+                var src3 = Math.ceil(this.GetResouce(rscrc1, this._mainChecker));
+
+                if (((src1 + src2 + src3) - rscrc1) > 0) {
+                    src2 -= (((src1 + src2 + src3) - Math.ceil(rscrc1)));
+                }
+
+                estimation.ResourceMainTotal = Math.ceil(rscrc1);
+                estimation.MainMresourceNeed = src1;
+                estimation.MainDresourceNeed = src2;
+                estimation.MainCresourceNeed = src3;
+
+                //MISC
+                submissionDate = COM.ParseDateOfObject(this.GetSubmissionDate(this._miscStart, this._miscSchedule, null, false));
+                estimation.MiscSubmissionDate = submissionDate;
+
+                r1 = this.GetRatio(a, this._miscHours)
+                r2 = this.GetRatio(b, this._miscHours)
+                estimation.IFFr1r2 = `${r1}hrs : ${r2}hrs`;
+
+                var rscrc2 = this.GetTotalResouce(COM.ConvertFloat(r1), this._mainSchedule, this._productionHours);
+
+                src1 = Math.ceil(this.GetResouce(rscrc2, this._miscModeler));
+                src2 = Math.ceil(this.GetResouce(rscrc2, this._miscDetailer));
+                src3 = Math.ceil(this.GetResouce(rscrc2, this._miscChecker));
+
+                if (((src1 + src2 + src3) - rscrc2) > 0) {
+                    src2 -= (((src1 + src2 + src3) - Math.ceil(rscrc2)));
+                }
+
+                estimation.ResourceMiscTotal = Math.ceil(rscrc2);
+                estimation.MiscMresourceNeed = src1;
+                estimation.MiscDresourceNeed = src2;
+                estimation.MiscCresourceNeed = src3;
+
+                return estimation;
+             }
+
+            GetTotalHours() {
+                return (this._mainHours + this._miscHours);
+             }
+
+            GetTotalResouce(totalhours, totalscheduledays, productionhours) {
+                return (totalhours / (totalscheduledays * productionhours));
+             }
+
+            GetResouce(numberofResource, percent) {
+                return COM.GetPercent(percent, numberofResource);
+             }
+
+            GetRatio(ratio, hour) {
+                return COM.GetPercent(ratio, hour);
+             }
+
+             //TC
+            //(new Date(), number, [new date], bool)
+            GetSubmissionDate(projectStartDate, numberofScheduledays, externalHolidays ,isExcludeExternal) {
+
+                @*COM._L(typeof (projectStartDate));*@
+
+                var startDate = projectStartDate;
+                var endDate = new Date(startDate);
+                @*COM._L(endDate);*@
+
+                endDate.setDate(startDate.getDate() + parseInt(numberofScheduledays));
+
+                @*COM._L(startDate);
+                COM._L(endDate);*@
+
+                var datesCol = this.GetRangeDates(startDate, endDate);
+
+                //Before subission date may sat or sun or external holiday
+                var weekOff = this.GetWeeokOFF(datesCol);
+                var weekEndLength = weekOff.length;
+
+                var workingdays = this.GetWorkingDays(datesCol);
+                @*COM._L(workingdays);*@
+
+                var newColDsc = this.SorDateDSC([...workingdays]);
+                var newEndate = new Date(newColDsc[0]);
+                newEndate.setDate(newEndate.getDate() + weekEndLength)
+
+                do {
+                    if (newEndate.getDay() == 0) {
+                        //if sun add 1 extra day
+                        newEndate.setDate(newEndate.getDate() + 1);
+                    }
+                    if (newEndate.getDay() == 6) {
+                        //if sat add extra 2 days
+                        newEndate.setDate(newEndate.getDate() + 2);
+                    }
+                } while (newEndate.getDay() == 0 || newEndate.getDay() == 6 );
+
+                @*$.each(newColDsc, (val, s) => COM._L(s));*@
+
+                return newEndate;
+
+                @*COM._L(newEndate);*@
+             }
+
+            //TC
+            //(new Date(), new Date())
+            GetRangeDates(startDate, endDate) {
+
+                //
+                var millisecondsPerDay = 86400 * 1000; //milliseconds per day
+                startDate.setHours(0, 0, 0, 1); //after midnight;
+                endDate.setHours(23,59,59,999); //before midnight;
+
+                for (var arr = [], dt = new Date(startDate); dt <= new Date(endDate); dt.setDate(dt.getDate() + 1)) {
+                    arr.push(new Date(dt));
+                }
+                @*console.log(arr);*@
+
+                return arr;
+             }
+
+            //TC
+            //([new Date()])
+            GetWeeokOFF(datesCol) {
+                var hoidaysonly = datesCol.filter((element, index) => {
+                    return (element.getDay() == 0 || element.getDay() == 6);
+                });
+
+                @*COM._L(hoidaysonly);*@
+                return hoidaysonly;
+             }
+
+            //TC
+            //([new Date()])
+            GetWorkingDays(datesCol) {
+                var workingDaysOnly = datesCol.filter((element, index) => {
+
+
+                    return (element.getDay() != 0 && element.getDay() != 6);
+                });
+
+                @*COM._L(workingDaysOnly);*@
+                return workingDaysOnly;
+             }
+
+            GetPGTHolidays(url) {
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    success: function (response) {
+                        $.each(response, function (index, value) {
+
+                        });
+                    },
+                    error: (error) => {
+                        console.log(JSON.stringify(error));
+                    }
+                });
+             }
+
+            ExcludePGTHolidays(datesCol) {
+
+             }
+
+            SorDateDSC(col) {
+                return col.sort((a, b) => b - a);
+             }
+
+             static IsValidPercent (event) {
+
+                 var a = parseInt($(mainmodeler).val());
+                 var b = parseInt($(maindetailer).val());
+                 var c = parseInt($(mainchecker).val());
+
+                 var percent = parseInt(event.target.value);
+
+                 if (!this.IsValid(a, b, c, percent)) {
+                     event.target.value = 0;
+                     return false;
+                 }
+
+                 a = parseInt($(miscmodeler).val());
+                 b = parseInt($(miscdetailer).val());
+                 c = parseInt($(miscchecker).val());
+
+                 if (!this.IsValid(a, b, c, percent)) {
+                     event.target.value = 0;
+                     return false;
+                 }
+
+                 return true;
+             }
+             static IsValid  (a, b, c, percent) {
+                 if (((a + b + c) > 100) || percent > 100 || percent < 0 || COM.IsNanOrNull(percent)) {
+                     return false;
+                 } else {
+                     return true;
+                 }
+             }
+         }
+
+        class Estimation {
+
+                constructor() {
+
+                    this.IFAr1r2;
+                    this.IFFr1r2;
+
+                    this.ResourcesMain;
+                    this.ResourcesMisc;
+
+                    this.MainSubmissionDt;
+                    this.MiscSubmissionDt;
+
+
+                    this.MainMNd;
+                    this.MainDNd;
+                    this.MainCNd;
+
+                    this.MiscMNd;
+                    this.MiscDNd;
+                    this.MiscCNd;
+
+                    this.SubmissionDate;
+
+                    //Arrays
+                    this.WorkingCol;
+                    this.WeekOFFCol;
+                    this.PGTHolidaysCol;
+                }
+
+            get IFAR1R2() {
+                return this.IFAr1r2;
+            }
+            set IFAR1R2(value) {
+                this.IFAr1r2 = value;
+            }
+            get IFFR1R2() {
+                return this.IFFR1R2;
+            }
+            set IFFR1R2(value) {
+                this.IFFR1R2 = value;
+            }
+            get TotalHours() {
+                return this.TotalH;
+            }
+            set TotalHours(value) {
+                this.TotalH = value;
+            }
+            get MainSubmissionDate() {
+                return this.MainSubmissionDt;
+            }
+            set MainSubmissionDate(value) {
+                this.MainSubmissionDt = value;
+            }
+            get MiscSubmissionDate() {
+                return this.MiscSubmissionDt;
+            }
+            set MiscSubmissionDate(value) {
+                this.MiscSubmissionDt = value;
+            }
+            get ResourceMainTotal() {
+                return this.ResourceMain;
+            }
+            set ResourceMainTotal(value) {
+                this.ResourceMain = value;
+            }
+            get ResourceMiscTotal() {
+                return this.ResourceMisc;
+            }
+            set ResourceMiscTotal(value) {
+                this.ResourceMisc = value;
+            }
+            get MainMresourceNeed() {
+                return this.MainMNd;
+            }
+            set MainMresourceNeed(value) {
+                this.MainMNd = value;
+            }
+            get MainDresourceNeed() {
+                return this.MainDNd;
+            }
+            set MainDresourceNeed(value) {
+                this.MainDNd = value;
+            }
+            get MainCresourceNeed() {
+                return this.MainCNd;
+            }
+            set MainCresourceNeed(value) {
+                this.MainCNd = value;
+            }
+            get MiscMresourceNeed() {
+                return this.MiscMNd;
+            }
+            set MiscMresourceNeed(value) {
+                this.MiscMNd = value;
+            }
+            get MiscDresourceNeed() {
+                return this.MiscDNd;
+            }
+            set MiscDresourceNeed(value) {
+                this.MiscDNd = value;
+            }
+            get MiscCresourceNeed() {
+                return this.MiscCNd;
+            }
+            set MiscCresourceNeed(value) {
+                this.MiscCNd = value;
+            }
+            get WeekOf() {
+                return this.WeekOFFCol;
+            }
+            set WeekOff(value) {
+                this.WeekOFFCol = value;
+            }
+            get WorkingDays() {
+                return this.WorkingCol;
+            }
+            set WorkingDays(value) {
+                this.WorkingCol = value;
+            }
+            get PGTHolidays() {
+                return this.PGTHolidaysCol;
+            }
+            set PGTHolidays(value) {
+                this.PGTHolidaysCol = value;
+            }
+        };
+    </script>
+}

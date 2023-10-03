@@ -1,0 +1,57 @@
+﻿@model Role
+
+@{
+    ViewData["Title"] = "Role";
+}
+
+
+<h5><i class="bi bi-database"></i> Register</h5>
+
+
+<div class="card shadow border-0 mt-4">
+
+    <div class="row">
+        <div class="col-6 m-4">
+            <div class="card shadow border-0  p-4">
+                <h6 class="card-title"></i>&nbsp @( COM.IsValidID(Model.RoleID)? "Update Role" : "Add Role")</h6>
+                <hr />
+                <form asp-controller="Role" asp-area="Admin" asp-action="UpSert" class="pgt-form">
+                    <input asp-for="RoleID" hidden />
+
+                    @*===========================================================================================================*@
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-label">Role Name<span style="color: red">*</span></label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" asp-for="RoleName" type="text" />
+                            <span class="text-danger" asp-validation-for="RoleName"></span>
+                        </div>
+                    </div>
+
+                    <div class="row pt-4">
+                        <div class="col-6 col-md-3">
+                            <button type="submit" class="btn btn-primary form-control">@( COM.IsValidID(Model.RoleID) ? "Update" : "Create")<i class="bi bi-database-fill-up"></i></button>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <a class="btn btn-outline-primary border  form-control" asp-controller="Role" asp-area="Admin" asp-action="Index">
+                                <i class="bi bi-arrow-left"></i>
+                                Back to List
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

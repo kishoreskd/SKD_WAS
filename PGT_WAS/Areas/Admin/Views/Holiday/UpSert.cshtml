@@ -1,0 +1,93 @@
+﻿@model Holiday
+
+@{
+    ViewData["Title"] = "Holiday";
+}
+
+
+
+
+<h5><i class="bi bi-database"></i> Register</h5>
+
+<div class="card mt-4">
+    <div class="row">
+        <div class="col-6">
+            <div class="card  m-4">
+                <div class="card-body p-4">
+                    <h6 class="card-title"><i class="bi bi-building-add"></i>&nbsp @( COM.IsValidID(Model.HolidayId)? "Update holiday" : "Add holiday")</h6>
+                    <hr />
+
+                    <form method="post" asp-controller="Holiday" asp-area="Admin" asp-action="UpSert" class="pgt-form">
+                        <input asp-for="HolidayId" hidden />
+
+                        @*===========================================================================================================*@
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Holiday Name<span style="color: red">*</span></label>
+                                <input class="form-control" asp-for="HolidayName" type="text" />
+                                <span class="text-danger" asp-validation-for="HolidayName"></span>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Holiday Date<span style="color: red">*</span></label>
+                                <input id="dt_holiday" class="form-control" asp-for="HolidayDate" type="text" placeholder="dd/mm/yyyy" />
+                                <span class="text-danger" asp-validation-for="HolidayDate"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 pt-3">
+                                <label class="form-label">#Remarks<span style="color: red"></span></label>
+                                <textarea class="form-control" asp-for="Remarks"></textarea>
+                                <span class="text-danger" asp-validation-for="Remarks"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="row pt-4">
+                            <div class="col-6 col-md-3">
+
+                                <button type="submit" class="btn btn-primary form-control">@(COM.IsValidID(Model.HolidayId)? "Update" : "Create")<i class="bi bi-database-fill-up"></i></button>
+
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a class="btn btn-outline-primary border  form-control" asp-controller="Holiday" asp-area="Admin" asp-action="Index">
+                                    <i class="bi bi-arrow-left"></i>
+                                    Back to List
+                                </a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $(document).ready(function () {
+            DatePicker();
+        });
+
+        const DatePicker = function () {
+            $("#dt_holiday").datepicker({
+                dateFormat: 'dd/mm/yy'
+
+            });
+            $("#dt_birthdate").datepicker({
+                dateFormat: 'dd/mm/yy'
+
+            });
+        };
+
+    </script>
+}

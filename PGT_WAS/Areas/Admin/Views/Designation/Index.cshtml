@@ -1,0 +1,157 @@
+﻿@model Designation
+
+@{
+    ViewData["Title"] = "Designation";
+}
+
+<h5><i class="bx bi-person-badge"></i>&nbsp Designation</h5>
+
+<div class="text-end pb-3">
+    <a asp-action="UpSert" asp-controller="Designation" asp-area="Admin" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Create Designation
+    </a>
+</div>
+
+<div class="card">
+    <div class="row">
+        <div class="col-sm m-4">
+
+            <div class="pt-2">
+                <h6 class="card-title"><i class="bx bi-person-badge"></i> Designation List</h6>
+                <hr />
+            </div>
+
+            <div>
+                <table id="designationTable" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Designation</th>
+                            <th>Department</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<form method="post" asp-controller="Designation" asp-area="Admin" asp-action="UpSert" class="pgt-form">
+
+    <div class="modal fade" id="exampleModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">@( COM.IsValidID(Model.DesignationId)? "Edit designation" : "Add designation")</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body pt-4">
+
+                                    <input asp-for="DesignationId" hidden />
+                                    <input id="department_id" asp-for="DepartmentId" hidden />-->
+<!--<div class="row">
+
+                                        <div class="col">
+                                            <label class="form-label">Department<span style="color: red">*</span></label>
+                                        </div>
+
+                                        <div class="col">
+                                            <select id="sb_department" class="form-control" asp-for="DepartmentId" asp-items="@(new SelectList (string.Empty, nameof(Model.DepartmentId), nameof(Model.Department.DepartmentName)))">
+                                            </select>
+                                            <span class="text-danger" asp-validation-for="DepartmentId"></span>
+                                        </div>
+
+                                        <div class="w-100 pt-2"></div>
+
+                                        <div class="col">
+                                            <label class="form-label">Designation Name<span style="color: red">*</span></label>
+
+                                        </div>
+
+                                        <div class="col">
+                                            <input class="form-control" asp-for="DesignationName" type="text" placeholder="Designation" />
+                                            <span id="designation_error" class="text-danger" asp-validation-for="DesignationName"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="Check()" class="btn btn-primary"> @( COM.IsValidID(Model.DesignationId)? "Update" : "Create")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>-->
+
+
+
+
+@section Scripts{
+    <script src="~/js/Admin/designation.js"></script>
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+         $(document).ready(function () {
+             LoadDepartments();
+         });
+
+
+        @*const Check = function (desId, depId) {
+            console.log([desId, depId]);
+        }
+
+        const LoadDepartments = function () {
+            $.getJSON('@Url.Content("~/")' + "pgt/api/DepartmentApi/Get", function (data) {
+
+                $("#sb_department").empty();
+
+                var items = "<option value ='" + "" + "' disabled selected>" + "Select department" + "</option>";
+
+                $.each(data, function (i, values) {
+                    items += "<option value ='" + values.departmentId + "'>" + values.departmentName + "</option>"
+                });
+
+                $("#sb_department").html(items);
+
+                if (COM.IsValidId($("#department_id").val())) {
+                    $("#sb_department").val($("#department_id").val());
+                };
+            });
+        };
+
+
+
+        const CheckAlreadyExist = function () {
+            var department = "#department_name";
+            var designation = "#designation_name";
+
+            var url = '@Url.Content("~/")' + `Admin/Department/CheckAlreadyExist`;
+
+            $.post(url, { dep: $(department).val(), des: $(designation).val() }, function (data) {
+                if (data.success) {
+                    $(designation).val(' ');
+                    $("#designation_error").text("The designation already exist in this department.");
+                    return false;
+                }
+            });
+        };*@
+
+    </script>
+}

@@ -1,0 +1,21 @@
+﻿
+
+.footer {
+    background-color: white;
+    border-top: 1px solid #e7eaec;
+    bottom:0;
+    top:0;
+    padding: 10px 20px;
+    position: absolute;
+    right:0;
+}
+
+.select2-container {
+    z-index: 100000;
+}
+
+label[required]::after {
+    content: " *";
+    color: red;
+    font-weight: bolder;
+}

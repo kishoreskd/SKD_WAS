@@ -1,0 +1,57 @@
+﻿@model Location
+
+@{
+    ViewData["Title"] = "Location";
+}
+
+
+<h5><i class="bi bi-database"></i> Register</h5>
+
+
+<div class="card shadow border-0 mt-4">
+
+    <div class="row">
+        <div class="col-6 m-4">
+            <div class="card shadow border-0  p-4">
+                <h6 class="card-title"><i class="bx bi-geo-alt"></i>&nbsp @( COM.IsValidID(Model.LocationId)? "Update Location" : "Add Location")</h6>
+                <hr />
+                <form asp-controller="Location" asp-area="Admin" asp-action="UpSert" class="pgt-form">
+                    <input asp-for="LocationId" hidden />
+
+                    @*===========================================================================================================*@
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label">Location Name<span style="color: red">*</span></label>
+                            <input class="form-control" asp-for="LocationName" type="text" />
+                            <span class="text-danger" asp-validation-for="LocationName"></span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row pt-4">
+                        <div class="col-6 col-md-3">
+                            <button type="submit" class="btn btn-primary form-control">@( COM.IsValidID(Model.LocationId)? "Update" : "Create")<i class="bi bi-database-fill-up"></i></button>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <a class="btn btn-outline-primary border  form-control" asp-controller="Location" asp-area="Admin" asp-action="Index">
+                                <i class="bi bi-arrow-left"></i>
+                                Back to List
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,1152 @@
+﻿@model ProjectAllocation
+
+
+@{
+    ViewData["Title"] = "Project Allocation";
+}
+
+<style>
+    input[type='number'] {
+        width: 80px;
+    }
+</style>
+
+<div class="card border-1">
+    <div id="cardbody" class="card-body">
+        <div class="f-l pr-1">
+            <button type="submit" id="btn_submit" class="btn btn-sm btn-primary">
+                <i class="bi bi-check"></i> Save
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="card border-1">
+
+        <div class="card-header pt-3 pl-3 pb-1">
+            <h6>Project Allocation</h6>
+        </div>
+
+        <div id="cardbody" class="card-body">
+            <form id="frm_container" action="/" method="post">
+
+                <input asp-for="ProjectAllocationId" hidden />
+
+                <div class="row">
+
+                    <div class="col">
+                        <label class="form-label"><strong>Job Number:</strong></label>
+                    </div>
+
+                    <div class="col">
+                        <input asp-for="PGTJobNumber" class="form-control" placeholder="Project Number..." />
+                        <span class="text-danger" asp-validation-for="PGTJobNumber"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label"><strong>Client Name:</strong></label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="ClientName" class="form-control" placeholder="Client Name..." />
+                        <span class="text-danger" asp-validation-for="ClientName"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col">
+                        <label class="form-label"><strong>Project Name:</strong></label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="ProjectName" class="form-control" placeholder="Project Name..." />
+                        <span class="text-danger" asp-validation-for="ProjectName"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label"><strong>Client Job Number:</strong></label>
+
+                    </div>
+                    <div class="col">
+                        <input asp-for="ClientJobNumber" class="form-control" placeholder="Client Job Number..." />
+                        <span class="text-danger" asp-validation-for="ClientJobNumber"></span>
+                    </div>
+
+                    <div class="w-100 pt-2"></div>
+
+                    <div class="col-3">
+                        <label class="form-label"><strong>Production Hours:</strong></label>
+                    </div>
+                    <div class="col-1">
+                        <input value="9" onkeypress="return COM.IsNumber()" id="txt_productionhours" asp-for="ProductionHours" class="form-control" type="text" style="width:80px" />
+                        <span class="text-danger" asp-validation-for="ProductionHours"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="pt-3">
+    <form id="frm_container" action="/" method="post">
+        <div>
+            <div class="card border-1">
+
+                <div class="card-header pt-3 pl-3 pb-1">
+                    <h6 class="f-l pr-1">Main Allocation</h6>
+                </div>
+
+                <div id="cardbody" class="card-body m-1">
+
+                    <div class="row">
+
+                        <div class="col-6 hstack gap-2">
+
+                            <div class="row">
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Hours</strong></label>
+                                </div>
+
+                                <div class="col">
+                                    <input id="txt_mainhours" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.Hours" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="MainAllocation.Hours"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Ratio</strong></label>
+                                </div>
+
+
+                                <div class="col-1">
+                                    <input id="txt_main_r1" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                                </div>
+                                <div class="col-1 text-center">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-4">
+                                    <input id="txt_main_r2" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Start Date</strong></label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainStart" asp-for="MainAllocation.StartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
+                                    <span class="text-danger" asp-validation-for="MainAllocation.StartDate"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Schedule Days</strong></label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainSchedule" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="MainAllocation.ScheduleDays"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-labe"><strong>Modeler</strong><span style="font-size:11px; color:green;">%</span></label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.ModelerPercent" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="MainAllocation.ModelerPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="MainAllocation.CheckerPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Detailer</strong><span style="font-size:11px; color:green;">%</span></label>
+                                </div>
+
+                                <div class="col">
+                                    <input id="txt_mainC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="MainAllocation.DetailerPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Coordination</strong><span style="font-size:11px; color:green;">%</span></label>
+
+                                </div>
+
+                                <div class="col">
+                                    <input id="txt_mainCoordination" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" readonly asp-for="MainAllocation.TotalCoordination" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="MainAllocation.TotalCoordination"></span>
+                                </div>
+                            </div>
+
+                            <div class="vr"></div>
+                        </div>
+
+
+                        <div class="col-6">
+                            <table class="table table-light table-bordered" style="width:100%; height: 100%;">
+                                <thead class="table" hidden>
+                                    <tr>
+                                        <th width="1%" class="text-left">Allocation</th>
+                                        <th width="10%" class="text-left">Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-left">
+                                    <tr>
+                                        <td><strong> Hours:</strong></td>
+                                        <td id="td_mainhours"><span class="badge bg-success">@(Model.MainAllocation.Hours)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Submission Date:</strong></td>
+                                        <td id="td_mainSubmission"><span class="badge bg-success">@(Model.MainAllocation.SubmissionDate)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ratio:</strong></td>
+                                        <td id="td_main_raio"><span class="badge bg-success">@(Model.MainAllocation.IFA):@(Model.MainAllocation.IFF)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Resource:</strong></td>
+                                        <td id="td_resourceMain"><span class="badge bg-success">@(Model.MainAllocation.TotalResources)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Resource (Modeler):</strong></td>
+                                        <td id="td_mainMnd"><span class="badge bg-success">@(Model.MainAllocation.TotalResources)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Resource (Checker):</strong></td>
+                                        <td id="td_mainCnd"><span class="badge bg-success">@(Model.MainAllocation.TotalChecker)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Resource (Detailer):</strong></td>
+                                        <td id="td_mainDnd"><span class="badge bg-success">@(Model.MainAllocation.TotalDetailer)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Coordination:</strong></td>
+                                        <td id="td_mainCornd"><span class="badge bg-success">@(Model.MainAllocation.TotalCoordination)</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <input id="rslt_mainSubmission" asp-for="@Model.MainAllocation.SubmissionDate" hidden />
+            <input id="rslt_mainR1" asp-for="@Model.MainAllocation.R1" hidden />
+            <input id="rslt_mainR2" asp-for="@Model.MainAllocation.R2" hidden />
+            <input id="rslt_mainResource" asp-for="@Model.MainAllocation.TotalResources" hidden />
+            <input id="rslt_mainMnd" asp-for="@Model.MainAllocation.TotalModeler" hidden />
+            <input id="rslt_mainCnd" asp-for="@Model.MainAllocation.TotalChecker" hidden />
+            <input id="rslt_mainDnd" asp-for="@Model.MainAllocation.TotalDetailer" hidden />
+        </div>
+
+
+    </form>
+</div>
+
+
+<div class="card border-1">
+
+    <div class="card-header pt-3 pl-3 pb-1">
+        <h6>Misc Allocation</h6>
+    </div>
+
+    <div id="cardbody" class="card-body m-1">
+        <form id="frm_container" action="/" method="post">
+
+            <div class="row">
+
+                <div class="col-6 hstack gap-2">
+                    <div class="row">
+
+                        <div class="col">
+                            <label class="form-label"><strong>Hours</strong></label>
+                        </div>
+
+                        <div class="col">
+                            <input id="txt_mischours" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MiscAllocation.Hours"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Ratio</strong></label>
+                        </div>
+
+
+                        <div class="col-1">
+                            <input id="txt_misc_r1" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                        </div>
+                        <div class="col-1 text-center">
+                            <strong>:</strong>
+                        </div>
+                        <div class="col-4">
+                            <input id="txt_misc_r2" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Start Date</strong></label>
+                        </div>
+                        <div class="col">
+                            <input id="txt_miscStart" asp-for="MiscAllocation.StartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
+                            <span class="text-danger" asp-validation-for="MiscAllocation.StartDate"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Schedule Days</strong></label>
+                        </div>
+                        <div class="col">
+                            <input id="txt_miscSchedule" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MiscAllocation.ScheduleDays"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-labe"><strong>Modeler</strong><span style="font-size:11px; color:green;">%</span></label>
+                        </div>
+                        <div class="col">
+                            <input id="txt_miscM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.ModelerPercent" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MiscAllocation.ModelerPercent"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
+                        </div>
+                        <div class="col">
+                            <input id="txt_miscD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MiscAllocation.CheckerPercent"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Detailer</strong><span style="font-size:11px; color:green;">%</span></label>
+                        </div>
+
+                        <div class="col">
+                            <input id="txt_miscC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MiscAllocation.DetailerPercent"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Coordination</strong><span style="font-size:11px; color:green;">%</span></label>
+
+                        </div>
+
+                        <div class="col">
+                            <input id="txt_miscCoordination" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.TotalCoordination" class="form-control" readonly type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MiscAllocation.TotalCoordination"></span>
+                        </div>
+                    </div>
+
+                    <div class="vr"></div>
+                </div>
+
+                <div class="col-6">
+                    <table id="" class="table table-light table-bordered" style="width:100%; height: 100%;">
+                        <thead class="table-primary" hidden>
+                            <tr>
+                                <th width="5%" class="text-left">Allocation</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-left">
+                            <tr>
+                                <td><strong>Hours:</strong></td>
+                                <td id="td_mischours"><span class="badge bg-success">@(Model.MiscAllocation.Hours)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Submission Date:</strong></td>
+                                <td id="td_miscSubmission"><span class="badge bg-success">@(Model.MiscAllocation.SubmissionDate)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ratio:</strong></td>
+                                <td id="td_misc_raio"><span class="badge bg-success">@(Model.MiscAllocation.IFA):@(Model.MiscAllocation.IFF)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Resource:</strong></td>
+                                <td id="td_resourceMisc"><span class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resource (Modeler):</strong></td>
+                                <td id="td_miscMnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resource (Checker):</strong></td>
+                                <td id="td_miscCnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalChecker)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resource (Detailer):</strong></td>
+                                <td id="td_miscDnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalDetailer)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Coordination:</strong></td>
+                                <td id="td_miscDnd"><span class="badge bg-success">@(Model.MiscAllocation.TotalCoordination)</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <input id="rslt_miscSubmission" asp-for="@Model.MiscAllocation.SubmissionDate" hidden />
+            <input id="rslt_miscR1" asp-for="@Model.MiscAllocation.R1" hidden />
+            <input id="rslt_miscR2" asp-for="@Model.MiscAllocation.R2" hidden />
+            <input id="rslt_miscResource" asp-for="@Model.MiscAllocation.TotalResources" hidden />
+            <input id="rslt_miscMnd" asp-for="@Model.MiscAllocation.TotalModeler" hidden />
+            <input id="rslt_miscCnd" asp-for="@Model.MiscAllocation.TotalChecker" hidden />
+            <input id="rslt_miscDnd" asp-for="@Model.MiscAllocation.TotalDetailer" hidden />
+        </form>
+    </div>
+</div>
+
+
+<div class="card border-1">
+
+    <div class="card-header pt-3 pl-3 pb-1">
+        <h6>Main and Misc Allocation</h6>
+    </div>
+
+    <div id="cardbody" class="card-body m-1">
+        <form id="" action="/" method="post">
+
+            <div class="row">
+
+                <div class="col-6 hstack gap-2">
+
+                    <div class="row">
+
+                        <div class="col">
+                            <label class="form-label"><strong>Hours</strong></label>
+                        </div>
+
+                        <div class="col">
+                            <input id="txt_main_mischours" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.Hours"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Ratio</strong></label>
+                        </div>
+
+
+                        <div class="col-1">
+                            <input id="txt_main_misc_r1" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                        </div>
+                        <div class="col-1 text-center">
+                            <strong>:</strong>
+                        </div>
+                        <div class="col-4">
+                            <input id="txt_main_misc_r2" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Start Date</strong></label>
+                        </div>
+                        <div class="col">
+                            <input id="txt_main_miscStart" asp-for="MainAndMiscAllocation.StartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
+                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.StartDate"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Schedule Days</strong></label>
+                        </div>
+                        <div class="col">
+                            <input id="txt_main_miscSchedule" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.ScheduleDays"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-labe"><strong>Modeler</strong><span style="font-size:11px; color:green;">%</span></label>
+                        </div>
+                        <div class="col">
+                            <input id="txt_main_miscM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.ModelerPercent" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.ModelerPercent"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
+                        </div>
+                        <div class="col">
+                            <input id="txt_main_miscD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.CheckerPercent" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.CheckerPercent"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Detailer</strong><span style="font-size:11px; color:green;">%</span></label>
+                        </div>
+
+                        <div class="col">
+                            <input id="txt_main_miscC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.DetailerPercent" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.DetailerPercent"></span>
+                        </div>
+
+                        <div class="w-100 pt-2"></div>
+
+                        <div class="col">
+                            <label class="form-label"><strong>Coordination</strong><span style="font-size:11px; color:green;">%</span></label>
+
+                        </div>
+
+                        <div class="col">
+                            <input id="txt_main_miscCoordination" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" readonly asp-for="MainAndMiscAllocation.TotalCoordination" class="form-control" type="text" style="width:80px" />
+                            <span class="text-danger" asp-validation-for="MainAndMiscAllocation.TotalCoordination"></span>
+                        </div>
+                    </div>
+
+                    <div class="vr"></div>
+                </div>
+
+
+                <div class="col-6">
+                    <table class="table table-light table-bordered" style="width:100%; height: 100%;">
+                        <thead class="table" hidden>
+                            <tr>
+                                <th width="1%" class="text-left">Allocation</th>
+                                <th width="10%" class="text-left">Result</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-left">
+                            <tr>
+                                <td><strong> Hours:</strong></td>
+                                <td id="td_main_mischours"><span class="badge bg-success">@(Model.MainAndMiscAllocation.Hours)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Submission Date:</strong></td>
+                                <td id="td_main_miscSubmission"><span class="badge bg-success">@(Model.MainAndMiscAllocation.SubmissionDate)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ratio:</strong></td>
+                                <td id="td_main_misc_raio"><span class="badge bg-success">@(Model.MainAndMiscAllocation.IFA):@(Model.MainAndMiscAllocation.IFF)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Resource:</strong></td>
+                                <td id="td_resourceMain"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resource (Modeler):</strong></td>
+                                <td id="td_main_miscMnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resource (Checker):</strong></td>
+                                <td id="td_main_miscCnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalChecker)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resource (Detailer):</strong></td>
+                                <td id="td_main_miscDnd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalDetailer)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Coordination:</strong></td>
+                                <td id="td_main_miscCornd"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalCoordination)</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <input id="rslt_miscSubmission" asp-for="@Model.MainAndMiscAllocation.SubmissionDate" hidden />
+            <input id="rslt_miscR1" asp-for="@Model.MainAndMiscAllocation.R1" hidden />
+            <input id="rslt_miscR2" asp-for="@Model.MainAndMiscAllocation.R2" hidden />
+            <input id="rslt_miscResource" asp-for="@Model.MainAndMiscAllocation.TotalResources" hidden />
+            <input id="rslt_miscMnd" asp-for="@Model.MainAndMiscAllocation.TotalModeler" hidden />
+            <input id="rslt_miscCnd" asp-for="@Model.MainAndMiscAllocation.TotalChecker" hidden />
+            <input id="rslt_miscDnd" asp-for="@Model.MainAndMiscAllocation.TotalDetailer" hidden />
+
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <div id="cardbody" class="card-body m-1">
+        <form id="frm_container" action="/" method="post">
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+
+        var productionnhours = "#txt_productionhours";
+
+        var main_r1 = "#txt_main_r1";
+        var main_r2 = "#txt_main_r2";
+        var mainhours = "#txt_mainhours"
+        var mainStart = "#txt_mainStart";
+        var mainschedule = "#txt_mainSchedule";
+        var mainmodeler = "#txt_mainM";
+        var maindetailer = "#txt_mainD";
+        var mainchecker = "#txt_mainC";
+        var maincoordninaion = "#txt_main_coordination";
+
+        var misc_r1 = "#txt_misc_r1";
+        var misc_r2 = "#txt_misc_r2";
+        var mischours = "#txt_mischours";
+        var miscStart = "#txt_miscStart";
+        var miscschedule = "#txt_miscSchedule";
+        var miscmodeler = "#txt_miscM";
+        var miscdetailer = "#txt_miscD";
+        var miscchecker = "#txt_miscC";
+        var misccoordninaion = "#txt_misc_coordination";
+
+
+        var rslt_mainSubmission = "#rslt_mainSubmission";
+        var rslt_mainR1 = "#rslt_mainR1";
+        var rslt_mainR2 = "#rslt_mainR2";
+        var rslt_mainResource = "#rslt_mainResource";
+        var rslt_mainMnd = "#rslt_mainMnd";
+        var rslt_mainCnd = "#rslt_mainCnd";
+        var rslt_mainDnd = "#rslt_mainDnd";
+        var rslt_mainCornd = "#rslt_mainCornd";
+
+
+        var rslt_miscSubmission = "#rslt_miscSubmission";
+        var rslt_miscR1 = "#rslt_miscR1";
+        var rslt_miscR2 = "#rslt_miscR2";
+        var rslt_miscResource = "#rslt_miscResource";
+        var rslt_miscMnd = "#rslt_miscMnd";
+        var rslt_miscCnd = "#rslt_miscCnd";
+        var rslt_miscDnd = "#rslt_miscDnd";
+        var rslt_miscCornd = "#rslt_miscCornd";
+
+
+        var td_mainR1 = "#td_main_r1";
+        var td_mainR2 = "#td_main_r2";
+
+        var td_mainTotalResource = "#td_resourceMain";
+        var td_mainhours = "#td_mainhours"
+        var td_mainSubmissionDt = "#td_mainsubmission"
+        var td_mainmodelerNd = "#td_mainMnd";
+        var td_maincheckerNd = "#td_mainCnd";
+        var td_maindetailerNd = "#td_mainDnd";
+        var td_mainCorNd = "#td_mainCornd";
+
+
+        var td_miscR1 = "#td_misc_r1";
+        var td_miscR2 = "#td_misc_r2";
+        var td_miscRatio = "#td_misc_raio";
+        var td_miscTotalResource = "#td_resourceMisc";
+        var td_mischours = "#td_mischours";
+        var td_miscSubmissionDt = "#td_miscSubmission";
+        var td_miscSubmissionDt = "#td_miscSubmission";
+        var td_miscmodelerNd = "#td_miscMnd";
+        var td_miscdetailerNd = "#td_miscDnd";
+        var td_misccheckerNd = "#td_miscCnd";
+        var td_miscCorNd = "#td_miscCornd";
+
+
+        $(document).ready(() => {
+            DatePicker();
+            LoadForm();
+        });
+
+
+        const LoadForm = function () {
+            @*var propName =  "MainAllocation";
+            var id = "main";
+            var container = $("#frm_container");
+            var html = `
+              <div>
+                <div class="card border-1">
+
+                <div class="card-header pt-3 pl-3 pb-1">
+                    <h6 class="f-l pr-1">${propName} Allocation</h6>
+                </div>
+
+                <div id="cardbody" class="card-body m-1">
+
+                    <div class="row">
+
+                        <div class="col-6 hstack gap-2">
+
+                            <div class="row">
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Hours</strong></label>
+                                </div>
+
+                                <div class="col">
+                                    <input id="txt_mainhours" onkeypress="return COM.IsNumber()" asp-for="@Model.${propName}.Hours" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="@Model.${propName}.Hours"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Ratio</strong></label>
+                                </div>
+
+
+                                <div class="col-1">
+                                    <input id="txt_main_r1" onkeypress="return COM.IsNumber()" asp-for="@Model.${propName}.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                                </div>
+                                <div class="col-1 text-center">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-4">
+                                    <input id="txt_main_r2" onkeypress="return COM.IsNumber()" asp-for="@Model.${propName}.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Start Date</strong></label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainStart" asp-for="@Model.${propName}.StartDate" class="form-control" type="text" placeholder="dd/mm/yyyy" />
+                                    <span class="text-danger" asp-validation-for="@Model.${propName}.StartDate"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Schedule Days</strong></label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainSchedule" onkeypress="return COM.IsNumber()" asp-for="@Model.${propName}.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="@Model.${propName}.ScheduleDays"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-labe"><strong>Modeler</strong><span style="font-size:11px; color:green;">%</span></label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainM" class="form-control" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="@Model.${propName}.ModelerPercent" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="@Model.${propName}.ModelerPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Checker</strong><span style="font-size:11px; color:green;">%</span></label>
+                                </div>
+                                <div class="col">
+                                    <input id="txt_mainD" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="@Model.${propName}.CheckerPercent" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="@Model.${propName}.CheckerPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Detailer</strong><span style="font-size:11px; color:green;">%</span></label>
+                                </div>
+
+                                <div class="col">
+                                    <input id="txt_mainC" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" asp-for="@Model.${propName}.DetailerPercent" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="@Model.${propName}.DetailerPercent"></span>
+                                </div>
+
+                                <div class="w-100 pt-2"></div>
+
+                                <div class="col">
+                                    <label class="form-label"><strong>Coordination</strong><span style="font-size:11px; color:green;">%</span></label>
+
+                                </div>
+
+                                <div class="col">
+                                    <input id="txt_mainCoordination" onblur="return Allocation.IsValidPercent(event)" onkeypress="return COM.IsNumber()" readonly asp-for="@Model.${propName}.TotalCoordination" class="form-control" type="text" style="width:80px" />
+                                    <span class="text-danger" asp-validation-for="@Model.${propName}.TotalCoordination"></span>
+                                </div>
+                            </div>
+
+                            <div class="vr"></div>
+                        </div>
+
+
+                        <div class="col-6">
+                            <table class="table table-light table-bordered" style="width:100%; height: 100%;">
+                                <thead class="table" hidden>
+                                    <tr>
+                                        <th width="1%" class="text-left">Allocation</th>
+                                        <th width="10%" class="text-left">Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-left">
+                                    <tr>
+                                        <td><strong> Hours:</strong></td>
+                                        <td id="td_mainhours"><span class="badge bg-success">@(Model.MainAllocation.Hours)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Submission Date:</strong></td>
+                                        <td id="td_mainSubmission"><span class="badge bg-success">@Model.${propName}.SubmissionDate</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ratio:</strong></td>
+                                        <td id="td_main_raio"><span class="badge bg-success">@Model.${propName}.IFA:@Model.${propName}.IFF</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Resource:</strong></td>
+                                        <td id="td_resourceMain"><span class="badge bg-success">@Model.${propName}.TotalResources</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Resource (Modeler):</strong></td>
+                                        <td id="td_mainMnd"><span class="badge bg-success">@Model.${propName}.TotalResources</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Resource (Checker):</strong></td>
+                                        <td id="td_mainCnd"><span class="badge bg-success">@Model.${propName}.TotalChecker</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Resource (Detailer):</strong></td>
+                                        <td id="td_mainDnd"><span class="badge bg-success">@Model.${propName}.TotalDetailer</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Coordination:</strong></td>
+                                        <td id="td_mainCornd"><span class="badge bg-success">@Model.${propName}.TotalCoordination</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <input id="rslt_mainSubmission" asp-for="@(Model.MainAllocation.SubmissionDate)" hidden />
+            <input id="rslt_mainR1" asp-for="@Model.${propName}.R1" hidden />
+            <input id="rslt_mainR2" asp-for="@Model.${propName}.R2" hidden />
+            <input id="rslt_mainResource" asp-for="@Model.${propName}.TotalResources" hidden />
+            <input id="rslt_mainMnd" asp-for="@Model.${propName}.TotalModeler" hidden />
+            <input id="rslt_mainCnd" asp-for="@Model.${propName}.TotalChecker" hidden />
+            <input id="rslt_mainDnd" asp-for="@Model.${propName}.TotalDetailer" hidden />
+            </div>
+                `
+
+            container.append(html);*@
+        }
+
+
+        const DatePicker = function () {
+            $("#txt_mainStart").datepicker({
+                beforeShowDay: $.datepicker.noWeekends,
+                dateFormat: 'dd/mm/yy'
+            });
+
+            $("#txt_miscStart").datepicker({
+                beforeShowDay: $.datepicker.noWeekends,
+                dateFormat: 'dd/mm/yy'
+            });
+        };
+
+
+        $("#btn_submit").click(function () {
+                var allocation = new Allocation(
+                COM.ConvertFloat($(mainhours).val()),
+                COM.ParseDate($(mainStart).val()),
+                COM.ConvertFloat($(main_r1).val()),
+                COM.ConvertFloat($(main_r2).val()),
+                COM.ConvertFloat($(mainschedule).val()),
+                COM.ConvertFloat($(mainmodeler).val()),
+                COM.ConvertFloat($(mainchecker).val()),
+                COM.ConvertFloat($(maindetailer).val()),
+                COM.ConvertFloat($(productionnhours).val()),
+            );
+
+            var estimation = allocation.GetEstimation();
+
+            $(td_mainhours).text($(mainhours).val());
+            $(td_mainSubmissionDt).text(estimation.SubmissionDate);
+
+            $(td_mainR1).text(estimation.R1);
+            $(td_mainR2).text(estimation.R2);
+
+            $(td_mainTotalResource).text(COM.IsNanOrInfinity(Math.ceil(estimation.TotalResource)) ? 0 : Math.ceil(estimation.TotalResource));
+            $(td_mainmodelerNd).text(COM.IsNanOrInfinity(estimation.TotalModelers) ? 0 : estimation.TotalModelers);
+            $(td_maincheckerNd).text(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
+            $(td_maindetailerNd).text(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
+
+
+            $(td_mainCorNd).text(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
+
+
+            $(rslt_mainCnd).val(COM.IsNanOrInfinity(estimation.MainCresourceNeed) ? 0 : estimation.MainCresourceNeed);
+            $(rslt_mainSubmission).val(estimation.SubmissionDate);
+            $(rslt_mainR1).text(estimation.R1);
+            $(rslt_mainR2).text(estimation.R2);
+            $(rslt_mainResource).val(COM.IsNanOrInfinity(Math.ceil(estimation.TotalResource)) ? 0 : Math.ceil(estimation.TotalResource));
+            $(rslt_mainMnd).val(COM.IsNanOrInfinity(estimation.TotalModelers) ? 0 : estimation.TotalModelers);
+            $(rslt_mainCnd).val(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
+            $(rslt_mainDnd).val(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
+            $(rslt_mainCornd).val(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
+
+
+        });
+
+        class Allocation {
+
+            constructor(hours, startDate, r1, r2, scheduleDays, mPercent, Cpercent, Dpercent, productionhours) {
+                this._hours = hours;
+                this._startDate = startDate;
+                this._r1 = r1;
+                this._r2 = r2;
+                this._scheduleDays = scheduleDays;
+                this._mPercent = mPercent;
+                this._Cpercent = Cpercent;
+                this._Dpercent = Dpercent;
+                this._productionhours = productionhours;
+            }
+            GetEstimation() {
+
+                var estimation = new Estimation();
+
+                var r1 = this.GetRatio(this._r1, this._hours)
+                var r2 = this.GetRatio(this._r2, this._hours)
+
+                var submissionDate = this.GetSubmissionDate(this._startDate, this._scheduleDays, null, false);
+                var resoureceTotal = this.GetTotalResouce(COM.ConvertFloat(r1), this._scheduleDays, this._productionhours);
+
+                var m = Math.round(COM.GetPercent(this._mPercent, resoureceTotal));
+                var c = Math.round(COM.GetPercent(this._Cpercent, resoureceTotal));
+                var d = Math.round(COM.GetPercent(this._Dpercent, resoureceTotal));
+
+                var total = m + c + d;
+                var coordniation = 0;
+
+
+                if ((resoureceTotal - total) > 0) {
+                    coordniation = Math.ceil(resoureceTotal) - total;
+                    console.log(coordniation);
+                }
+
+                estimation.R1 = r1;
+                estimation.R2 = r2;
+                estimation.SubmissionDate = COM.ParseDateOfObject(submissionDate);
+                estimation.TotalModelers = m;
+                estimation.TotalCheckers = c;
+                estimation.TotalDetailers = d;
+                estimation.Coordination = coordniation;
+                estimation.TotalResource = resoureceTotal;
+
+                console.log(estimation);
+
+                return estimation;
+            }
+            GetSubmissionDate(projectStartDate, numberofScheduledays, externalHolidays, isExcludeExternal) {
+
+                var startDate = projectStartDate;
+                var endDate = new Date(startDate);
+
+                endDate.setDate(startDate.getDate() + parseInt(numberofScheduledays));
+
+                var datesCol = this.GetRangeDates(startDate, endDate);
+
+                //Before subission date may sat or sun or external holiday
+                var weekOff = this.GetWeeokOFF(datesCol);
+                var weekEndLength = weekOff.length;
+
+                var workingdays = this.GetWorkingDays(datesCol);
+
+
+                var newColDsc = this.SorDateDSC([...workingdays]);
+                var newEndate = new Date(newColDsc[0]);
+                newEndate.setDate(newEndate.getDate() + weekEndLength)
+
+                do {
+                    if (newEndate.getDay() == 0) {
+                        //if sun add 1 extra day
+                        newEndate.setDate(newEndate.getDate() + 1);
+                    }
+                    if (newEndate.getDay() == 6) {
+                        //if sat add extra 2 days
+                        newEndate.setDate(newEndate.getDate() + 2);
+                    }
+                } while (newEndate.getDay() == 0 || newEndate.getDay() == 6);
+
+
+                return newEndate;
+            }
+            GetRatio(ratio, hour) {
+                return COM.GetPercent(ratio, hour);
+            }
+            GetTotalResouce(totalhours, totalscheduledays, productionhours) {
+                return (totalhours / (totalscheduledays * productionhours));
+            }
+            //(new Date(), new Date())
+            GetRangeDates(startDate, endDate) {
+
+                //
+                var millisecondsPerDay = 86400 * 1000; //milliseconds per day
+                startDate.setHours(0, 0, 0, 1); //after midnight;
+                endDate.setHours(23, 59, 59, 999); //before midnight;
+
+                for (var arr = [], dt = new Date(startDate); dt <= new Date(endDate); dt.setDate(dt.getDate() + 1)) {
+                    arr.push(new Date(dt));
+                }
+
+                return arr;
+            }
+            //([new Date()])
+            GetWeeokOFF(datesCol) {
+                var hoidaysonly = datesCol.filter((element, index) => {
+                    return (element.getDay() == 0 || element.getDay() == 6);
+                });
+
+                return hoidaysonly;
+            }
+            //([new Date()])
+            GetWorkingDays(datesCol) {
+                var workingDaysOnly = datesCol.filter((element, index) => {
+                    return (element.getDay() != 0 && element.getDay() != 6);
+                });
+
+                return workingDaysOnly;
+            }
+            SorDateDSC(col) {
+                return col.sort((a, b) => b - a);
+            }
+            static IsValidPercent(event) {
+
+                var a = parseInt($(mainmodeler).val());
+                var b = parseInt($(maindetailer).val());
+                var c = parseInt($(mainchecker).val());
+
+                var percent = parseInt(event.target.value);
+
+                if (!this.IsValid(a, b, c, percent)) {
+                    event.target.value = 0;
+                    return false;
+                }
+
+                a = parseInt($(miscmodeler).val());
+                b = parseInt($(miscdetailer).val());
+                c = parseInt($(miscchecker).val());
+
+                if (!this.IsValid(a, b, c, percent)) {
+                    event.target.value = 0;
+                    return false;
+                }
+
+                return true;
+            }
+            static IsValid(a, b, c, percent) {
+                if (((a + b + c) > 100) || percent > 100 || percent < 0 || COM.IsNanOrNull(percent)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+        };
+        class Estimation {
+
+            constructor() {
+
+                this._R1;
+                this._R2;
+
+                this._Hours;
+
+                this._SubmissionDate;
+
+                this._TotalResource;
+
+
+                this._TotalModelers;
+                this._TotalCheckers;
+                this._TotalDetailers;
+
+                this._Coordination;
+            }
+
+            get R1() {
+                return this._R1;
+            }
+            set R1(value) {
+                this._R1 = value;
+            }
+            get R2() {
+                return this._R2;
+            }
+            set R2(value) {
+                this._R2 = value;
+            }
+            get Hours() {
+                return this._Hours;
+            }
+            set Hours(value) {
+                this._Hours = value;
+            }
+
+            get TotalResource() {
+                return this._TotalResource;
+            }
+            set TotalResource(value) {
+                this._TotalResource = value;
+            }
+
+            get SubmissionDate() {
+                return this._SubmissionDate;
+            }
+            set SubmissionDate(value) {
+                this._SubmissionDate = value;
+            }
+            get TotalModelers() {
+                return this._TotalModelers;
+            }
+            set TotalModelers(value) {
+                this._TotalModelers = value;
+            }
+            get TotalCheckers() {
+                return this._TotalCheckers;
+            }
+            set TotalCheckers(value) {
+                this._TotalCheckers = value;
+            }
+
+            get TotalDetailers() {
+                return this._TotalDetailers;
+            }
+            set TotalDetailers(value) {
+                this._TotalDetailers = value;
+            }
+
+            get Coordination() {
+                return this._Coordination;
+            }
+            set Coordination(value) {
+                this._Coordination = value;
+            }
+        };
+
+    </script>
+
+}
