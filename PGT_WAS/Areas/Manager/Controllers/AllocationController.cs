@@ -34,146 +34,148 @@ namespace PGT_WAS.Areas.Manager.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ProjectAllocation()
-        {
-            return View(new ProjectAllocation() { MainAllocation = new MainAllocation(), MiscAllocation = new MiscAllocation(), MainAndMiscAllocation = new MainAndMiscAllocation() });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ProjectInfoAllocation()
-        {
-            return View(new ProjectAllocation() { MainAllocation = new MainAllocation(), MiscAllocation = new MiscAllocation(), MainAndMiscAllocation = new MainAndMiscAllocation() });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> UpSert(int? id)
-        {
-
-            try
-            {
-                Project project = new Project
-                {
-                    ProjectEstimation = new ProjectEstimation()
-                };
-
-                if (COM.IsValidID(id)) project = await _unitWork.Project.GetFirstOrDefault(proj => id == proj.ProjectId, includeProp: "ProjectEstimation");
-
-                return View(project);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> UpSert(Project project)
-        {
-            try
-            {
-                _userId = Convert.ToInt32(HttpContext.Session.GetString("user_id"));
-                project.UserAccountId = _userId;
-
-
-                if (!ModelState.IsValid)
-                {
-                    return View();
-                }
-
-                Project projectDb = await _unitWork.Project.GetFirstOrDefault(proj => project.ProjectId == proj.ProjectId, includeProp: "ProjectEstimation");
-
-                SD.Msg = "Project saved successfully";
-
-                if (COM.IsNull(projectDb))
-                {
-                    await _unitWork.Project.Add(project);
-                }
-                else
-                {
-                    SD.Msg = "Project updated successfully";
-                    _unitWork.Project.Update(project);
-                    //_estimationContext.Update(project.ProjectEstimation);
-                }
-
-                await _unitWork.Project.Commit();
-                TempData[SD.Success] = SD.Msg;
-                return RedirectToAction(nameof(Allocation), "Allocation");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-
-        public async Task<JsonResult> Delete(int id)
-        {
-            try
-            {
-                Project project = await _unitWork.Project.GetFirstOrDefault(proj => proj.ProjectId == id, includeProp: "ProjectEstimation");
-
-                if (COM.IsNull(project))
-                {
-                    return Json(new { success = false, msg = "Error while deleting" });
-                }
-                _unitWork.Project.Remove(project);
-                await _unitWork.Project.Commit();
-
-
-                return Json(new { success = true, msg = "Project deleted successfully !" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Json(new { success = false, msg = "Error code 500 Internal error...." });
-            }
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> ProjectAllocation()
+        //{
+        //    return View(new ProjectAllocation() { MainAllocation = new MainAllocation(), MiscAllocation = new MiscAllocation(), MainAndMiscAllocation = new MainAndMiscAllocation() });
+        //}
 
 
 
-        [HttpPost]
-        public JsonResult GetAllProjectAllocation()
-        {
-            try
-            {
-                var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
-                var start = Request.Form["start"].FirstOrDefault();
-                var length = Request.Form["length"].FirstOrDefault();
-                var index = Request.Form["order[0][column]"].FirstOrDefault();
-                var sortColumn = Request.Form["columns[" + index + "][name]"].FirstOrDefault();
-                var sortColumnDir = Request.Form["order[0][dir]"].FirstOrDefault();
-                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+        //[HttpGet]
+        //public async Task<IActionResult> ProjectInfoAllocation()
+        //{
+        //    return View(new ProjectAllocation() { MainAllocation = new MainAllocation(), MiscAllocation = new MiscAllocation(), MainAndMiscAllocation = new MainAndMiscAllocation() });
+        //}
 
-                int pageSize = length != null ? Convert.ToInt32(length) : 0;
-                int skip = start != null ? Convert.ToInt32(start) : 0;
-                int recordsTotal = 0;
+        //[HttpGet]
+        //public async Task<IActionResult> UpSert(int? id)
+        //{
 
-                //var v = _projectContext.GetFilterData(sortColumn, sortColumnDir, searchValue, "PGTJobNumber", "ProjectEstimation");
-                var v = _unitWork.Project.GetFilterData(null, null, null, "PGTJobNumber", "ProjectEstimation");
+        //    try
+        //    {
+        //        Project project = new Project
+        //        {
+        //            ProjectEstimation = new ProjectEstimation()
+        //        };
 
-                recordsTotal = v.Count();
+        //        if (COM.IsValidID(id)) project = await _unitWork.Project.GetFirstOrDefault(proj => id == proj.ProjectId, includeProp: "ProjectEstimation");
 
-                var data = v;
+        //        return View(project);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex.Message);
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
-                if (length != null)
-                {
-                    data = v.Skip(skip).Take(pageSize).ToList();
-                }
+
+        //[HttpPost]
+        //public async Task<IActionResult> UpSert(Project project)
+        //{
+        //    try
+        //    {
+        //        _userId = Convert.ToInt32(HttpContext.Session.GetString("user_id"));
+        //        project.UserAccountId = _userId;
 
 
-                JsonResult j = Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return View();
+        //        }
 
-                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Json(new { success = false, msg = "Error code 500 Internal error...." });
-            }
-        }
+        //        Project projectDb = await _unitWork.Project.GetFirstOrDefault(proj => project.ProjectId == proj.ProjectId, includeProp: "ProjectEstimation");
+
+        //        SD.Msg = "Project saved successfully";
+
+        //        if (COM.IsNull(projectDb))
+        //        {
+        //            await _unitWork.Project.Add(project);
+        //        }
+        //        else
+        //        {
+        //            SD.Msg = "Project updated successfully";
+        //            _unitWork.Project.Update(project);
+        //            //_estimationContext.Update(project.ProjectEstimation);
+        //        }
+
+        //        await _unitWork.Project.Commit();
+        //        TempData[SD.Success] = SD.Msg;
+        //        return RedirectToAction(nameof(Allocation), "Allocation");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex.Message);
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
+
+
+        //public async Task<JsonResult> Delete(int id)
+        //{
+        //    try
+        //    {
+        //        Project project = await _unitWork.Project.GetFirstOrDefault(proj => proj.ProjectId == id, includeProp: "ProjectEstimation");
+
+        //        if (COM.IsNull(project))
+        //        {
+        //            return Json(new { success = false, msg = "Error while deleting" });
+        //        }
+        //        _unitWork.Project.Remove(project);
+        //        await _unitWork.Project.Commit();
+
+
+        //        return Json(new { success = true, msg = "Project deleted successfully !" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex.Message);
+        //        return Json(new { success = false, msg = "Error code 500 Internal error...." });
+        //    }
+        //}
+
+
+
+        //[HttpPost]
+        //public JsonResult GetAllProjectAllocation()
+        //{
+        //    try
+        //    {
+        //        var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+        //        var start = Request.Form["start"].FirstOrDefault();
+        //        var length = Request.Form["length"].FirstOrDefault();
+        //        var index = Request.Form["order[0][column]"].FirstOrDefault();
+        //        var sortColumn = Request.Form["columns[" + index + "][name]"].FirstOrDefault();
+        //        var sortColumnDir = Request.Form["order[0][dir]"].FirstOrDefault();
+        //        var searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+        //        int pageSize = length != null ? Convert.ToInt32(length) : 0;
+        //        int skip = start != null ? Convert.ToInt32(start) : 0;
+        //        int recordsTotal = 0;
+
+        //        //var v = _projectContext.GetFilterData(sortColumn, sortColumnDir, searchValue, "PGTJobNumber", "ProjectEstimation");
+        //        var v = _unitWork.Project.GetFilterData(null, null, null, "PGTJobNumber", "ProjectEstimation");
+
+        //        recordsTotal = v.Count();
+
+        //        var data = v;
+
+        //        if (length != null)
+        //        {
+        //            data = v.Skip(skip).Take(pageSize).ToList();
+        //        }
+
+
+        //        JsonResult j = Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+        //        return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex.Message);
+        //        return Json(new { success = false, msg = "Error code 500 Internal error...." });
+        //    }
+        //}
     }
 }

@@ -35,4 +35,8 @@
     <ProjectReference Include="..\WAS.Utility\WAS.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Manager\Helper\" />
+  </ItemGroup>
+
 </Project>

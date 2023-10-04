@@ -11,9 +11,10 @@ namespace WAS.Interface
     public interface IUnitOfWork
     {
         public IUserTasks UserTasks { get; }
-        public IProjectContext Project { get; }
         public IEmployeeContext Employee { get; }
         public IUserTaskStatusContext UserTaskStatus { get;  }
+        public IProjectAllocationContext ProjectAllocation { get; }
+
         public Task<int> Commit();
     }
 }

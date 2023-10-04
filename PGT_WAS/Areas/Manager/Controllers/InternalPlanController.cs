@@ -22,7 +22,7 @@ namespace PGT_WAS.Areas.Manager.Controllers
     public class InternalPlanController : Controller
     {
         private readonly ILogger<InternalPlanController> _logger;
-
+        private string _includeEntities;
         private int _userId;
         private readonly IUnitOfWork _unitWork;
 
@@ -30,6 +30,7 @@ namespace PGT_WAS.Areas.Manager.Controllers
         {
             this._unitWork = unitOfWork;
             this._logger = logger;
+            this._includeEntities = $"{nameof(Employee)},{nameof(ProjectAllocation)},{nameof(UserTaskStatus)},Employee.Designation";
         }
 
         public IActionResult InternalPlan()
@@ -102,12 +103,13 @@ namespace PGT_WAS.Areas.Manager.Controllers
 
                 if (COM.IsNull(vm.UpdateUserTasks_VM.UserTaskIds) || !COM.IsValidCount(vm.UpdateUserTasks_VM.UserTaskIds.Length)) return RedirectToAction(nameof(InternalPlan), "InternalPlan");
 
-                IEnumerable<UserTasks> usrTasks = await _unitWork.UserTasks.GetAll(task => task.UserAccountId == _userId && vm.UpdateUserTasks_VM.UserTaskIds.Contains(task.UserTasksId), includeProp: $"{nameof(Project)},{nameof(Employee)}");
+                IEnumerable<UserTasks> usrTasks = await _unitWork.UserTasks.GetAll(task => task.UserAccountId == _userId && vm.UpdateUserTasks_VM.UserTaskIds.Contains(task.UserTasksId),
+                                                        includeProp: _includeEntities);
 
                 foreach (UserTasks task in usrTasks)
                 {
                     task.Description = vm.UpdateUserTasks_VM.Desctiption;
-                    task.ProjectId = vm.UpdateUserTasks_VM.ProjectId;
+                    task.ProjectAllocationId = vm.UpdateUserTasks_VM.ProjectId;
                     task.Status = vm.UpdateUserTasks_VM.Status;
                     task.StartDate = COM.GetCusomizedDate(vm.UpdateUserTasks_VM.StartDate);
                     task.EndDate = COM.GetCusomizedDate(vm.UpdateUserTasks_VM.EndDate);
@@ -145,7 +147,8 @@ namespace PGT_WAS.Areas.Manager.Controllers
 
                 if (COM.IsNull(vm.DeleteUserTasks_VM.UserTaskIds) || !COM.IsValidCount(vm.DeleteUserTasks_VM.UserTaskIds.Length)) return RedirectToAction(nameof(InternalPlan), "InternalPlan");
 
-                IEnumerable<UserTasks> usrTasks = await _unitWork.UserTasks.GetAll(task => task.UserAccountId == _userId && vm.DeleteUserTasks_VM.UserTaskIds.Contains(task.UserTasksId), includeProp: $"{nameof(Project)},{nameof(Employee)}");
+                IEnumerable<UserTasks> usrTasks = await _unitWork.UserTasks.GetAll(task => task.UserAccountId == _userId && vm.DeleteUserTasks_VM.UserTaskIds.Contains(task.UserTasksId),
+                                                        includeProp: _includeEntities);
 
                 _unitWork.UserTasks.RemoveRange(usrTasks);
                 await _unitWork.Commit();
@@ -171,7 +174,8 @@ namespace PGT_WAS.Areas.Manager.Controllers
 
 
                 IEnumerable<UserTasks> tActivity = await _unitWork.UserTasks.GetAll(task =>
-               task.UserAccountId == _userId && task.Month == month, includeProp: $"{nameof(Employee)},{nameof(Project)},{nameof(UserTaskStatus)},Employee.Designation");
+                                                           task.UserAccountId == _userId && task.Month == month, 
+                                                           includeProp: _includeEntities);
 
                 var results = (from activity in tActivity
                                where activity.Employee.RepotingPersonId == teamLeadId || activity.Employee.Id == teamLeadId
@@ -187,8 +191,6 @@ namespace PGT_WAS.Areas.Manager.Controllers
 
                                 }).ToList();
 
-
-                //IEnumerable<string> labels = results.Select(act => act.Activity.Select(activity => activity.Employee.Name).Distinct()).ToList();
 
                 if (!COM.IsAny(payLoads))
                 {
@@ -223,7 +225,8 @@ namespace PGT_WAS.Areas.Manager.Controllers
                 int recordsTotal = 0;
 
                 IEnumerable<UserTasks> tActivity = await _unitWork.UserTasks.GetAll(task =>
-                                         task.UserAccountId == _userId && task.Month == month, includeProp: $"{nameof(Employee)},{nameof(Project)},{nameof(UserTaskStatus)},Employee.Designation");
+                                       task.UserAccountId == _userId && task.Month == month, 
+                                       includeProp: _includeEntities);
 
                 var results = (from activity in tActivity
                                where activity.Employee.RepotingPersonId == teamLeadId || activity.Employee.Id == teamLeadId
@@ -346,7 +349,7 @@ namespace PGT_WAS.Areas.Manager.Controllers
             {
                 EmployeeId = emp,
                 Description = vm.Desctiption,
-                ProjectId = vm.ProjectId,
+                ProjectAllocationId = vm.ProjectId,
                 Status = vm.Status,
                 StartDate = COM.GetCusomizedDate(vm.StartDate),
                 EndDate = COM.GetCusomizedDate(vm.EndDate),

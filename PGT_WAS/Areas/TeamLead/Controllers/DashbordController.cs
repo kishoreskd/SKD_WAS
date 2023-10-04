@@ -54,7 +54,7 @@ namespace PGT_WAS.Areas.TeamLead.Controllers
 
 
                 IEnumerable<UserTasks> tActivity = await _unitWork.UserTasks.GetAll(task =>
-               task.UserAccountId == _userId && task.Month == month, includeProp: $"{nameof(Employee)},{nameof(Project)},{nameof(UserTaskStatus)},Employee.Designation");
+               task.UserAccountId == _userId && task.Month == month, includeProp: $"{nameof(Employee)},{nameof(ProjectAllocation)},{nameof(UserTaskStatus)},Employee.Designation");
 
                 var results = (from activity in tActivity
                                where activity.Employee.RepotingPersonId == _userId || activity.Employee.Id == _userId

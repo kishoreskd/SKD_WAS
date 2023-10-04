@@ -13,15 +13,8 @@
     <div class="card-body">
 
         <div class="">
-
             <div class="f-r pb-3 pr-1">
-                <a class="btn btn-sm btn-primary text-right m-l-xs" asp-action="UpSert" asp-controller="Allocation" asp-area="@SD.ROLE.Role_Manager">
-                    <i class="bi bi-plus-circle"></i> Assign
-                </a>
-            </div>
-
-            <div class="f-r pb-3 pr-1">
-                <a class="btn btn-sm btn-primary text-right m-l-xs" asp-action="ProjectAllocation" asp-controller="Allocation" asp-area="@SD.ROLE.Role_Manager">
+                <a class="btn btn-sm btn-primary text-right m-l-xs" asp-action="UpSert" asp-controller="ProjectAllocation" asp-area="@SD.ROLE.Role_Manager">
                     <i class="bi bi-plus-circle"></i> Project Allocation
                 </a>
             </div>
@@ -31,7 +24,7 @@
         <table id="projectAllocationTable" style="font-size:12px;" class="table table-borderless table-hover table-default">
             <thead class="table-primary">
                 <tr>
-                    <th class="text-center"></th>
+                    @*<th class="text-center"></th>*@
                     <th>#</th>
                     <th class="text-center">PGT job number</th>
                     <th>Client Name</th>

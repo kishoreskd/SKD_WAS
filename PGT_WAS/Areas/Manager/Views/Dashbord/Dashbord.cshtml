@@ -213,7 +213,7 @@
                             });
 
                             var currentTask = "";
-                            currentTask = !COM.ObjIsNull(act.project) ? act.project.pgtJobNumber : act.userTaskStatus.status;
+                            currentTask = !COM.ObjIsNull(act.projectAllocation) ? act.projectAllocation.pgtJobNumber : act.userTaskStatus.status;
                             task.push(currentTask)
                         });
 
@@ -276,16 +276,7 @@
                     const { ctx, data, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
                     ctx.font = 'bolder 12px sans-serif';
                     ctx.fillStyle = 'black';
-                    ctx.textBaseline = 'middle';
-                    // data.datasets[0].data.forEach((datapoint, index) => { ctx.fillText(datapoint.name, 10, y.getPixelForValue(index));})
-
-                    @*data.designation.forEach((data, index) => {
-                        ctx.fillText(`(${data.split('')[0]})`, 10, y.getPixelForValue(index));
-                    });*@
-
-                    @*data.label.forEach((data, index) => {
-                        ctx.fillText(data, 10, y.getPixelForValue(index));
-                    });*@
+                    ctx.textBaseline = 'middle';                   
                 }
             }
 

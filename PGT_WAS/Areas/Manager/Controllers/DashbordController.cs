@@ -25,6 +25,7 @@ namespace PGT_WAS.Areas.Manager.Controllers
 
         private int _userId;
         private int _userLocationId;
+        private string _includeEntities;
 
         private readonly IUnitOfWork _unitWork;
 
@@ -32,6 +33,8 @@ namespace PGT_WAS.Areas.Manager.Controllers
         {
             this._unitWork = unitOfWork;
             this._logger = logger;
+            this._includeEntities = $"{nameof(Employee)},{nameof(ProjectAllocation)},{nameof(UserTaskStatus)},Employee.Designation";
+
         }
 
 
@@ -54,7 +57,8 @@ namespace PGT_WAS.Areas.Manager.Controllers
 
 
                 IEnumerable<UserTasks> tActivity = await _unitWork.UserTasks.GetAll(task =>
-               task.UserAccountId == _userId && task.Month == month, includeProp: $"{nameof(Employee)},{nameof(Project)},{nameof(UserTaskStatus)},Employee.Designation");
+                                                           task.UserAccountId == _userId && task.Month == month, 
+                                                           includeProp: _includeEntities);
 
                 var results = (from activity in tActivity
                                where activity.Employee.RepotingPersonId == teamLeadId || activity.Employee.Id == teamLeadId

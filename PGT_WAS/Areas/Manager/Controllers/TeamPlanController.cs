@@ -28,11 +28,14 @@ namespace PGT_WAS.Areas.Manager.Controllers
         private int _userId;
         private readonly IUnitOfWork _unitWork;
         private int _userLocationId;
+        private string _includeEntities;
 
         public TeamPlanController(IUnitOfWork unitOfWork, ILogger<TeamPlanController> logger)
         {
             this._unitWork = unitOfWork;
             this._logger = logger;
+            this._includeEntities = $"{nameof(Employee)},{nameof(ProjectAllocation)},{nameof(UserTaskStatus)},Employee.Designation";
+
         }
 
 
@@ -55,7 +58,7 @@ namespace PGT_WAS.Areas.Manager.Controllers
                 }
 
 
-                IEnumerable<UserTasks> tActivity = await _unitWork.UserTasks.GetAll(task => task.Month == month, includeProp: $"{nameof(Employee)},{nameof(Project)},{nameof(UserTaskStatus)},Employee.Designation");
+                IEnumerable<UserTasks> tActivity = await _unitWork.UserTasks.GetAll(task => task.Month == month, includeProp: $"{nameof(Employee)},{nameof(ProjectAllocation)},{nameof(UserTaskStatus)},Employee.Designation");
 
                 var results = (from activity in tActivity
                                where activity.Employee.RepotingPersonId == teamLeadId || activity.Employee.Id == teamLeadId
@@ -105,7 +108,8 @@ namespace PGT_WAS.Areas.Manager.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                IEnumerable<UserTasks> tActivity = await _unitWork.UserTasks.GetAll(task => task.Month == month, includeProp: $"{nameof(Employee)},{nameof(Project)},{nameof(UserTaskStatus)},Employee.Designation");
+                IEnumerable<UserTasks> tActivity = await _unitWork.UserTasks.GetAll(task => task.Month == month, 
+                    includeProp: _includeEntities);
 
                 var results = (from activity in tActivity
                                where activity.Employee.RepotingPersonId == teamLeadId || activity.Employee.Id == teamLeadId
@@ -166,6 +170,22 @@ namespace PGT_WAS.Areas.Manager.Controllers
                 }
 
                 return Ok(employees);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllProject()
+        {
+            try
+            {
+                IEnumerable<ProjectAllocation> project = await _unitWork.ProjectAllocation.GetAll();
+                if (!COM.IsAny(project)) return NotFound();
+                return Ok(project);
             }
             catch (Exception ex)
             {

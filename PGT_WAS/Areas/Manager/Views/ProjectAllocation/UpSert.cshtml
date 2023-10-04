@@ -15,17 +15,29 @@
     }
 </style>
 
-<div class="card border-1">
-    <div id="cardbody" class="card-body">
-        <div class="f-l pr-1">
-            <button type="submit" id="btn_submit" class="btn btn-sm btn-primary">
-                <i class="bi bi-check"></i> Save
-            </button>
+
+<form id="frm_container" method="post" asp-controller="ProjectAllocation" asp-area="@SD.ROLE.Role_Manager" asp-action="UpSert" class="pgt-form">
+
+    <div class="card border-1">
+        <div id="cardbody" class="card-body">
+            <div class="f-l pr-1">
+                <button type="button" id="btn_submit" class="btn btn-sm btn-primary">
+                    <i class="bi bi-check"></i> Check
+                </button>
+            </div>
+            <div class="f-l pr-1">
+                <button type="submit" id="btn_save" class="btn btn-sm btn-success">
+                    <i class="bi bi-floppy"></i> Save
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<form id="frm_container" action="/" method="post">
+    <input id="project_allocation_id" asp-for="ProjectAllocationId" hidden />
+    <input asp-for="MainAllocation.MainAllocationId" hidden />
+    <input asp-for="MiscAllocation.MiscAllocationId" hidden />
+    <input asp-for="MainAndMiscAllocation.MainAndMiscAllocationId" hidden />
+
 
     <div class="pt-3">
         <div class="card border-1">
@@ -36,10 +48,7 @@
 
             <div id="cardbody" class="card-body">
 
-                <input asp-for="ProjectAllocationId" hidden />
-
                 <div class="row">
-
                     <div class="col">
                         <label class="form-label"><strong>Job Number:</strong></label>
                     </div>
@@ -84,7 +93,6 @@
                         <span class="text-danger" asp-validation-for="ProductionHours"></span>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -100,22 +108,21 @@
                 </thead>
                 <tbody class="text-right">
                     <tr>
-                        <td id="cb_main"> <input class="form-check-input" type="checkbox" value="main" asp-for="IsMainChecked"></td>
+                        <td> <input id="main" class="form-check-input" type="checkbox" asp-for="IsMainChecked"></td>
                         <td><strong>Main</strong></td>
                     </tr>
                     <tr>
-                        <td id="cb_misc"> <input class="form-check-input" type="checkbox" value="misc" asp-for="IsMiscChecked"></td>
+                        <td> <input id="misc" class="form-check-input" type="checkbox" asp-for="IsMiscChecked"></td>
                         <td><strong> Misc</strong></td>
                     </tr>
                     <tr>
-                        <td id="cb_main_misc"> <input class="form-check-input" type="checkbox" value="main_misc" asp-for="IsMainMiscChecked"></td>
+                        <td> <input id="main_misc" class="form-check-input" type="checkbox" asp-for="IsMainMiscChecked"></td>
                         <td><strong> Main and Misc</strong></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
 
 
     <div class="hidden main">
@@ -239,59 +246,57 @@
                                 <tbody class="text-left">
                                     <tr>
                                         <td><strong> Hours:</strong></td>
-                                        <td id="td_main_hours"><span class="badge bg-success">@(Model.MainAllocation.Hours)</span></td>
+                                        <td><span id="td_main_hours" class="badge bg-success">@(Model.MainAllocation.Hours)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Submission Date:</strong></td>
-                                        <td id="td_main_submission_date"><span class="badge bg-success">@(Model.MainAllocation.SubmissionDate)</span></td>
+                                        <td><span id="td_main_submission_date" class="badge bg-success">@(COM.IsNullOrEmpty(Model.MainAllocation.SubmissionDate)? "dd/mm/yy" : Model.MainAllocation.SubmissionDate)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Ratio:</strong></td>
-                                        <td id="td_main_ratio"><span class="badge bg-success">@(Model.MainAllocation.IFA):@(Model.MainAllocation.IFF)</span></td>
+                                        <td><span id="td_main_ratio" class="badge bg-success">@(Model.MainAllocation.IFA):@(Model.MainAllocation.IFF)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Total Resource:</strong></td>
-                                        <td id="td_main_total_resource"><span class="badge bg-success">@(Model.MainAllocation.TotalResources)</span></td>
+                                        <td><span id="td_main_total_resource" class="badge bg-success">@(Model.MainAllocation.TotalResources)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Resource (Modeler):</strong></td>
-                                        <td id="td_main_modelers_need"><span class="badge bg-success">@(Model.MainAllocation.TotalResources)</span></td>
+                                        <td><span id="td_main_modelers_need" class="badge bg-success">@(Model.MainAllocation.TotalModeler)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Resource (Checker):</strong></td>
-                                        <td id="td_main_checkers_need"><span class="badge bg-success">@(Model.MainAllocation.TotalChecker)</span></td>
+                                        <td><span id="td_main_checkers_need" class="badge bg-success">@(Model.MainAllocation.TotalChecker)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Resource (Detailer):</strong></td>
-                                        <td id="td_main_detailers_need"><span class="badge bg-success">@(Model.MainAllocation.TotalDetailer)</span></td>
+                                        <td><span id="td_main_detailers_need" class="badge bg-success">@(Model.MainAllocation.TotalDetailer)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Coordination:</strong></td>
-                                        <td id="td_main_cordination_need"><span class="badge bg-success">@(Model.MainAllocation.TotalCoordination)</span></td>
+                                        <td><span id="td_main_cordination_need" class="badge bg-success">@(Model.MainAllocation.TotalCoordination)</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
             </div>
+
             <input id="rslt_main_submission" asp-for="@Model.MainAllocation.SubmissionDate" hidden />
-            <input id="rslt_main_r1" asp-for="@Model.MainAllocation.R1" hidden />
-            <input id="rslt_main_r2" asp-for="@Model.MainAllocation.R2" hidden />
+            <input id="rslt_main_r1" asp-for="@Model.MainAllocation.Ratio1" hidden />
+            <input id="rslt_main_r2" asp-for="@Model.MainAllocation.Ratio2" hidden />
             <input id="rslt_main_resource" asp-for="@Model.MainAllocation.TotalResources" hidden />
             <input id="rslt_main_modelers_need" asp-for="@Model.MainAllocation.TotalModeler" hidden />
             <input id="rslt_main_checkers_need" asp-for="@Model.MainAllocation.TotalChecker" hidden />
             <input id="rslt_main_detailers_need" asp-for="@Model.MainAllocation.TotalDetailer" hidden />
             <input id="rslt_main_coordination_need" asp-for="@Model.MainAllocation.TotalCoordination" hidden />
+            <input id="rslt_main_project_allocation_id" asp-for="MainAllocation.ProjectAllocationId" hidden />
         </div>
     </div>
 
 
-
     <div class="hidden misc">
-
-
         <div class="card border-1">
 
             <div class="card-header pt-3 pl-3 pb-1">
@@ -409,35 +414,35 @@
                             <tbody class="text-left">
                                 <tr>
                                     <td><strong>Hours:</strong></td>
-                                    <td id="td_misc_hours"><span class="badge bg-success">@(Model.MiscAllocation.Hours)</span></td>
+                                    <td><span id="td_misc_hours" class="badge bg-success">@(Model.MiscAllocation.Hours)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Submission Date:</strong></td>
-                                    <td id="td_misc_submission_date"><span class="badge bg-success">@(Model.MiscAllocation.SubmissionDate)</span></td>
+                                    <td><span id="td_misc_submission_date" class="badge bg-success">@(COM.IsNullOrEmpty(Model.MiscAllocation.SubmissionDate)?"dd/mm/yy": Model.MiscAllocation.SubmissionDate)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Ratio:</strong></td>
-                                    <td id="td_misc_ratio"><span class="badge bg-success">@(Model.MiscAllocation.IFA):@(Model.MiscAllocation.IFF)</span></td>
+                                    <td><span id="td_misc_ratio" class="badge bg-success">@(Model.MiscAllocation.IFA):@(Model.MiscAllocation.IFF)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Total Resource:</strong></td>
-                                    <td id="td_misc_total_resource"><span class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
+                                    <td><span id="td_misc_total_resource" class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Resource (Modeler):</strong></td>
-                                    <td id="td_misc_modeler_need"><span class="badge bg-success">@(Model.MiscAllocation.TotalResources)</span></td>
+                                    <td><span id="td_misc_modelers_need" class="badge bg-success">@(Model.MiscAllocation.TotalModeler)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Resource (Checker):</strong></td>
-                                    <td id="td_misc_checker_need"><span class="badge bg-success">@(Model.MiscAllocation.TotalChecker)</span></td>
+                                    <td><span id="td_misc_checkers_need" class="badge bg-success">@(Model.MiscAllocation.TotalChecker)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Resource (Detailer):</strong></td>
-                                    <td id="td_misc_detailer_need"><span class="badge bg-success">@(Model.MiscAllocation.TotalDetailer)</span></td>
+                                    <td><span id="td_misc_detailers_need" class="badge bg-success">@(Model.MiscAllocation.TotalDetailer)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Coordination:</strong></td>
-                                    <td id="td_misc_coordination_need"><span class="badge bg-success">@(Model.MiscAllocation.TotalCoordination)</span></td>
+                                    <td><span id="td_misc_cordination_need" class="badge bg-success">@(Model.MiscAllocation.TotalCoordination)</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -445,14 +450,14 @@
                 </div>
 
                 <input id="rslt_misc_submission" asp-for="@Model.MiscAllocation.SubmissionDate" hidden />
-                <input id="rslt_misc_r1" asp-for="@Model.MiscAllocation.R1" hidden />
-                <input id="rslt_misc_r2" asp-for="@Model.MiscAllocation.R2" hidden />
+                <input id="rslt_misc_r1" asp-for="@Model.MiscAllocation.Ratio1" hidden />
+                <input id="rslt_misc_r2" asp-for="@Model.MiscAllocation.Ratio2" hidden />
                 <input id="rslt_misc_resource" asp-for="@Model.MiscAllocation.TotalResources" hidden />
                 <input id="rslt_misc_modelers_need" asp-for="@Model.MiscAllocation.TotalModeler" hidden />
                 <input id="rslt_misc_checkers_need" asp-for="@Model.MiscAllocation.TotalChecker" hidden />
                 <input id="rslt_misc_detailers_need" asp-for="@Model.MiscAllocation.TotalDetailer" hidden />
                 <input id="rslt_misc_coordination_need" asp-for="@Model.MiscAllocation.TotalCoordination" hidden />
-
+                <input id="rslt_misc_project_allocation_id" asp-for="MiscAllocation.ProjectAllocationId" hidden />
             </div>
         </div>
     </div>
@@ -577,35 +582,35 @@
                             <tbody class="text-left">
                                 <tr>
                                     <td><strong>Hours:</strong></td>
-                                    <td id="td_mainmisc_hours"><span class="badge bg-success">@(Model.MainAndMiscAllocation.Hours)</span></td>
+                                    <td><span id="td_mainmisc_hours" class="badge bg-success">@(Model.MainAndMiscAllocation.Hours)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Submission Date:</strong></td>
-                                    <td id="td_mainmisc_submission_date"><span class="badge bg-success">@(Model.MainAndMiscAllocation.SubmissionDate)</span></td>
+                                    <td><span id="td_mainmisc_submission_date" class="badge bg-success">@(COM.IsNullOrEmpty(Model.MainAndMiscAllocation.SubmissionDate)? "dd/mm/yy" : Model.MainAndMiscAllocation.SubmissionDate)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Ratio:</strong></td>
-                                    <td id="td_mainmisc_ratio"><span class="badge bg-success">@(Model.MainAndMiscAllocation.IFA):@(Model.MainAndMiscAllocation.IFF)</span></td>
+                                    <td><span id="td_mainmisc_ratio" class="badge bg-success">@(Model.MainAndMiscAllocation.IFA):@(Model.MainAndMiscAllocation.IFF)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Total Resource:</strong></td>
-                                    <td id="td_mainmisc_total_resource"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
+                                    <td><span id="td_mainmisc_total_resource" class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Resource (Modeler):</strong></td>
-                                    <td id="td_mainmisc_modelers_need"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalResources)</span></td>
+                                    <td><span id="td_mainmisc_modelers_need" class="badge bg-success">@(Model.MainAndMiscAllocation.TotalModeler)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Resource (Checker):</strong></td>
-                                    <td id="td_mainmisc_checker_need"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalChecker)</span></td>
+                                    <td><span id="td_mainmisc_checkers_need" class="badge bg-success">@(Model.MainAndMiscAllocation.TotalChecker)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Resource (Detailer):</strong></td>
-                                    <td id="td_mainmisc_detailer_need"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalDetailer)</span></td>
+                                    <td><span id="td_mainmisc_detailers_need" class="badge bg-success">@(Model.MainAndMiscAllocation.TotalDetailer)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Coordination:</strong></td>
-                                    <td id="td_mainmisc_coordination_need"><span class="badge bg-success">@(Model.MainAndMiscAllocation.TotalCoordination)</span></td>
+                                    <td><span id="td_mainmisc_cordination_need" class="badge bg-success">@(Model.MainAndMiscAllocation.TotalCoordination)</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -613,13 +618,14 @@
                 </div>
 
                 <input id="rslt_mainmisc_submission" asp-for="@Model.MainAndMiscAllocation.SubmissionDate" hidden />
-                <input id="rslt_mainmisc_r1" asp-for="@Model.MainAndMiscAllocation.R1" hidden />
-                <input id="rslt_mainmisc_r2" asp-for="@Model.MainAndMiscAllocation.R2" hidden />
+                <input id="rslt_mainmisc_r1" asp-for="@Model.MainAndMiscAllocation.Ratio1" hidden />
+                <input id="rslt_mainmisc_r2" asp-for="@Model.MainAndMiscAllocation.Ratio2" hidden />
                 <input id="rslt_mainmisc_resource" asp-for="@Model.MainAndMiscAllocation.TotalResources" hidden />
                 <input id="rslt_mainmisc_modelers_need" asp-for="@Model.MainAndMiscAllocation.TotalModeler" hidden />
                 <input id="rslt_mainmisc_checkers_need" asp-for="@Model.MainAndMiscAllocation.TotalChecker" hidden />
                 <input id="rslt_mainmisc_detailers_need" asp-for="@Model.MainAndMiscAllocation.TotalDetailer" hidden />
-                <input id="rslt_mainmisc_detailers_need" asp-for="@Model.MainAndMiscAllocation.TotalCoordination" hidden />
+                <input id="rslt_mainmisc_coordination_need" asp-for="@Model.MainAndMiscAllocation.TotalCoordination" hidden />
+                <input id="rslt_mainmisc_project_allocation_id" asp-for="MainAndMiscAllocation.ProjectAllocationId" hidden />
 
             </div>
         </div>
@@ -633,16 +639,27 @@
 @section Scripts{
 
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Manager/allocation.js"></script>
 
     <script type="text/javascript">
 
         $(document).ready(() => {
             DatePicker();
+
+            if ($("#main").is(':checked')) {
+                $(".hidden.main").show();
+            }
+            if ($("#misc").is(':checked')) {
+                $(".hidden.misc").show();
+            }
+            if ($("#main_misc").is(':checked')) {
+                $(".hidden.main_misc").show();
+            }
         });
 
         $("input[type='checkbox']").change(function () {
-            var checkbox = $(this).val();
-            var count = 0;
+            var checkbox = $(this).attr('id');
+
             if ($(".hidden").hasClass(checkbox)) {
                 if ($(this).is(":checked")) {
                     $(".hidden." + checkbox).show();
@@ -662,11 +679,14 @@
                 beforeShowDay: $.datepicker.noWeekends,
                 dateFormat: 'dd/mm/yy'
             });
+
+            $("#txt_mainmisc_start_date").datepicker({
+                beforeShowDay: $.datepicker.noWeekends,
+                dateFormat: 'dd/mm/yy'
+            });
         };
 
-
         var txt_production_hours = "#txt_production_hours";
-
         var txt_main_r1 = "#txt_main_r1";
         var txt_main_r2 = "#txt_main_r2";
         var txt_main_hours = "#txt_main_hours"
@@ -677,25 +697,6 @@
         var txt_main_checker = "#txt_main_checker";
         var txt_main_coordination = "#txt_main_coordination";
 
-        var txt_misc_r1 = "#txt_misc_r1";
-        var txt_misc_r2 = "#txt_misc_r2";
-        var txt_misc_hours = "#txt_misc_hours"
-        var txt_misc_start_date = "#txt_misc_start_date";
-        var txt_misc_schedule_days = "#txt_misc_schedule_days";
-        var txt_misc_modeler = "#txt_misc_modeler";
-        var txt_misc_detailer = "#txt_misc_detailer";
-        var txt_misc_checker = "#txt_misc_checker";
-        var txt_misc_coordination = "#txt_misc_coordination";
-
-        var txt_mainmisc_r1 = "#txt_mainmisc_r1";
-        var txt_mainmisc_r2 = "#txt_mainmisc_r2";
-        var txt_mainmisc_hours = "#txt_mainmisc_hours"
-        var txt_mainmisc_sart = "#txt_mainmisc_start_date";
-        var txt_mainmisc_schedule_days = "#txt_mainmisc_schedule_days";
-        var txt_mainmisc_modeler = "#txt_mainmisc_modeler";
-        var txt_mainmisc_detailer = "#txt_mainmisc_detailer";
-        var txt_mainmisc_checker = "#txt_mainmisc_checker";
-        var txt_mainmisc_coordination = "#txt_mainmisc_coordination";
 
         var rslt_main_submission = "#rslt_main_submission";
         var rslt_main_r1 = "#rslt_main_r1";
@@ -705,84 +706,88 @@
         var rslt_main_checkers_need = "#rslt_main_checkers_need";
         var rslt_main_detailers_need = "#rslt_main_detailers_need";
         var rslt_main_coordination_need = "#rslt_main_coordination_need";
+        var rslt_main_project_allocation_id = "#rslt_main_project_allocation_id";
+        var rslt_misc_project_allocation_id = "#rslt_misc_project_allocation_id";
+        var rslt_mainmisc_project_allocation_id = "#rslt_mainmisc_project_allocation_id";
 
-        var rslt_misc_submission = "#rslt_misc_submission";
-        var rslt_misc_r1 = "#rslt_misc_r1";
-        var rslt_misc_r2 = "#rslt_misc_r2";
-        var rslt_misc_resource = "#rslt_misc_resource";
-        var rslt_misc_modelers_need = "#rslt_misc_modelers_need";
-        var rslt_misc_checkers_need = "#rslt_misc_checkers_need";
-        var rslt_misc_detailers_need = "#rslt_misc_detailers_need";
-        var rslt_misc_coordination_need = "#rslt_misc_coordination_need";
-
-        var rslt_mainmisc_submission = "#rslt_mainmisc_submission";
-        var rslt_mainmisc_r1 = "#rslt_mainmisc_r1";
-        var rslt_mainmisc_r2 = "#rslt_mainmisc_r2";
-        var rslt_mainmisc_resource = "#rslt_mainmisc_resource";
-        var rslt_mainmisc_modelers_need = "#rslt_mainmisc_modelers_need";
-        var rslt_mainmisc_checkers_need = "#rslt_mainmisc_checkers_need";
-        var rslt_mainmisc_detailers_need = "#rslt_mainmisc_detailers_need";
-        var rslt_mainmisc_coordination_need = "#rslt_mainmisc_coordination_need";
-
+        var td_main_hours = "#td_main_hours"
         var td_main_ratio = "#td_main_ratio";
         var td_main_total_resource = "#td_main_total_resource";
-        var td_main_hours = "#td_main_hours"
         var td_main_submission_date = "#td_main_submission_date"
         var td_main_modelers_need = "#td_main_modelers_need";
         var td_main_checkers_need = "#td_main_checkers_need";
         var td_main_detailers_need = "#td_main_detailers_need";
         var td_main_cordination_need = "#td_main_cordination_need";
 
-        var td_misc_ratio = "#td_misc_ratio";
-        var td_misc_total_resource = "#td_misc_total_resource";
-        var td_misc_hours = "#td_misc_hours";
-        var td_misc_submission_date = "#td_misc_submission_date";
-        var td_misc_modelers_need = "#td_misc_modelers_need";
-        var td_misc_checkers_need = "#td_misc_checkers_need";
-        var td_misc_detailers_need = "#td_misc_detailers_need";
-        var td_misc_cordination_need = "#td_misc_cordination_need";
-
-        var td_mainmisc_ratio = "#td_mainmisc_ratio";
-        var td_mainmisc_total_resource = "#td_mainmisc_total_resource";
-        var td_mainmisc_hours = "#td_mainmisc_hours";
-        var td_mainmisc_submission_date = "#td_mainmisc_submission_date";
-        var td_mainmisc_modelers_need = "#td_mainmisc_modelers_need";
-        var td_mainmisc_checkers_need = "#td_mainmisc_checkers_need";
-        var td_mainmisc_detailers_need = "#td_mainmisc_detailers_need";
-        var td_mainmisc_cordination_need = "#td_mainmisc_cordination_need";  
-
         $("#btn_submit").click(function () {
+            EstimationCalculation();
+        });
 
-            var td_hours = td_main_hours;
-            var td_submission_date = td_main_submission_date;
-            var td_ratio = td_main_ratio;
+        $("#btn_save").click(function () {
+            EstimationCalculation();
+        });
 
-            var td_total_resource = td_main_total_resource;
-            var td_modelers_need = td_main_modelers_need;
-            var td_checkers_need = td_main_checkers_need;
-            var td_detailers_need = td_main_detailers_need;
-            var td_cordination_need = td_main_cordination_need;
+        const EstimationCalculation = function () {
+            var jobType = ["main", "misc", "mainmisc"];
 
-            var rslt_submission_date = rslt_main_submission;
-            var rslt_r1 = rslt_main_r1;
-            var rslt_r2 = rslt_main_r2;
-            var rslt_resource = rslt_main_resource;
-            var rslt_modelers_need = rslt_main_modelers_need;
-            var rslt_checkers_need = rslt_main_checkers_need;
-            var rslt_detailers_need = rslt_main_detailers_need;
-            var rslt_coordination_need = rslt_main_coordination_need;
+            for (var i = 0; i < 3; i++) {
+
+                var txt_hours = ReplaceJobType(txt_main_hours, jobType[i]);
+                var txt_start_date = ReplaceJobType(txt_main_start_date, jobType[i]);
+                var txt_r1 = ReplaceJobType(txt_main_r1, jobType[i]);
+                var txt_r2 = ReplaceJobType(txt_main_r2, jobType[i]);
+                var schedule_days = ReplaceJobType(txt_main_schedule_days, jobType[i]);
+                var modeler = ReplaceJobType(txt_main_modeler, jobType[i]);
+                var checker = ReplaceJobType(txt_main_checker, jobType[i]);
+                var detailer = ReplaceJobType(txt_main_detailer, jobType[i]);
+                var production_hours = ReplaceJobType(txt_production_hours, jobType[i]);
+
+                var td_hours = ReplaceJobType(td_main_hours, jobType[i]);;
+                var td_submission_date = ReplaceJobType(td_main_submission_date, jobType[i]);
+                var td_ratio = ReplaceJobType(td_main_ratio, jobType[i]);
+
+                var td_total_resource = ReplaceJobType(td_main_total_resource, jobType[i]);
+                var td_modelers_need = ReplaceJobType(td_main_modelers_need, jobType[i]);
+                var td_checkers_need = ReplaceJobType(td_main_checkers_need, jobType[i]);
+                var td_detailers_need = ReplaceJobType(td_main_detailers_need, jobType[i]);
+                var td_cordination_need = ReplaceJobType(td_main_cordination_need, jobType[i]);
+
+                var rslt_submission_date = ReplaceJobType(rslt_main_submission, jobType[i]);
+                var rslt_r1 = ReplaceJobType(rslt_main_r1, jobType[i]);
+                var rslt_r2 = ReplaceJobType(rslt_main_r2, jobType[i]);
+                var rslt_resource = ReplaceJobType(rslt_main_resource, jobType[i]);
+                var rslt_modelers_need = ReplaceJobType(rslt_main_modelers_need, jobType[i]);
+                var rslt_checkers_need = ReplaceJobType(rslt_main_checkers_need, jobType[i]);
+                var rslt_detailers_need = ReplaceJobType(rslt_main_detailers_need, jobType[i]);
+                var rslt_coordination_need = ReplaceJobType(rslt_main_coordination_need, jobType[i]);
+
+
+                FeedValue(txt_hours, txt_start_date, txt_r1, txt_r2, schedule_days, modeler, checker, detailer, production_hours,
+                    td_hours, td_submission_date, td_ratio, td_total_resource, td_modelers_need, td_checkers_need, td_detailers_need, td_cordination_need,
+                    rslt_submission_date, rslt_r1, rslt_r2, rslt_resource, rslt_modelers_need, rslt_checkers_need, rslt_detailers_need, rslt_coordination_need
+                );
+            }
+        }
+
+        const ReplaceJobType = function (str, jobType) {
+            var newStr = str.replace("main", jobType);
+            return newStr;
+        };
+
+        const FeedValue = function (txt_hours, txt_start_date, txt_r1, txt_r2, schedule_days, modeler, checker, detailer, production_hours,
+            td_hours, td_submission_date, td_ratio, td_total_resource, td_modelers_need, td_checkers_need, td_detailers_need, td_cordination_need,
+            rslt_submission_date, rslt_r1, rslt_r2, rslt_resource, rslt_modelers_need, rslt_checkers_need, rslt_detailers_need, rslt_coordination_need) {
 
             var allocation = new Allocation(
-                COM.ConvertFloat($(txt_main_hours).val()),
-                COM.ParseDate($(txt_main_start_date).val()),
-                COM.ConvertFloat($(txt_main_r1).val()),
-                COM.ConvertFloat($(txt_main_r2).val()),
-                COM.ConvertFloat($(txt_main_schedule_days).val()),
-                COM.ConvertFloat($(txt_main_modeler).val()),
-                COM.ConvertFloat($(txt_main_checker).val()),
-                COM.ConvertFloat($(txt_main_detailer).val()),
-                COM.ConvertFloat($(txt_production_hours).val()),
-            );
+                COM.ConvertFloat($(txt_hours).val()),
+                COM.ParseDate($(txt_start_date).val()),
+                COM.ConvertFloat($(txt_r1).val()),
+                COM.ConvertFloat($(txt_r2).val()),
+                COM.ConvertFloat($(schedule_days).val()),
+                COM.ConvertFloat($(modeler).val()),
+                COM.ConvertFloat($(checker).val()),
+                COM.ConvertFloat($(detailer).val()),
+                COM.ConvertFloat($(production_hours).val()));
 
             var estimation = allocation.GetEstimation();
 
@@ -790,25 +795,25 @@
             var ratio2 = COM.IsNanOrInfinity(estimation.R2) ? 0 : estimation.R2;
             var mainRatio = ratio1 + ":" + ratio2;
 
-            $(td_main_hours).text($(txt_main_hours).val());
-            $(td_main_submission_date).text(estimation.SubmissionDate);
-            $(td_main_ratio).text(mainRatio);
+            $(td_hours).text($(txt_main_hours).val());
+            $(td_submission_date).text(estimation.SubmissionDate);
+            $(td_ratio).text(mainRatio);
 
-            $(td_main_total_resource).text(COM.IsNanOrInfinity(Math.ceil(estimation.TotalResource)) ? 0 : Math.ceil(estimation.TotalResource));
-            $(td_main_modelers_need).text(COM.IsNanOrInfinity(estimation.TotalModelers) ? 0 : estimation.TotalModelers);
-            $(td_main_checkers_need).text(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
-            $(td_main_detailers_need).text(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
-            $(td_main_cordination_need).text(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
+            $(td_total_resource).text(COM.IsNanOrInfinity(Math.ceil(estimation.TotalResource)) ? 0 : Math.ceil(estimation.TotalResource));
+            $(td_modelers_need).text(COM.IsNanOrInfinity(estimation.TotalModelers) ? 0 : estimation.TotalModelers);
+            $(td_checkers_need).text(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
+            $(td_detailers_need).text(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
+            $(td_cordination_need).text(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
 
-            $(rslt_main_submission).val(estimation.SubmissionDate);
-            $(rslt_main_r1).text(estimation.R1);
-            $(rslt_main_r2).text(estimation.R2);
-            $(rslt_main_resource).val(COM.IsNanOrInfinity(Math.ceil(estimation.TotalResource)) ? 0 : Math.ceil(estimation.TotalResource));
-            $(rslt_main_modelers_need).val(COM.IsNanOrInfinity(estimation.TotalModelers) ? 0 : estimation.TotalModelers);
-            $(rslt_main_checkers_need).val(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
-            $(rslt_main_detailers_need).val(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
-            $(rslt_main_coordination_need).val(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
-        });
+            $(rslt_submission_date).val(estimation.SubmissionDate);
+            $(rslt_r1).val(COM.IsNanOrInfinity(estimation.R1) ? 0 : estimation.R1);
+            $(rslt_r2).val(COM.IsNanOrInfinity(estimation.R2) ? 0 : estimation.R2);
+            $(rslt_resource).val(COM.IsNanOrInfinity(Math.ceil(estimation.TotalResource)) ? 0 : Math.ceil(estimation.TotalResource));
+            $(rslt_modelers_need).val(COM.IsNanOrInfinity(estimation.TotalModelers) ? 0 : estimation.TotalModelers);
+            $(rslt_checkers_need).val(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
+            $(rslt_detailers_need).val(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
+            $(rslt_coordination_need).val(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
+        }
 
         class Allocation {
 
@@ -853,7 +858,7 @@
                 estimation.Coordination = coordniation;
                 estimation.TotalResource = resoureceTotal;
 
-                console.log(estimation);
+                @*console.log(estimation);*@
 
                 return estimation;
             }
@@ -962,7 +967,6 @@
                     return true;
                 }
             }
-
         };
         class Estimation {
 

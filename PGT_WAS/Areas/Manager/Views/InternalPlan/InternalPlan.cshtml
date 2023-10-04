@@ -666,12 +666,12 @@
             $("#cmb_project_number_add").empty();
             $("#cmb_project_number_edit").empty();
 
-            var url ='@Url.Content("~/")'+ "pgt/api/ProjectApi/Get";
+            var url = '@Url.Content("~/")' + "Manager/TeamPlan/GetAllProject";
             var items = "";
 
             $.get(url, (data) => {
                 $.each(data, (i, val) => {
-                    items += "<option value ='" + val.projectId + "'>" + val.pgtJobNumber + "</option>"
+                    items += "<option value ='" + val.projectAllocationId + "'>" + val.pgtJobNumber + "</option>"
                 });
 
                 $("#cmb_project_number_add").html(items);
@@ -806,7 +806,7 @@
                         });
 
                         var currentTask = "";
-                        currentTask = !COM.ObjIsNull(act.project) ? act.project.pgtJobNumber : act.userTaskStatus.status;
+                        currentTask = !COM.ObjIsNull(act.projectAllocation) ? act.projectAllocation.pgtJobNumber : act.userTaskStatus.status;
                         task.push(currentTask)
                     });
 

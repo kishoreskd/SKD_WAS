@@ -19,14 +19,12 @@ namespace WAS.Context.Repository
             this._context = context;
             this.UserTasks = new UserTasksContext(_context);
             this.Employee = new EmployeeContext(_context);
-            this.Project = new ProjectContext(_context);
             this.UserTaskStatus = new UserTaskStatusContext(_context);
             this.ProjectAllocation = new ProjectAllocationContext(_context);
         }
 
         public IUserTasks UserTasks { get; private set; }
         public IEmployeeContext Employee { get; private set; }
-        public IProjectContext Project { get; private set; }
         public IUserTaskStatusContext UserTaskStatus { get; private set; }
 
 

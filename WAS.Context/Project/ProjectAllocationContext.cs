@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace WAS.Context.Manager
 {
-    public class ProjectAllocationContext : Repository<Project>, IProjectAllocationContext
+    public class ProjectAllocationContext : Repository<ProjectAllocation>, IProjectAllocationContext
     {
         private readonly ApplicationContext _context;
         public ProjectAllocationContext(ApplicationContext context) : base(context)

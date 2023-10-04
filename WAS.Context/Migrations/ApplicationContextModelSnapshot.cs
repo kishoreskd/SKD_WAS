@@ -228,7 +228,7 @@ namespace WAS.Context.Migrations
                             Name = "Kishore S",
                             Password = "zxzZoZhWLPpvHqvau3cfzg==",
                             RoleId = 2,
-                            Timestamp = "10/3/2023 6:27:38 PM",
+                            Timestamp = "10/4/2023 12:28:17 PM",
                             TotalExperiance = 2,
                             UserName = "2701"
                         },
@@ -250,7 +250,7 @@ namespace WAS.Context.Migrations
                             Name = "Srivathsan",
                             Password = "zxzZoZhWLPpvHqvau3cfzg==",
                             RoleId = 3,
-                            Timestamp = "10/3/2023 6:27:38 PM",
+                            Timestamp = "10/4/2023 12:28:17 PM",
                             TotalExperiance = 2,
                             UserName = "2702"
                         },
@@ -272,7 +272,7 @@ namespace WAS.Context.Migrations
                             Name = "Sivahari Senthilkumar",
                             Password = "zxzZoZhWLPpvHqvau3cfzg==",
                             RoleId = 4,
-                            Timestamp = "10/3/2023 6:27:38 PM",
+                            Timestamp = "10/4/2023 12:28:17 PM",
                             TotalExperiance = 2,
                             UserName = "2703"
                         },
@@ -294,7 +294,7 @@ namespace WAS.Context.Migrations
                             Name = "Ashok",
                             Password = "zxzZoZhWLPpvHqvau3cfzg==",
                             RoleId = 4,
-                            Timestamp = "10/3/2023 6:27:38 PM",
+                            Timestamp = "10/4/2023 12:28:17 PM",
                             TotalExperiance = 2,
                             UserName = "2704"
                         });
@@ -395,15 +395,16 @@ namespace WAS.Context.Migrations
                     b.Property<double>("R2")
                         .HasColumnType("float");
 
-                    b.Property<string>("Ratio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Ratio1")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Ratio2")
+                        .HasColumnType("float");
 
                     b.Property<int>("ScheduleDays")
                         .HasColumnType("int");
 
                     b.Property<string>("StartDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SubmissionDate")
@@ -467,15 +468,16 @@ namespace WAS.Context.Migrations
                     b.Property<double>("R2")
                         .HasColumnType("float");
 
-                    b.Property<string>("Ratio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Ratio1")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Ratio2")
+                        .HasColumnType("float");
 
                     b.Property<int>("ScheduleDays")
                         .HasColumnType("int");
 
                     b.Property<string>("StartDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SubmissionDate")
@@ -539,15 +541,16 @@ namespace WAS.Context.Migrations
                     b.Property<double>("R2")
                         .HasColumnType("float");
 
-                    b.Property<string>("Ratio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Ratio1")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Ratio2")
+                        .HasColumnType("float");
 
                     b.Property<int>("ScheduleDays")
                         .HasColumnType("int");
 
                     b.Property<string>("StartDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SubmissionDate")
@@ -577,108 +580,6 @@ namespace WAS.Context.Migrations
                     b.ToTable("MiscAllocation");
                 });
 
-            modelBuilder.Entity("WAS.Model.Project", b =>
-                {
-                    b.Property<int>("ProjectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("ActualEndDt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ActualStartDt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClientJobNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClientName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("MainCheckersNdPercent")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MainDetilersNdPercent")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MainH")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MainModelersNdPercent")
-                        .HasColumnType("float");
-
-                    b.Property<int>("MainSDt")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MainStartDt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("MiscCheckersNdPercent")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MiscDetilersNdPercent")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MiscH")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MiscModelersNdPercent")
-                        .HasColumnType("float");
-
-                    b.Property<int>("MiscSDt")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MiscStartDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PGTJobNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("PlannedBudget")
-                        .HasColumnType("float");
-
-                    b.Property<string>("PlannedEndDt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlannedStartDt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProjectName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ratio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TimeStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("TotalH")
-                        .HasColumnType("float");
-
-                    b.Property<int>("UserAccountId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("WHPerday")
-                        .HasColumnType("float");
-
-                    b.HasKey("ProjectId");
-
-                    b.HasIndex("UserAccountId");
-
-                    b.ToTable("Project");
-                });
-
             modelBuilder.Entity("WAS.Model.ProjectAllocation", b =>
                 {
                     b.Property<int>("ProjectAllocationId")
@@ -686,18 +587,15 @@ namespace WAS.Context.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("ActualEndDt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ActualStartDt")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ClientJobNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClientName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedDate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
@@ -716,15 +614,6 @@ namespace WAS.Context.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("PlannedBudget")
-                        .HasColumnType("float");
-
-                    b.Property<string>("PlannedEndDt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlannedStartDt")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("ProductionHours")
                         .HasColumnType("float");
 
@@ -732,66 +621,9 @@ namespace WAS.Context.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TimeStamp")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ProjectAllocationId");
 
                     b.ToTable("ProjectAllocation");
-                });
-
-            modelBuilder.Entity("WAS.Model.ProjectEstimation", b =>
-                {
-                    b.Property<int>("ProjectEstimationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("IFAr1r2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IFFr1r2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("MainCNd")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MainDNd")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MainMNd")
-                        .HasColumnType("float");
-
-                    b.Property<string>("MainSubmissionDt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("MiscCNd")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MiscDNd")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MiscMNd")
-                        .HasColumnType("float");
-
-                    b.Property<string>("MiscSubmissionDt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("ResourcesMain")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ResourcesMisc")
-                        .HasColumnType("float");
-
-                    b.HasKey("ProjectEstimationId");
-
-                    b.HasIndex("ProjectId")
-                        .IsUnique();
-
-                    b.ToTable("ProjectEstimation");
                 });
 
             modelBuilder.Entity("WAS.Model.Role", b =>
@@ -890,7 +722,7 @@ namespace WAS.Context.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<int?>("ProjectAllocationId")
                         .HasColumnType("int");
 
                     b.Property<string>("StartDate")
@@ -913,7 +745,7 @@ namespace WAS.Context.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ProjectAllocationId");
 
                     b.HasIndex("UserAccountId");
 
@@ -991,26 +823,6 @@ namespace WAS.Context.Migrations
                     b.Navigation("ProjectAllocation");
                 });
 
-            modelBuilder.Entity("WAS.Model.Project", b =>
-                {
-                    b.HasOne("WAS.Model.Employee", "UserAccountEmployee")
-                        .WithMany()
-                        .HasForeignKey("UserAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserAccountEmployee");
-                });
-
-            modelBuilder.Entity("WAS.Model.ProjectEstimation", b =>
-                {
-                    b.HasOne("WAS.Model.Project", null)
-                        .WithOne("ProjectEstimation")
-                        .HasForeignKey("WAS.Model.ProjectEstimation", "ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WAS.Model.UserTasks", b =>
                 {
                     b.HasOne("WAS.Model.Employee", "Employee")
@@ -1019,9 +831,9 @@ namespace WAS.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WAS.Model.Project", "Project")
+                    b.HasOne("WAS.Model.ProjectAllocation", "ProjectAllocation")
                         .WithMany()
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectAllocationId");
 
                     b.HasOne("WAS.Model.Employee", "UserAccountEmployee")
                         .WithMany()
@@ -1035,7 +847,7 @@ namespace WAS.Context.Migrations
 
                     b.Navigation("Employee");
 
-                    b.Navigation("Project");
+                    b.Navigation("ProjectAllocation");
 
                     b.Navigation("UserAccountEmployee");
 
@@ -1045,11 +857,6 @@ namespace WAS.Context.Migrations
             modelBuilder.Entity("WAS.Model.Employee", b =>
                 {
                     b.Navigation("DirectReports");
-                });
-
-            modelBuilder.Entity("WAS.Model.Project", b =>
-                {
-                    b.Navigation("ProjectEstimation");
                 });
 
             modelBuilder.Entity("WAS.Model.ProjectAllocation", b =>

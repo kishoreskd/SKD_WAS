@@ -10,7 +10,7 @@ using WAS.Model;
 
 namespace WAS.Interface
 {
-    public interface IProjectAllocationContext : IRepository<Project>
+    public interface IProjectAllocationContext : IRepository<ProjectAllocation>
     {
         void Update(ProjectAllocation project);
         Task<int> Commit();

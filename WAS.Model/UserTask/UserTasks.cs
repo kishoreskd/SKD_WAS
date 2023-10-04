@@ -40,12 +40,12 @@ namespace WAS.Model
         public Employee Employee { get; set; }
 
 
-        [ForeignKey("Project")]
-        public int? ProjectId { get; set; }
+        [ForeignKey("ProjectAllocation")]
+        public int? ProjectAllocationId { get; set; }
 
         [ValidateNever]
-        [ForeignKey("ProjectId")]
-        public Project? Project { get; set; }
+        [ForeignKey("ProjectAllocationId")]
+        public ProjectAllocation? ProjectAllocation { get; set; }
 
 
         [ForeignKey("UserAccountEmployee")]

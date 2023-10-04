@@ -30,8 +30,8 @@ namespace WAS.Context
 
 
 
-        public DbSet<Project> Project { get; set; }
-        public DbSet<ProjectEstimation> ProjectEstimation { get; set; }
+        //public DbSet<Project> Project { get; set; }
+        //public DbSet<ProjectEstimation> ProjectEstimation { get; set; }
         public DbSet<UserTasks> UserTasks { get; set; }
         public DbSet<UserTaskStatus> UserTaskStatus { get; set; }
 

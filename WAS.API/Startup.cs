@@ -74,7 +74,6 @@ namespace WAS.API
             services.AddScoped<ILocationContext, LocationContext>();
             services.AddScoped<IHolidayContext, HolidayContext>();
             services.AddScoped<IRoleContext, RoleContext>();          
-            services.AddScoped<IProjectContext, ProjectContext>();
 
 
             services.AddSwaggerGen(c =>

@@ -29,17 +29,17 @@ function format(d) {
                     <tbody class="table-light">
                         <tr>
                             <td>Hours</td>
-                            <td >${d.mainH}</td>
-                            <td >${d.miscH}</td>
-                            <td >${d.mainH}</td>
-                            <td >${d.miscH}</td>
+                            <td >${d.mainAllocation.hours}</td>
+                            <td >${d.miscAllocation.hours}</td>
+                            <td >${d.mainAllocation.hours}</td>
+                            <td >${d.miscAllocation.hours}</td>
                         </tr>
                         <tr>
                             <td>Submission Date</td>
-                            <td id="td_mainsubmission">${d.mainStartDt}</td>
-                            <td id="td_miscSubmission">${d.miscStartDate}</td>
-                            <td id="td_mainsubmission">${d.projectEstimation.mainSubmissionDt}</td>
-                            <td id="td_miscSubmission">${d.projectEstimation.miscSubmissionDt}</td>                                          
+                            <td id="td_mainsubmission">${d.mainAllocation.startDate}</td>
+                            <td id="td_miscSubmission">${d.miscAllocation.startDate}</td>
+                            <td id="td_mainsubmission">${d.mainAllocation.submissionDate}</td>
+                            <td id="td_miscSubmission">${d.miscAllocation.submissionDate}</td>
                         </tr>
                         <tr>
                             <td>Ratio</td>
@@ -94,7 +94,7 @@ $(document).ready(function () {
         //"bAutoWidth": false,
         pagingType: 'full_numbers',
         "ajax": {
-            "url": "/Manager/Allocation/GetAllProjectAllocation",
+            "url": "/Manager/ProjectAllocation/GetAllProjectAllocation",
             "type": "POST",
             "dataType": "json",
             "data": "json",
@@ -102,13 +102,13 @@ $(document).ready(function () {
         },
 
         columns: [
-            {
-                className: 'dt-control',
-                orderable: false,
-                data: null,
-                defaultContent: '',
-                width: "1%"
-            },
+            //{
+            //    className: 'dt-control',
+            //    orderable: false,
+            //    data: null,
+            //    defaultContent: '',
+            //    width: "1%"
+            //},
             {
                 "data": "#",
                 "render": function (draw, type, row, data) {
@@ -141,8 +141,8 @@ $(document).ready(function () {
                 "render": function (draw, type, row, data) {
                     return `
                             <div  class="text-end">
-                                <a " href="/Manager/Allocation/UpSert?id=${row.projectId}"> <i class="bi bi-pencil-square"></i></a>
-                                <a  " onClick = Delete('/Manager/Allocation/Delete/${row.projectId}')  class="mx-2"> <i class="bi bi-trash"></i></a>
+                                <a " href="/Manager/ProjectAllocation/UpSert?id=${row.projectAllocationId}"> <i class="bi bi-pencil-square"></i></a>
+                                <a  " onClick = Delete('/Manager/ProjectAllocation/Delete/${row.projectAllocationId}')  class="mx-2"> <i class="bi bi-trash"></i></a>
                             </div>`
                 },
 
@@ -151,20 +151,20 @@ $(document).ready(function () {
         ],
     });
 
-    dataTable.on('click', 'td.dt-control', function (e) {
-        let tr = e.target.closest('tr');
-        let row = dataTable.row(tr);
+    //dataTable.on('click', 'td.dt-control', function (e) {
+    //    let tr = e.target.closest('tr');
+    //    let row = dataTable.row(tr);
 
-        if (row.child.isShown()) {
-            // This row is already open - close it
-            row.child.hide();
-        }
-        else {
-            // Open this row
-            console.log(row.data());
-            row.child(format(row.data())).show();
-        }
-    });
+    //    if (row.child.isShown()) {
+    //        // This row is already open - close it
+    //        row.child.hide();
+    //    }
+    //    else {
+    //        // Open this row
+    //        console.log(row.data());
+    //        row.child(format(row.data())).show();
+    //    }
+    //});
 });
 
 

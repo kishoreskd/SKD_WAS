@@ -44,7 +44,7 @@ const TableCreation = function (act, index) {
                         <td class="text-left"> <span class="badge rounded-pill bg-info"><i class="bi bi-calendar"></i>&nbsp ${act.startDate}</span> - <span class="badge rounded-pill bg-danger"><i class="bi bi-calendar"></i>&nbsp ${act.endDate}</span></td>
                         
                         <td  class="text-right"><span class="badge rounded-pill bg-secondary">${COM.ObjIsNull(act.userTaskStatus) ? " " : act.userTaskStatus.status} ${COM.IsNullOrEmpty(act.description) ? " " : "(" + act.description + ")"}</span></td>
-                        <td class="text-right"><span class="badge bg-success"><i class="bi bi-briefcase"></i>&nbsp ${COM.ObjIsNull(act.project) ? " " : act.project.pgtJobNumber}</span></td >
+                        <td class="text-right"><span class="badge bg-success"><i class="bi bi-briefcase"></i>&nbsp ${COM.ObjIsNull(act.projectAllocation) ? " " : act.projectAllocation.pgtJobNumber}</span></td >
                       </tr>              
                     `
     return items;

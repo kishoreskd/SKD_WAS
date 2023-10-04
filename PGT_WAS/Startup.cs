@@ -83,9 +83,7 @@ namespace PGT_WAS
             services.AddScoped<ILocationContext, LocationContext>();
             services.AddScoped<IHolidayContext, HolidayContext>();
             services.AddScoped<IRoleContext, RoleContext>();
-
-            services.AddScoped<IProjectContext, ProjectContext>();
-            services.AddScoped<IProjectEstimationContext, ProjectEstimationContext>();
+                     
             services.AddScoped<ILoginContext, LoginContext>();
 
             services.AddScoped<IUnitOfWork, UnitOfWorkContext>();
