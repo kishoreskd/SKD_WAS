@@ -20,11 +20,7 @@
 
     <div class="card border-1">
         <div id="cardbody" class="card-body">
-            <div class="f-l pr-1">
-                <button type="button" id="btn_submit" class="btn btn-sm btn-primary">
-                    <i class="bi bi-check"></i> Check
-                </button>
-            </div>
+
             <div class="f-l pr-1">
                 <button type="submit" id="btn_save" class="btn btn-sm btn-success">
                     <i class="bi bi-floppy"></i> Save
@@ -43,7 +39,16 @@
         <div class="card border-1">
 
             <div class="card-header pt-3 pl-3 pb-1">
-                <h6>Project Allocation</h6>
+
+                <div class="f-l pr-1">
+                    <h6>Project Allocation</h6>
+                </div>
+
+                <div class="f-r pr-1">
+                    <button type="button" id="btn_submit" class="btn btn-sm btn-primary">
+                        <i class="bi bi-check"></i> Check
+                    </button>
+                </div>
             </div>
 
             <div id="cardbody" class="card-body">
@@ -89,7 +94,7 @@
                         <label class="form-label"><strong>Production Hours:</strong></label>
                     </div>
                     <div class="col-1">
-                        <input id="txt_production_hours" value="9" onkeypress="return COM.IsNumber()" asp-for="ProductionHours" class="form-control" type="text" style="width:80px" />
+                        <input id="txt_production_hours" value="9" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="ProductionHours" class="form-control" type="text" style="width:80px" />
                         <span class="text-danger" asp-validation-for="ProductionHours"></span>
                     </div>
                 </div>
@@ -146,7 +151,7 @@
                                 </div>
 
                                 <div class="col">
-                                    <input id="txt_main_hours" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.Hours" class="form-control" type="text" style="width:80px" />
+                                    <input id="txt_main_hours" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.Hours" class="form-control" type="text" style="width:80px" />
                                     <span class="text-danger" asp-validation-for="MainAllocation.Hours"></span>
                                 </div>
 
@@ -156,15 +161,14 @@
                                     <label class="form-label"><strong>Ratio</strong></label>
                                 </div>
 
-
                                 <div class="col-1">
-                                    <input id="txt_main_r1" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                                    <input id="txt_main_r1" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
                                 </div>
                                 <div class="col-1 text-center">
                                     <strong>:</strong>
                                 </div>
                                 <div class="col-4">
-                                    <input id="txt_main_r2" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                                    <input id="txt_main_r2" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
                                 </div>
 
                                 <div class="w-100 pt-2"></div>
@@ -183,7 +187,7 @@
                                     <label class="form-label"><strong>Schedule Days</strong></label>
                                 </div>
                                 <div class="col">
-                                    <input id="txt_main_schedule_days" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                                    <input id="txt_main_schedule_days" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MainAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
                                     <span class="text-danger" asp-validation-for="MainAllocation.ScheduleDays"></span>
                                 </div>
 
@@ -254,7 +258,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Ratio:</strong></td>
-                                        <td><span id="td_main_ratio" class="badge bg-success">@(Model.MainAllocation.IFA):@(Model.MainAllocation.IFF)</span></td>
+                                        <td><span id="td_main_ratio" class="badge bg-success">@(Model.MainAllocation.Ratio1):@(Model.MainAllocation.Ratio2)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Total Resource:</strong></td>
@@ -315,7 +319,7 @@
                             </div>
 
                             <div class="col">
-                                <input id="txt_misc_hours" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
+                                <input id="txt_misc_hours" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
                                 <span class="text-danger" asp-validation-for="MiscAllocation.Hours"></span>
                             </div>
 
@@ -327,13 +331,13 @@
 
 
                             <div class="col-1">
-                                <input id="txt_misc_r1" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                                <input id="txt_misc_r1" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
                             </div>
                             <div class="col-1 text-center">
                                 <strong>:</strong>
                             </div>
                             <div class="col-4">
-                                <input id="txt_misc_r2" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                                <input id="txt_misc_r2" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
                             </div>
 
                             <div class="w-100 pt-2"></div>
@@ -352,7 +356,7 @@
                                 <label class="form-label"><strong>Schedule Days</strong></label>
                             </div>
                             <div class="col">
-                                <input id="txt_misc_schedule_days" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                                <input id="txt_misc_schedule_days" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
                                 <span class="text-danger" asp-validation-for="MiscAllocation.ScheduleDays"></span>
                             </div>
 
@@ -422,7 +426,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Ratio:</strong></td>
-                                    <td><span id="td_misc_ratio" class="badge bg-success">@(Model.MiscAllocation.IFA):@(Model.MiscAllocation.IFF)</span></td>
+                                    <td><span id="td_misc_ratio" class="badge bg-success">@(Model.MiscAllocation.Ratio1):@(Model.MiscAllocation.Ratio2)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Total Resource:</strong></td>
@@ -482,7 +486,7 @@
                             </div>
 
                             <div class="col">
-                                <input id="txt_mainmisc_hours" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
+                                <input id="txt_mainmisc_hours" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.Hours" class="form-control" type="text" style="width:80px" />
                                 <span class="text-danger" asp-validation-for="MainAndMiscAllocation.Hours"></span>
                             </div>
 
@@ -494,13 +498,13 @@
 
 
                             <div class="col-1">
-                                <input id="txt_mainmisc_r1" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
+                                <input id="txt_mainmisc_r1" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R1" class="form-control" type="text" style="width:60px; height: 30px;">
                             </div>
                             <div class="col-1 text-center">
                                 <strong>:</strong>
                             </div>
                             <div class="col-4">
-                                <input id="txt_mainmisc_r2" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
+                                <input id="txt_mainmisc_r2" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.R2" class="form-control" type="text" style="width: 60px; height: 30px; ">
                             </div>
 
                             <div class="w-100 pt-2"></div>
@@ -519,7 +523,7 @@
                                 <label class="form-label"><strong>Schedule Days</strong></label>
                             </div>
                             <div class="col">
-                                <input id="txt_mainmisc_schedule_days" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
+                                <input id="txt_mainmisc_schedule_days" onblur="COM.OnBlurSetDefaultValueHandler(event);" onkeypress="return COM.IsNumber()" asp-for="MainAndMiscAllocation.ScheduleDays" class="form-control" type="text" style="width:80px" />
                                 <span class="text-danger" asp-validation-for="MainAndMiscAllocation.ScheduleDays"></span>
                             </div>
 
@@ -586,11 +590,15 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Submission Date:</strong></td>
-                                    <td><span id="td_mainmisc_submission_date" class="badge bg-success">@(COM.IsNullOrEmpty(Model.MainAndMiscAllocation.SubmissionDate)? "dd/mm/yy" : Model.MainAndMiscAllocation.SubmissionDate)</span></td>
+                                    <td>
+                                        <span id="td_mainmisc_submission_date" class="badge bg-success">
+                                            @(COM.IsNullOrEmpty(Model.MainAndMiscAllocation.SubmissionDate)? "dd/mm/yy" : Model.MainAndMiscAllocation.SubmissionDate)
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Ratio:</strong></td>
-                                    <td><span id="td_mainmisc_ratio" class="badge bg-success">@(Model.MainAndMiscAllocation.IFA):@(Model.MainAndMiscAllocation.IFF)</span></td>
+                                    <td><span id="td_mainmisc_ratio" class="badge bg-success">@(Model.MainAndMiscAllocation.Ratio1):@(Model.MainAndMiscAllocation.Ratio2)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Total Resource:</strong></td>
@@ -630,8 +638,6 @@
             </div>
         </div>
     </div>
-
-
 </form>
 
 
@@ -686,10 +692,10 @@
             });
         };
 
+        var txt_main_hours = "#txt_main_hours";
         var txt_production_hours = "#txt_production_hours";
         var txt_main_r1 = "#txt_main_r1";
         var txt_main_r2 = "#txt_main_r2";
-        var txt_main_hours = "#txt_main_hours"
         var txt_main_start_date = "#txt_main_start_date";
         var txt_main_schedule_days = "#txt_main_schedule_days";
         var txt_main_modeler = "#txt_main_modeler";
@@ -728,6 +734,7 @@
         });
 
         const EstimationCalculation = function () {
+
             var jobType = ["main", "misc", "mainmisc"];
 
             for (var i = 0; i < 3; i++) {
@@ -760,7 +767,7 @@
                 var rslt_checkers_need = ReplaceJobType(rslt_main_checkers_need, jobType[i]);
                 var rslt_detailers_need = ReplaceJobType(rslt_main_detailers_need, jobType[i]);
                 var rslt_coordination_need = ReplaceJobType(rslt_main_coordination_need, jobType[i]);
-
+              
 
                 FeedValue(txt_hours, txt_start_date, txt_r1, txt_r2, schedule_days, modeler, checker, detailer, production_hours,
                     td_hours, td_submission_date, td_ratio, td_total_resource, td_modelers_need, td_checkers_need, td_detailers_need, td_cordination_need,
@@ -780,7 +787,7 @@
 
             var allocation = new Allocation(
                 COM.ConvertFloat($(txt_hours).val()),
-                COM.ParseDate($(txt_start_date).val()),
+                $(txt_start_date).val(),
                 COM.ConvertFloat($(txt_r1).val()),
                 COM.ConvertFloat($(txt_r2).val()),
                 COM.ConvertFloat($(schedule_days).val()),
@@ -795,7 +802,8 @@
             var ratio2 = COM.IsNanOrInfinity(estimation.R2) ? 0 : estimation.R2;
             var mainRatio = ratio1 + ":" + ratio2;
 
-            $(td_hours).text($(txt_main_hours).val());
+
+            $(td_hours).text(estimation.Hours);
             $(td_submission_date).text(estimation.SubmissionDate);
             $(td_ratio).text(mainRatio);
 
@@ -804,7 +812,7 @@
             $(td_checkers_need).text(COM.IsNanOrInfinity(estimation.TotalCheckers) ? 0 : estimation.TotalCheckers);
             $(td_detailers_need).text(COM.IsNanOrInfinity(estimation.TotalDetailers) ? 0 : estimation.TotalDetailers);
             $(td_cordination_need).text(COM.IsNanOrInfinity(estimation.Coordination) ? 0 : estimation.Coordination);
-
+            @*alert(estimation.SubmissionDate);*@
             $(rslt_submission_date).val(estimation.SubmissionDate);
             $(rslt_r1).val(COM.IsNanOrInfinity(estimation.R1) ? 0 : estimation.R1);
             $(rslt_r2).val(COM.IsNanOrInfinity(estimation.R2) ? 0 : estimation.R2);
@@ -851,19 +859,32 @@
 
                 estimation.R1 = r1;
                 estimation.R2 = r2;
-                estimation.SubmissionDate = COM.ParseDateOfObject(submissionDate);
+
+                if (!COM.ObjIsNull(submissionDate)) {
+
+                    estimation.SubmissionDate = COM.ParseDateOfObject(submissionDate);
+
+                } else {
+
+                    estimation.SubmissionDate = "dd/mm/yyyy";
+
+                }
+
                 estimation.TotalModelers = m;
                 estimation.TotalCheckers = c;
                 estimation.TotalDetailers = d;
                 estimation.Coordination = coordniation;
                 estimation.TotalResource = resoureceTotal;
-
+                estimation.Hours = this._hours;
                 @*console.log(estimation);*@
 
                 return estimation;
             }
 
             GetSubmissionDate(projectStartDate, numberofScheduledays, externalHolidays, isExcludeExternal) {
+
+                if (projectStartDate == '') return null;
+                 projectStartDate =  COM.ParseDate(projectStartDate);
 
                 var startDate = projectStartDate;
                 var endDate = new Date(startDate);
@@ -938,9 +959,11 @@
             }
             static IsValidPercent(event) {
 
-        @*var a = parseInt($(mainmodeler).val());
-                var b = parseInt($(maindetailer).val());
-                var c = parseInt($(mainchecker).val());
+                COM.OnBlurSetDefaultValueHandler(event);
+
+                var a = parseInt($("#txt_main_modeler").val());
+                var b = parseInt($("#txt_main_checker").val());
+                var c = parseInt($("#txt_main_detailer").val());
 
                 var percent = parseInt(event.target.value);
 
@@ -949,16 +972,25 @@
                 return false;
                 }
 
-                a = parseInt($(miscmodeler).val());
-                b = parseInt($(miscdetailer).val());
-                c = parseInt($(miscchecker).val());
+                 a = parseInt($("#txt_misc_modeler").val());
+                 b = parseInt($("#txt_misc_checker").val());
+                 c = parseInt($("#txt_misc_detailer").val());
 
                 if (!this.IsValid(a, b, c, percent)) {
-                event.target.value = 0;
-                return false;
-                }*@
+                    event.target.value = 0;
+                    return false;
+                }
 
-                        return true;
+                a = parseInt($("#txt_mainmisc_modeler").val());
+                b = parseInt($("#txt_mainmisc_checker").val());
+                c = parseInt($("#txt_mainmisc_detailer").val());
+
+                if (!this.IsValid(a, b, c, percent)) {
+                    event.target.value = 0;
+                    return false;
+                }
+
+               return true;
             }
             static IsValid(a, b, c, percent) {
                 if (((a + b + c) > 100) || percent > 100 || percent < 0 || COM.IsNanOrNull(percent)) {

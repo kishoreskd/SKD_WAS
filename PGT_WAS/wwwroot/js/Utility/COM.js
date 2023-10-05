@@ -44,10 +44,18 @@
     static IsNumber(evt) {
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;
+
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
             return false;
         }
         return true;
+    }
+
+    static OnBlurSetDefaultValueHandler(e) {
+        if (e.target.value.trim() == '') {
+            e.target.value = 0;
+            return false;
+        }
     }
 
     static IsNanOrInfinity(x) {
@@ -59,6 +67,8 @@
 
     //CONVERSION
     static ConvertFloat(x) {
+
+        if (this.IsNanOrNull(x)) { console.log("IsnAN"); return 0; };
         return parseFloat(x);
     }
 
@@ -77,6 +87,8 @@
     }
 
     static StringToDate(input) {
+
+
 
         var parts = input.split("-");
         // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
